@@ -26,12 +26,6 @@ public class PresentationSlide implements Slide {
 
     @Override
     public void Display() {
-        JFrame frame = new JFrame();
-        frame.setLayout(new BorderLayout(10,5));
-        frame.setTitle("LearningMyFriend :শেখা ও শখা ");
-        frame.setSize(800,500);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
     }
 
     @Override

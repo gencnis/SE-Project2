@@ -4,15 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TopBar extends JPanel {
-    JMenu Add = new JMenu("Add");
+    JMenu Add = new JMenu("Add|যোগ করুন");
 
-    JMenu Insert = new JMenu("Insert");
-    JMenu Draw = new JMenu("Draw");
-    JMenu LoadProject = new JMenu("LoadProject");
-    JMenu Save = new JMenu("Save");
-    JMenu Share = new JMenu("Share");
-    JMenu Print = new JMenu("Print");
-    JMenu Present = new JMenu("Present");
+    JMenu Insert = new JMenu("Insert|ঢোকান");
+    JMenu Draw = new JMenu("Draw|আঁকা");
+    JMenu LoadProject = new JMenu("Load Project|লোড প্রকল্প");
+    JMenu Save = new JMenu("Save|রক্ষা");
+    JMenu Share = new JMenu("Share|ভাগ");
+    JMenu Print = new JMenu("Print|ছাপা");
+    JMenu Present = new JMenu("Present|বর্তমান");
 
 
 

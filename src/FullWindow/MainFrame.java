@@ -17,7 +17,7 @@ public class MainFrame extends JFrame {
 
 
         this.setTitle("LearningMyFriend :শেখা ও শখা ");
-        this.setSize(800,500);
+        this.setSize(1000,500);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
