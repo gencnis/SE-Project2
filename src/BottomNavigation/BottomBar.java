@@ -10,6 +10,8 @@ public class BottomBar extends JPanel {
     ArrayList<PresentationSlide> slides = new ArrayList<>();
 
     public BottomBar(){
+        this.setBackground(Color.decode("#B2D5DB"));
+
         for(int i = 0; i < 5; i ++){
             slides.add(new PresentationSlide());
         }
@@ -20,10 +22,5 @@ public class BottomBar extends JPanel {
         }
 
     }
-
-
-    // how far did I get?
-    // built a simple menu with all items
-    // started building bottom bar
 
 }
