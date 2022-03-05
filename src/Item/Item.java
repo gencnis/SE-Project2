@@ -9,7 +9,7 @@
 
 package Item;
 
-import Slide.*;
+import SlideMgr.*;
 
 public interface Item {
 

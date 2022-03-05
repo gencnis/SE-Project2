@@ -13,7 +13,7 @@
 
 package Deck;
 
-import Slide.Slide;
+import SlideMgr.Slide;
 
 import java.util.ArrayList;
 

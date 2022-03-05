@@ -7,7 +7,7 @@
 
 package Item;
 
-import Slide.*;
+import SlideMgr.*;
 
 public class Text implements Item{
 

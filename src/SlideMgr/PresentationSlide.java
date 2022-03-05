@@ -1,4 +1,4 @@
-package Slide;
+package SlideMgr;
 /**
  *
  * Concrete Class for a singular presentation Slide.
@@ -10,9 +10,6 @@ package Slide;
  *
  * @Author: Fehmi Neffati
  */
-
-import javax.swing.*;
-import java.awt.*;
 
 public class PresentationSlide extends Slide {
 

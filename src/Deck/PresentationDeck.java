@@ -8,9 +8,7 @@
 
 package Deck;
 
-import Slide.Slide;
-
-import java.util.ArrayList;
+import SlideMgr.Slide;
 
 public class PresentationDeck extends Deck
 {

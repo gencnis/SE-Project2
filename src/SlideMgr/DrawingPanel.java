@@ -1,4 +1,4 @@
-package Slide;
+package SlideMgr;
 
 import javax.swing.*;
 import java.awt.*;

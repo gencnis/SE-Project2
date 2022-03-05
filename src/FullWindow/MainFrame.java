@@ -10,10 +10,17 @@ package FullWindow;
 
 import BottomNavigation.BottomBar;
 import TopBar.TopBar;
+import SlideMgr.*;
 
-
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainFrame extends JFrame
@@ -31,6 +38,18 @@ public class MainFrame extends JFrame
     JPanel s2 = new JPanel();
     JPanel s3 = new JPanel();
 
+//Image loading variables
+    Slide s;
+    private JButton addImg;
+    File targetFile;
+    BufferedImage targetImg;
+    ImageIcon icon; //what you load your image into when you get it
+    private static final int baseSize = 128; //default size variable, can add in our own to resize the image
+
+    //get your desktop in most cases as a default directory
+    File home = FileSystemView.getFileSystemView().getHomeDirectory();
+    String basePath = home.getAbsolutePath();
+//Image Loading variables
 
 
     MainFrame()
@@ -67,6 +86,22 @@ public class MainFrame extends JFrame
         //use this when you remove and rearrange the order of stuff
         //mainPanel.remove("3");
 
+//image loading Button
+        s = new Slide();
+        JPanel top = new JPanel();
+        addImg = new JButton("Add Img");
+        addImg.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                loadImage(e, baseSize, baseSize);
+            }
+        });
+        top.add(addImg);
+
+//uncomment both lines for demonstration. this will overwrite the top current layout for demo purposes
+        //add(top, BorderLayout.NORTH);
+        //add(s, BorderLayout.CENTER);
+
+//image loading button
 
 
         this.setTitle("LearningMyFriend :শেখা ও শখা ");
@@ -79,6 +114,61 @@ public class MainFrame extends JFrame
         new MainFrame();
     }
 
+    //happens when button is pressed, takes custom dimensions for an image
+    protected void loadImage(ActionEvent e, int width, int height)
+    {
+        //opens a file explorer on the desktop
+        JFileChooser fc = new JFileChooser(basePath);
+        fc.setFileFilter(new ImageFileFilter());  //filters out non-image items
+        int res = fc.showOpenDialog(null);
+        // Image found
+        try {
+            if (res == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                setTargetImage(file, width, height);  //loads up the image file for us to use
+            } //Image Not Found
+            else {
+                JOptionPane.showMessageDialog(null,
+                        "An JPEG or PNG file must be selected. \nCancelling Action.", "Invalid File Chosen",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception iOException)
+        {
+        }
+
+    }
 
 
+    //resizes the image based on provided image and dimensions
+    public BufferedImage rescale(BufferedImage originalImage, int width, int height)
+    {
+        BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, width, height, null);
+        g.dispose();
+        return resizedImage;
+    }
+
+    //primes image for use
+    public void setTargetImage(File reference, int width, int height)
+    {
+
+        try
+        {
+            targetFile = reference;
+            targetImg = rescale(ImageIO.read(reference), width, height); //sets image to desired size
+        } catch (IOException ex) {
+            // Logger.getLogger(MainAppFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
+        icon=new ImageIcon(targetImg); //puts image into a use able format for JPanels
+        s.addImage(icon); //adds image to the slide
+
+
+    }
 }
+
+
+
