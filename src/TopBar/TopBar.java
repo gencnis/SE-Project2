@@ -44,7 +44,7 @@ public class TopBar extends JPanel {
         Draw.add(new JMenuItem("Free Draw"));
 
         LoadProject.add(new JMenuItem("Open project from Device"));
-        LoadProject.add(new JMenuItem("Load Template"));
+        LoadProject.add(new JMenuItem("Open Template"));
 
         Save.add(new JMenuItem("As Project"));
         Save.add(new JMenuItem("As Template"));
