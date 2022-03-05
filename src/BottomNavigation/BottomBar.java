@@ -10,6 +10,8 @@ package BottomNavigation;
 
 
 
+import SlideMgr.Slide;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,7 +29,7 @@ public class BottomBar extends JPanel {
      * @param slideShow idk what this is or if we could change but all's cool since it works
      * @param mainPanel TODO: TODO: Ideally would be Slide not JPanel
      */
-    public BottomBar(ArrayList<JPanel> slides, CardLayout slideShow, JPanel mainPanel){
+    public BottomBar(ArrayList<Slide> slides, CardLayout slideShow, JPanel mainPanel){
         this.setBackground(Color.decode("#B2D5DB"));
 
         Integer i = 0;

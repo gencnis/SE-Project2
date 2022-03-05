@@ -26,7 +26,8 @@ import java.util.ArrayList;
 public class MainFrame extends JFrame
 {
     // TODO: Ideally instead of this we would have our Deck of Slides
-    ArrayList<JPanel> allPanels = new ArrayList<>();
+    //can change this to Slide
+    ArrayList<Slide> allPanels = new ArrayList<>();
 
     //slideshow display
     CardLayout slideShow = new CardLayout();
@@ -34,9 +35,9 @@ public class MainFrame extends JFrame
 
     //TODO: Ideally instead of JPanels we want to have our Slide class
     // If that's not possible let me know (fehmi) we might be able to change some signatures around
-    JPanel s1 = new JPanel();
-    JPanel s2 = new JPanel();
-    JPanel s3 = new JPanel();
+    Slide s1 = new Slide();
+    Slide s2 = new Slide();
+    Slide s3 = new Slide();
 
 //Image loading variables
     Slide s;
