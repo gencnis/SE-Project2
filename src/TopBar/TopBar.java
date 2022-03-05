@@ -14,7 +14,6 @@ import java.awt.*;
 
 public class TopBar extends JPanel {
     JMenu Add = new JMenu("Add|যোগ করুন");
-
     JMenu Insert = new JMenu("Insert|ঢোকান");
     JMenu Draw = new JMenu("Draw|আঁকা");
     JMenu LoadProject = new JMenu("Open Project|লোড প্রকল্প");
@@ -30,6 +29,8 @@ public class TopBar extends JPanel {
         this.setBackground(Color.decode("#B2D5DB"));
         JMenuBar aa = new JMenuBar();
         aa.setBackground(Color.decode("#B2D5DB"));
+        aa.setPreferredSize(new Dimension(860,50));
+        aa.setBorder(BorderFactory.createEtchedBorder(0));
 
         Add.add(new JMenuItem("Add New Slide"));
         Add.add(new JMenuItem("Add Slides Numbers"));
