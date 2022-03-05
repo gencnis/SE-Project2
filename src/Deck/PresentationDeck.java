@@ -12,7 +12,8 @@ import Slide.Slide;
 
 import java.util.ArrayList;
 
-public class PresentationDeck extends Deck{
+public class PresentationDeck extends Deck
+{
 
     @Override
     public void display() {
@@ -35,7 +36,8 @@ public class PresentationDeck extends Deck{
     }
 
     @Override
-    public void Remove(Slide slide) {
+    public void Remove(Slide slide)
+    {
 
     }
 }
