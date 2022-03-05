@@ -23,8 +23,19 @@ public class MainFrame extends JFrame
     //needs to declare buttons Here
     private JButton load;
 
+    //slideshow display
+    CardLayout slideShow = new CardLayout();
+    JPanel mainPanel = new JPanel();
+    JPanel s1 = new JPanel();
+    JPanel s2 = new JPanel();
+    JPanel s3 = new JPanel();
+    JButton b1 = new JButton("Switch to Second Slide");
+    JButton b2 = new JButton("Switch to Third Slide");
 
-    MainFrame(){
+
+
+    MainFrame()
+    {
         TopBar tb = new TopBar();
         this.add(tb, BorderLayout.NORTH);
 
@@ -38,13 +49,13 @@ public class MainFrame extends JFrame
         ButtonClicker click = new ButtonClicker();
         load = new JButton("Load Image");
         load.addActionListener(click);
-
-
         //sample button implementation
         JPanel top = new JPanel();
         top.add(load);
         add(top, BorderLayout.CENTER);
 
+//CENTER SLIDESHOW CARD LAYOUT
+        mainPanel.getLayout(CardLayout)
 
 
         this.setTitle("LearningMyFriend :শেখা ও শখা ");
