@@ -42,20 +42,51 @@ public class MainFrame extends JFrame
         BottomBar bb = new BottomBar();
         this.add(bb, BorderLayout.SOUTH);
 
-//BUTTON CLICK IMPLEMENTATION EXAMPLE:
 
-        //make each button like so to hook up a click action
-        //be sure to add the button to the list of events in ButtonClicker Class
-        ButtonClicker click = new ButtonClicker();
-        load = new JButton("Load Image");
-        load.addActionListener(click);
-        //sample button implementation
-        JPanel top = new JPanel();
-        top.add(load);
-        add(top, BorderLayout.CENTER);
+
+
+
 
 //CENTER SLIDESHOW CARD LAYOUT
-        mainPanel.getLayout(CardLayout)
+        mainPanel.setLayout(slideShow);
+        s1.add(b1);
+        s2.add(b2);
+        s1.setBackground(Color.CYAN);
+        s2.setBackground(Color.BLACK);
+
+        //implement button actions like this to keep things neat
+        b1.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                slideShow.show(mainPanel, "2");
+            }
+        });
+
+
+        b2.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                slideShow.show(mainPanel, "3");
+            }
+        });
+
+        mainPanel.add(s1, "1");
+        mainPanel.add(s2, "2"); //the second parameter is an identifier string
+        mainPanel.add(s3, "3");
+        //we can set this to be the string number identifier from the slide
+
+        //you set the slideShow's main parent Jpanel
+        // and then the string identifier for the slide to be displayed
+        //use this when nyou want to display a different slide
+        slideShow.show(mainPanel, "1");
+        add(mainPanel, BorderLayout.CENTER);
+        //use this when you remove and rearrange the order of stuff
+        //mainPanel.remove("3");
+
 
 
         this.setTitle("LearningMyFriend :শেখা ও শখা ");
@@ -69,17 +100,5 @@ public class MainFrame extends JFrame
     }
 
 
-    private class ButtonClicker implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)
-        {
 
-            //MAKE SURE YOU HAVE AN IF STATEMENT FOR EVERY BUTTON ON THE UI
-            if (e.getSource() == load)
-            {
-                //put method call or implementation here
-                load.setText("The button has been clicked");
-            }
-        }
-    }
 }
