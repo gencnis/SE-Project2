@@ -1,3 +1,11 @@
+/**
+ *
+ * This is the full window that contains everything
+ *
+ * @Author: Fehmi Neffati
+ *
+ */
+
 package FullWindow;
 
 import BottomNavigation.BottomBar;

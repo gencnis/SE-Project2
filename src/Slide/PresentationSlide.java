@@ -14,7 +14,7 @@ package Slide;
 import javax.swing.*;
 import java.awt.*;
 
-public class PresentationSlide implements Slide {
+public class PresentationSlide extends Slide {
 
     //Attributes
 
@@ -24,22 +24,14 @@ public class PresentationSlide implements Slide {
 
     //Methods
 
-    @Override
     public void Display() {
+        // TODO : LOGIC FILL
+        System.out.println("An item has been added to the current slide.");
     }
-
-    @Override
     public void addSlide() {
 
     }
-
-    @Override
     public void removeSlide(Slide slide) {
 
-    }
-
-    public static void main(String[] args) {
-        PresentationSlide slide1 = new PresentationSlide();
-        slide1.Display();
     }
 }

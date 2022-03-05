@@ -1,3 +1,12 @@
+/**
+ *
+ * top bar that contains all of the drop down menus and main functions
+ *
+ *
+ * @Author: Fehmi Neffati
+ *
+ */
+
 package TopBar;
 
 import javax.swing.*;
@@ -8,7 +17,7 @@ public class TopBar extends JPanel {
 
     JMenu Insert = new JMenu("Insert|ঢোকান");
     JMenu Draw = new JMenu("Draw|আঁকা");
-    JMenu LoadProject = new JMenu("Load Project|লোড প্রকল্প");
+    JMenu LoadProject = new JMenu("Open Project|লোড প্রকল্প");
     JMenu Save = new JMenu("Save|রক্ষা");
     JMenu Share = new JMenu("Share|ভাগ");
     JMenu Print = new JMenu("Print|ছাপা");
@@ -34,7 +43,7 @@ public class TopBar extends JPanel {
 
         Draw.add(new JMenuItem("Free Draw"));
 
-        LoadProject.add(new JMenuItem("Load project from Device"));
+        LoadProject.add(new JMenuItem("Open project from Device"));
         LoadProject.add(new JMenuItem("Load Template"));
 
         Save.add(new JMenuItem("As Project"));
