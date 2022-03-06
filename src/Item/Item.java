@@ -9,13 +9,8 @@
 
 package Item;
 
-import SlideMgr.*;
 
 public interface Item
 {
-
-    //void displayItem(PresentationSlide slide);
-    void addItem();
-    void removeItem();
 
     }

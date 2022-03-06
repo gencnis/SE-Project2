@@ -20,6 +20,10 @@ import java.util.ArrayList;
 public class Slide extends DrawingPanel
 {
     ArrayList<JLabel> images;
+    ArrayList<JTextArea> textAreas;
+
+    //This a test
+    ArrayList<Item> items;
 
     String slideID;
 
@@ -31,6 +35,8 @@ public class Slide extends DrawingPanel
         this.slideID = slideID.toString();
 
         images = new ArrayList<JLabel>();
+        textAreas = new ArrayList<>();
+        items = new ArrayList<Item>();
         setLayout(null);
 
 // TODO: Fehmi: add JButtons to take you to the next and previous slides on the sides
@@ -45,7 +51,7 @@ public class Slide extends DrawingPanel
     //makes a JLabel, adds it to reference list
     public void addImageToSlide(ImageIcon icon)
     {
-        JLabel imgLabel=new JLabel(icon);
+        JLabel imgLabel = new JLabel(icon);
 
 
         imgLabel.setSize(100, 100);
@@ -75,6 +81,21 @@ public class Slide extends DrawingPanel
 
     void save(ArrayList<Item> allItems){
         // TODO:
+    }
+
+    /**
+     * This is to keep the text in this current slide, it is being called from the Class Text.java
+     * @param s is a text area
+     * @param t is the Item we're passing, no matter what it might be (picture, etc) it gets saved and added
+     */
+    public void addText(JTextArea s, Item t){
+        s.setBounds(50, 50, 150, 150);
+
+        //textAreas.add(s); // intial list i added to
+        items.add(t);      // to test out the arrayList of items theory
+        add(s);
+        System.out.println("Text should be inserted");
+
     }
 
 

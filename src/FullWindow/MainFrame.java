@@ -9,6 +9,7 @@
 package FullWindow;
 
 import BottomNavigation.BottomBar;
+import Item.Text;
 import TopBar.TopBar;
 import SlideMgr.*;
 
@@ -17,6 +18,7 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.ArrayList;
 
 import static Utilities.ImageUtilities.setTargetImage;
 
@@ -51,7 +53,7 @@ public class MainFrame extends JFrame
         mainPanel.setLayout(slideShow);
 
 
-        TopBar tb = new TopBar();
+        TopBar tb = new TopBar(this);
         this.add(tb, BorderLayout.NORTH);
 
         bb = new BottomBar(slideShow, mainPanel);
@@ -76,18 +78,6 @@ public class MainFrame extends JFrame
 
         //slideDeck.removeSlide(); //removes current slide
        //slideDeck.removeSlide(0); //removes slide at index
-
-
-
-
-
-
-
-
-
-
-
-
 
         //use this when you want to display a different slide
         //For the second parameter:
@@ -186,6 +176,11 @@ public class MainFrame extends JFrame
     public static void selectItem(JComponent item)
     {
         selectedItem = item;
+    }
+
+    public static void insertText(){
+        new Text(currentSlide);
+        System.out.println("MainFrame Text");
     }
 
 

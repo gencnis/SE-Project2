@@ -10,6 +10,7 @@
 package TopBar;
 
 import FullWindow.MainFrame;
+import Item.Text;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +36,7 @@ public class TopBar extends JPanel
 
 
 
-    public TopBar()
+    public TopBar(MainFrame mainFrame)
     {
 
         this.setBackground(Color.decode("#B2D5DB"));
@@ -60,7 +61,17 @@ public class TopBar extends JPanel
                                 });
 
         Insert.add(image);
-        Insert.add(new JMenuItem("Text"));
+
+        JMenuItem addText = new JMenuItem("Text");
+        addText.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Before");
+                MainFrame.insertText();
+                System.out.println("After");
+            }
+        });
+        Insert.add(addText);
         Insert.add(new JMenuItem("Equation"));
         Insert.add(new JMenuItem("Link"));
         Insert.add(new JMenuItem("Code"));
