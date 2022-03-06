@@ -35,8 +35,8 @@ public class MainFrame extends JFrame
     private static final int baseSize = 128; //default image size variable, can add in our own to resize the image
 
     //get your desktop in most cases as a default directory
-    File home = FileSystemView.getFileSystemView().getHomeDirectory();
-    String basePath = home.getAbsolutePath();
+    static File home = FileSystemView.getFileSystemView().getHomeDirectory();
+    static String basePath = home.getAbsolutePath();
 //Image Loading variables
 
 
@@ -54,7 +54,7 @@ public class MainFrame extends JFrame
         this.add(bb, BorderLayout.SOUTH);
 
 
-        Thread.sleep(100);
+       // Thread.sleep(100);
 
 
         slideDeck = SlideDeck.getSlideDeck();
@@ -68,6 +68,10 @@ public class MainFrame extends JFrame
         slideDeck.addSlide();
         currentSlide.setBackground(Color.YELLOW);
         slideDeck.addSlide(1);
+        currentSlide.setBackground(Color.GREEN);
+
+        //slideDeck.removeSlide(); //removes current slide
+       //slideDeck.removeSlide(0); //removes slide at index
 
 
 
@@ -82,27 +86,30 @@ public class MainFrame extends JFrame
 
 
         //use this when you want to display a different slide
-        slideShow.show(mainPanel, "1");
-        //each slide has an identifier that is linke to each button
+        //For the second parameter:
+        //use the slide.getSlideID for their unique ID code. This is not always the index in the arraylist.
 
-        //use this when you remove and rearrange the order of stuff
-        //mainPanel.remove("3");
+
+
+
 
 //image loading Button
-      // s = new Slide();
+
        // JPanel top = new JPanel();
-        //addImg = new JButton("Add Img");
-       /* addImg.addActionListener(new ActionListener() {
+       ///JButton  addImg = new JButton("Add Img");
+        //addImg.addActionListener(new ActionListener() {
             //put in whatever dimensions you want
-            public void actionPerformed(ActionEvent e) {
+          /*  public void actionPerformed(ActionEvent e) {
                 loadImage(e, baseSize, baseSize);
             }
-        });
-        top.add(addImg);*/
+        });*/
+        //top.add(addImg);
+
 
 //uncomment both lines for demonstration. this will overwrite the top current layout for demo purposes
         //add(top, BorderLayout.NORTH);
         //add(s, BorderLayout.CENTER);
+
 
 //image loading button
 
@@ -123,8 +130,9 @@ public class MainFrame extends JFrame
         }
     }
 
+//   TODO: Call this with whatever your menu listener is and it will do all the stuff for you.
     //happens when button is pressed, takes custom dimensions for an image
-    protected void loadImage(ActionEvent e, int width, int height)
+    public static void loadImage(ActionEvent e, int width, int height)
     {
         //opens a file explorer on the desktop
         JFileChooser fc = new JFileChooser(basePath);
@@ -134,7 +142,7 @@ public class MainFrame extends JFrame
         try {
             if (res == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                setTargetImage(file, width, height, slideDeck.getCurrentSlide());  //loads up the image file for us to use
+                setTargetImage(file, width, height, currentSlide);  //loads up the image file for us to use
             } //Image Not Found
             else {
                 JOptionPane.showMessageDialog(null,

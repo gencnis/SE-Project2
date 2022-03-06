@@ -54,7 +54,7 @@ public class SlideDeck
         MainFrame.showSlide(s);
     }
 
-    public static void removeSlide()
+    public  void removeSlide()
     {
         Integer currentSlideIndex = slides.indexOf(currentSlide);
         Slide previousSlide;
@@ -75,11 +75,12 @@ public class SlideDeck
             Slide temp = currentSlide; //get temporary reference
             if(previousSlide != null)
                 MainFrame.showSlide(previousSlide); //also updates currentSlide so need to get the temporary reference first
-            slides.remove(temp);
+
 
 
 //          TODO: Call whatever you need to update the Front End bottom bar buttons here.
             bb.removeSlideButton(temp);
+            slides.remove(temp);
             MainFrame.updateSlideShow(temp, false); //removes from slideshow
             temp.clearSlide();
             //temp gets destroyed after this
@@ -112,13 +113,15 @@ public class SlideDeck
 
 
 
-            Slide temp = currentSlide; //get temporary reference
+            Slide temp = slides.get(index); //get temporary reference
             if(previousSlide != null)
                 MainFrame.showSlide(previousSlide); //also updates currentSlide so need to get the temporary reference first
-            slides.remove(temp);
+
 
 
 //          TODO: Call whatever you need to update the Front End bottom bar buttons here.
+            bb.removeSlideButton(temp);
+            slides.remove(temp);
             MainFrame.updateSlideShow(temp, false); //removes from slideshow
             temp.clearSlide();
 

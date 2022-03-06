@@ -36,7 +36,7 @@ public class ImageUtilities
 //TODO: not sure if wanna store this for saving
             targetImg = rescale(ImageIO.read(reference), width, height); //sets image to desired size
             icon=new ImageIcon(targetImg); //puts image into a use able format for JPanels
-            currentSlide.addImage(icon); //adds image to the slide
+            currentSlide.addImageToSlide(icon); //adds image to the slide
         } catch (IOException ex)
         {
             System.out.println("File not found or invalid.");

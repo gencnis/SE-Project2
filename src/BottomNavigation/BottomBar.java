@@ -14,9 +14,11 @@ import SlideMgr.Slide;
 import SlideMgr.SlideDeck;
 
 import javax.swing.*;
+import javax.swing.plaf.SliderUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class BottomBar extends JPanel
 {
@@ -36,11 +38,12 @@ public class BottomBar extends JPanel
     static SlideDeck slideDeck;
     static CardLayout slideShow;
     static JPanel mainPanel;
+    ArrayList<JButton> buttons;
 
      public BottomBar( CardLayout slideShow, JPanel mainPanel)
     {
 
-
+        buttons = new ArrayList<JButton>();
         this.slideShow = slideShow;
         this.mainPanel = mainPanel;
         //slideDeck = SlideDeck.getSlideDeck();
@@ -66,6 +69,7 @@ public class BottomBar extends JPanel
         Integer temp = index + 1;
         JButton c = new JButton(temp.toString());
 
+
         c.addActionListener(new ActionListener()
         {
             @Override
@@ -74,19 +78,45 @@ public class BottomBar extends JPanel
                 slideShow.show(mainPanel, s.getSlideID());
             }
         });
-        this.add(c);
+        buttons.add(index, c);
+        this.add(c, index);
+
+
+
+        if(index < slideDeck.getSlides().size() - 1) //if not adding on the end, have to rebuild the buttons;
+        {
+            rebuildDeck();
+
+        }
 
     }
 
 //TODO: Figure out how to remove the buttons from the menu. You may need to rebuild all the buttons again.
     //this will be called via SlideDeck removeSlide()
-    public static void removeSlideButton(Slide s)
+    public void removeSlideButton(Slide s)
     {
+
+        int index = slideDeck.getSlides().indexOf(s);
+        this.remove(index);
+        buttons.remove(index);
+        rebuildDeck();
         //get rid of the button
         //get ird
 
         //rebuild Slide Show to display correct order of buttons
 
+    }
+
+    void rebuildDeck()
+    {
+        this.removeAll();
+        Integer index = 1;
+        for(JButton b : buttons)
+        {
+            b.setText(index.toString());
+            this.add(b);
+            index++;
+        }
     }
 
 

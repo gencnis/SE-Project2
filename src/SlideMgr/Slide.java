@@ -9,7 +9,6 @@
 
 package SlideMgr;
 
-import FullWindow.MainFrame;
 import Item.Item;
 
 import javax.swing.*;
@@ -30,15 +29,17 @@ public class Slide extends JPanel
         images = new ArrayList<JLabel>();
         setLayout(null);
 
-
+// TODO: Fehmi: add JButtons to take you to the next and previous slides on the sides
 
 
     }
 
 
+
+
     //run this to add an image from the button action
     //makes a JLabel, adds it to reference list
-    public void addImage(ImageIcon icon)
+    public void addImageToSlide(ImageIcon icon)
     {
         JLabel imgLabel=new JLabel(icon);
 

@@ -9,11 +9,22 @@
 
 package TopBar;
 
+import FullWindow.MainFrame;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class TopBar extends JPanel {
+public class TopBar extends JPanel
+{
+
+
     JMenu Add = new JMenu("Add|যোগ করুন");
+//TODO: Format stuff like this so I can access all your buttons
+    ArrayList<JMenuItem> addItems;
+
     JMenu Insert = new JMenu("Insert|ঢোকান");
     JMenu Draw = new JMenu("Draw|আঁকা");
     JMenu LoadProject = new JMenu("Open Project|লোড প্রকল্প");
@@ -24,7 +35,8 @@ public class TopBar extends JPanel {
 
 
 
-    public TopBar(){
+    public TopBar()
+    {
 
         this.setBackground(Color.decode("#B2D5DB"));
         JMenuBar aa = new JMenuBar();
@@ -35,7 +47,19 @@ public class TopBar extends JPanel {
         Add.add(new JMenuItem("Add New Slide"));
         Add.add(new JMenuItem("Add Slides Numbers"));
 
-        Insert.add(new JMenuItem("Image"));
+//TODO: DO all your menu items like this. Then just call the action out of mainfram that you need done.
+        JMenuItem image = new JMenuItem("Image");
+        image.addActionListener(new ActionListener()
+                                    {
+                                    //put in whatever dimensions you want
+                                    public void actionPerformed(ActionEvent e)
+                                    {
+//          TODO:  //specify your dimensions somehow before putting them here
+                                        MainFrame.loadImage(e, 100, 100);
+                                    }
+                                });
+
+        Insert.add(image);
         Insert.add(new JMenuItem("Text"));
         Insert.add(new JMenuItem("Equation"));
         Insert.add(new JMenuItem("Link"));
