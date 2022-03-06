@@ -10,6 +10,7 @@ package BottomNavigation;
 
 
 
+import FullWindow.MainFrame;
 import SlideMgr.Slide;
 import SlideMgr.SlideDeck;
 
@@ -63,7 +64,8 @@ public class BottomBar extends JPanel
 
 //TODO: You may need to rearrange all the buttons to make sure each one is pointing to the right slide.
 //if I insert a slide after 5 in a 10 slide show, slides 6-10 need to be updated
-    public void addSlideButton(Integer index, Slide s)
+
+    public void addSlideButton(Integer index , Slide s)
     {
 
         Integer temp = index + 1;
@@ -75,7 +77,7 @@ public class BottomBar extends JPanel
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                slideShow.show(mainPanel, s.getSlideID());
+                MainFrame.showSlide(s);
             }
         });
         buttons.add(index, c);

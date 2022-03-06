@@ -22,7 +22,8 @@ public class Slide extends DrawingPanel
     ArrayList<JLabel> images;
 
     String slideID;
-    JComponent selectedItem = null;
+
+
 
     public Slide(Integer slideID)
     {
@@ -75,6 +76,7 @@ public class Slide extends DrawingPanel
     void save(ArrayList<Item> allItems){
         // TODO:
     }
+
 
 
 }

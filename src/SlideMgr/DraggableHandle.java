@@ -44,6 +44,8 @@ class DraggableHandler extends MouseInputAdapter
             dragging = true;
             System.out.println("grabbed");
         }
+
+       // EditProperties.resize(item, 300,300);
     }
 
     public void mouseReleased(MouseEvent e)

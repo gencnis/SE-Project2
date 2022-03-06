@@ -39,6 +39,10 @@ public class MainFrame extends JFrame
     static String basePath = home.getAbsolutePath();
 //Image Loading variables
 
+//Element Editing Variables
+    static JComponent selectedItem = null;
+
+
 
     MainFrame() throws InterruptedException
     {
@@ -140,9 +144,10 @@ public class MainFrame extends JFrame
         int res = fc.showOpenDialog(null);
         // Image found
         try {
-            if (res == JFileChooser.APPROVE_OPTION) {
+            if (res == JFileChooser.APPROVE_OPTION)
+            {
                 File file = fc.getSelectedFile();
-                setTargetImage(file, width, height, currentSlide);  //loads up the image file for us to use
+                setTargetImage(file, width, height, slideDeck.getCurrentSlide());  //loads up the image file for us to use
             } //Image Not Found
             else {
                 JOptionPane.showMessageDialog(null,
@@ -174,8 +179,15 @@ public class MainFrame extends JFrame
     {
         slideShow.show(mainPanel, s.getSlideID()); //need to provide ID so it shows the correct slide
         slideDeck.setCurrentSlide(s);
-        currentSlide = slideDeck.getCurrentSlide();
+        currentSlide = s;
+        System.out.print(slideDeck.getSlides().indexOf(currentSlide));
     }
+
+    public static void selectItem(JComponent item)
+    {
+        selectedItem = item;
+    }
+
 
 
 
