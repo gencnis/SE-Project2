@@ -14,10 +14,13 @@ import Item.Item;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-public class Slide extends JPanel
+
+
+//Manages all of the Objects in the SlideShow
+public class Slide extends DrawingPanel
 {
     ArrayList<JLabel> images;
-    DrawingPanel dp;
+
     String slideID;
     JComponent selectedItem = null;
 

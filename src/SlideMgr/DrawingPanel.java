@@ -1,15 +1,17 @@
 package SlideMgr;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
-//LINE 39: NEEDS TO GET BRUSH ENABLED
-//LINE 43: NEEDS TO GET Brush Color
-//LINE 48: NEEDS to GET Brush Size
+
+//LINE 33: NEEDS TO GET Brush Color
+//LINE 38: NEEDS to GET Brush Size
 
 //RESOURCE: https://stackoverflow.com/questions/22436954/saving-a-jpanel-as-an-image-object-and-drawing-it-back-onto-a-jpanel
 //Original and Third Post
@@ -19,6 +21,11 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
 {
 
     private int xPos, yPos;//mouse positions
+    Color brushColor = Color.BLACK;
+    Integer brushWidth = 10;
+    Integer brushHeight = 10;
+
+    private BufferedImage bufferedImage;
 
     DrawingPanel()
     {
@@ -26,9 +33,59 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         addMouseMotionListener(this);
     }
 
+    // Make sure that the "bufferedImage" is non-null
+    // and has the same size as this panel
+    private void validateImage()
+    {
+        if (bufferedImage == null)
+        {
+            //geets you a new buffered image
+            bufferedImage = new BufferedImage(
+                    getWidth(), getHeight(),
+                    BufferedImage.TYPE_INT_ARGB);
+
+            //tests it for drawability
+            Graphics g = bufferedImage.getGraphics();
+            g.setColor(getBackground());
+            g.fillRect(0,0,getWidth(),getHeight());
+            g.dispose();
+
+        }
+
+        if (bufferedImage.getWidth() != getWidth() ||
+                bufferedImage.getHeight() != getHeight())
+        {
+            BufferedImage newBufferedImage = new BufferedImage(
+                    getWidth(), getHeight(),
+                    BufferedImage.TYPE_INT_ARGB);
+            Graphics g = newBufferedImage.getGraphics();
+            g.setColor(getBackground());
+            g.fillRect(0,0,getWidth(),getHeight());
+            g.drawImage(bufferedImage, 0,0,null);
+            g.dispose();
+            bufferedImage = newBufferedImage;
+        }
+    }
+
+
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        validateImage();
+
+        // Paint the bufferedImage which stores
+        // what was drawn until now
+        g.drawImage(bufferedImage, 0, 0, null);
+    }
+
+
+
     @Override
     public void mousePressed(MouseEvent me)
     {
+//  //TODO:Implement a GetBrushColor() method here so you can customize the color.
+//    TODO: Implement a GetBrushSize() method here so you can customize the size.
         xPos = me.getX();
         yPos = me.getY();
     }
@@ -36,17 +93,14 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     @Override
     public void mouseDragged(MouseEvent me)
     {
-//Brush enabled
         int x = me.getX(), y = me.getY();
-        Graphics g = getGraphics();
+        validateImage();
 
-//FRONT END: SET THIS COLOR SOMEWHERE IN tHE BUTTONS
-        g.setColor(Color.BLACK);
-
-
-
-//FRONTEND: SET THE BRUSH SIZE SOME WHEERE IN THE UI
-        g.drawOval(xPos, yPos, 30, 30);
+        // Paint directly into the bufferedImage here
+        Graphics g = bufferedImage.getGraphics();
+        g.setColor(brushColor);
+        g.drawOval(xPos, yPos, brushWidth, brushHeight);
+        repaint();
         xPos = x;
         yPos = y;
     }
@@ -61,11 +115,13 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     public BufferedImage getScreenShot()
     {
 
-        BufferedImage image = new BufferedImage(this.getWidth(),
-                this.getHeight(), BufferedImage.TYPE_INT_RGB);
-        // call the Panels's paint method, using
-        // the Graphics object of the image.
-        this.paint(image.getGraphics());
+        // This basically returns a "copy" of the
+        // bufferedImage that stores what was drawn
+        BufferedImage image = new BufferedImage(
+                getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics g = image.getGraphics();
+        g.drawImage(bufferedImage, 0, 0, null);
+        g.dispose();
         return image;
     }
 
@@ -89,4 +145,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     @Override
     public void mouseMoved(MouseEvent me) {
     }
+
+
+
 }
