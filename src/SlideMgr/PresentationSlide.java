@@ -10,7 +10,7 @@ package SlideMgr;
  *
  * @Author: Fehmi Neffati
  */
-
+/*
 public class PresentationSlide extends Slide {
 
     //Attributes
@@ -31,4 +31,4 @@ public class PresentationSlide extends Slide {
     public void removeSlide(Slide slide) {
 
     }
-}
+}*/

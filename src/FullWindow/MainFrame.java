@@ -12,40 +12,27 @@ import BottomNavigation.BottomBar;
 import TopBar.TopBar;
 import SlideMgr.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+
+import static Utilities.ImageUtilities.setTargetImage;
 
 public class MainFrame extends JFrame
 {
-    // TODO: Ideally instead of this we would have our Deck of Slides
-    //can change this to Slide
-    ArrayList<Slide> allPanels = new ArrayList<>();
+    static SlideDeck slideDeck;
 
     //slideshow display
-    CardLayout slideShow = new CardLayout();
-    JPanel mainPanel = new JPanel();
+    static CardLayout slideShow;
+    static JPanel mainPanel;
+    static BottomBar bb;
+    static Slide currentSlide;
 
-    //TODO: Ideally instead of JPanels we want to have our Slide class
-    // If that's not possible let me know (fehmi) we might be able to change some signatures around
-    Slide s1 = new Slide();
-    Slide s2 = new Slide();
-    Slide s3 = new Slide();
 
 //Image loading variables
-    Slide s;
-    private JButton addImg;
-    File targetFile;
-    BufferedImage targetImg;
-    ImageIcon icon; //what you load your image into when you get it
-    private static final int baseSize = 128; //default size variable, can add in our own to resize the image
+    private static final int baseSize = 128; //default image size variable, can add in our own to resize the image
 
     //get your desktop in most cases as a default directory
     File home = FileSystemView.getFileSystemView().getHomeDirectory();
@@ -53,50 +40,65 @@ public class MainFrame extends JFrame
 //Image Loading variables
 
 
-    MainFrame()
+    MainFrame() throws InterruptedException
     {
-        // TODO: Here Ideally we want the slides to be added to the deck arrayList automatically when they're created
-        // And that's the one we'd want to pass to the bottom border
-        allPanels.add(s1);
-        allPanels.add(s2);
-        allPanels.add(s3);
+        slideShow = new CardLayout();
+        mainPanel = new JPanel();
+        mainPanel.setLayout(slideShow);
 
 
         TopBar tb = new TopBar();
         this.add(tb, BorderLayout.NORTH);
 
-        BottomBar bb = new BottomBar(allPanels, slideShow, mainPanel);
+        bb = new BottomBar(slideShow, mainPanel);
         this.add(bb, BorderLayout.SOUTH);
 
-        this.add(mainPanel, BorderLayout.CENTER);
+
+        Thread.sleep(100);
 
 
-        s1.setBackground(Color.BLACK);
-        s2.setBackground(Color.GREEN);
-        //CENTER SLIDESHOW CARD LAYOUT
-        mainPanel.setLayout(slideShow);
+        slideDeck = SlideDeck.getSlideDeck();
 
-        mainPanel.add(s1, "1");
-        mainPanel.add(s2, "2"); //the second parameter is an identifier string
-        mainPanel.add(s3, "3");
-        //we can set this to be the string number identifier from the slide
+        bb.initializeBB();
+        slideDeck.addSlide();
 
-        //you set the slideShow's main parent Jpanel and then the string identifier for the slide to be displayed
+        currentSlide.setBackground(Color.BLACK);
+        slideDeck.addSlide();
+        currentSlide.setBackground(Color.BLUE);
+        slideDeck.addSlide();
+        currentSlide.setBackground(Color.YELLOW);
+        slideDeck.addSlide(1);
+
+
+
+
+
+
+
+
+
+
+
+
+
         //use this when you want to display a different slide
         slideShow.show(mainPanel, "1");
+        //each slide has an identifier that is linke to each button
+
         //use this when you remove and rearrange the order of stuff
         //mainPanel.remove("3");
 
 //image loading Button
-        s = new Slide();
-        JPanel top = new JPanel();
-        addImg = new JButton("Add Img");
-        addImg.addActionListener(new ActionListener() {
+      // s = new Slide();
+       // JPanel top = new JPanel();
+        //addImg = new JButton("Add Img");
+       /* addImg.addActionListener(new ActionListener() {
+            //put in whatever dimensions you want
             public void actionPerformed(ActionEvent e) {
                 loadImage(e, baseSize, baseSize);
             }
         });
-        top.add(addImg);
+        top.add(addImg);*/
 
 //uncomment both lines for demonstration. this will overwrite the top current layout for demo purposes
         //add(top, BorderLayout.NORTH);
@@ -104,15 +106,21 @@ public class MainFrame extends JFrame
 
 //image loading button
 
-
+        this.add(mainPanel, BorderLayout.CENTER);
         this.setTitle("LearningMyFriend :শেখা ও শখা ");
         this.setSize(1000,500);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new MainFrame();
+    public static void main(String[] args)
+    {
+        try
+        {
+            new MainFrame();
+        } catch (InterruptedException e) {
+            System.err.format("IOException: %s%n", e);
+        }
     }
 
     //happens when button is pressed, takes custom dimensions for an image
@@ -126,7 +134,7 @@ public class MainFrame extends JFrame
         try {
             if (res == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                setTargetImage(file, width, height);  //loads up the image file for us to use
+                setTargetImage(file, width, height, slideDeck.getCurrentSlide());  //loads up the image file for us to use
             } //Image Not Found
             else {
                 JOptionPane.showMessageDialog(null,
@@ -139,36 +147,30 @@ public class MainFrame extends JFrame
 
     }
 
+    //adds slide on the end
 
-    //resizes the image based on provided image and dimensions
-    public BufferedImage rescale(BufferedImage originalImage, int width, int height)
+
+    public static void updateSlideShow(Slide s, boolean isAdded)
     {
-        BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(originalImage, 0, 0, width, height, null);
-        g.dispose();
-        return resizedImage;
-    }
-
-    //primes image for use
-    public void setTargetImage(File reference, int width, int height)
-    {
-
-        try
-        {
-            targetFile = reference;
-            targetImg = rescale(ImageIO.read(reference), width, height); //sets image to desired size
-        } catch (IOException ex) {
-            // Logger.getLogger(MainAppFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-
-
-        icon=new ImageIcon(targetImg); //puts image into a use able format for JPanels
-        s.addImage(icon); //adds image to the slide
+        if(isAdded)
+            mainPanel.add(s, s.getSlideID());
+        else
+            mainPanel.remove(s);
 
 
     }
+
+    public static BottomBar getBottomBar() {return bb;}
+
+    public static void showSlide(Slide s)
+    {
+        slideShow.show(mainPanel, s.getSlideID()); //need to provide ID so it shows the correct slide
+        slideDeck.setCurrentSlide(s);
+        currentSlide = slideDeck.getCurrentSlide();
+    }
+
+
+
 }
 
 

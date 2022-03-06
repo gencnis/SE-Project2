@@ -9,7 +9,7 @@ package Item;
 
 import SlideMgr.*;
 
-public class Text implements Item{
+/*public class Text implements Item{
 
     @Override
     public void displayItem(PresentationSlide slide) {
@@ -29,3 +29,4 @@ public class Text implements Item{
 
     }
 }
+*/

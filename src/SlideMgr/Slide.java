@@ -9,6 +9,7 @@
 
 package SlideMgr;
 
+import FullWindow.MainFrame;
 import Item.Item;
 
 import javax.swing.*;
@@ -18,14 +19,18 @@ public class Slide extends JPanel
 {
     ArrayList<JLabel> images;
     DrawingPanel dp;
-    public Slide()
+    String slideID;
+    JComponent selectedItem = null;
+
+    public Slide(Integer slideID)
     {
+
+        this.slideID = slideID.toString();
+
         images = new ArrayList<JLabel>();
         setLayout(null);
-        for (JLabel img:images)
-        {
-            add(img);
-        }
+
+
 
 
     }
@@ -53,19 +58,21 @@ public class Slide extends JPanel
         //end makes things draggable
     }
 
-    void display(){
-        // TODO: DISPLAY A SLIDE
+    public void clearSlide() //basically deletes everything on a slide
+    {
+        images.clear();
+        this.removeAll();
+        this.revalidate();
+        this.repaint();
     }
-    void add(){
-        // TODO: ADD AN ITEM TO THE LIST OF ITEMS OF THIS SLIDE
-    }
+
+    public String getSlideID(){return slideID;}
 
     void save(ArrayList<Item> allItems){
         // TODO:
     }
 
-    void Remove(Item item){
-    }
+
 }
 
 
