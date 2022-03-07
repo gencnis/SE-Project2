@@ -182,11 +182,23 @@ public class MainFrame extends JFrame
         new Text(currentSlide);
         System.out.println("MainFrame Text");
     }
+    public static void draw(){
+        currentSlide.setActivated(true);
+    }
 
 
     public static void saveAsProject() {
         // TODO : PLEASE DO THIS ASAP
+        // TODO: Preferably have this call a method from the SlideDeck class
         System.out.println("Tester: Project should be saved.");
+    }
+
+    public static void loadFromComputer() {
+        // TODO : PLEASE DO THIS ASAP
+    }
+
+    public static void stopDrawing() {
+        currentSlide.setActivated(false);
     }
 }
 

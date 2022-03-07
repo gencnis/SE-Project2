@@ -10,7 +10,6 @@
 package Item;
 
 
-public interface Item
-{
+public interface Item {
 
 }

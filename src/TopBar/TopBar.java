@@ -11,6 +11,7 @@ package TopBar;
 
 import FullWindow.MainFrame;
 import Item.Text;
+import SlideMgr.DrawingPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,9 +67,7 @@ public class TopBar extends JPanel
         addText.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Before");
                 MainFrame.insertText();
-                System.out.println("After");
             }
         });
         Insert.add(addText);
@@ -77,9 +76,34 @@ public class TopBar extends JPanel
         Insert.add(new JMenuItem("Code"));
         Insert.add(new JMenuItem("Bullet List"));
 
-        Draw.add(new JMenuItem("Free Draw"));
 
-        LoadProject.add(new JMenuItem("Open project from Device"));
+
+        JMenuItem draw = new JMenuItem("Free Draw");
+        draw.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.draw();
+            }
+        });
+        Draw.add(draw);
+        JMenuItem stopDraw = new JMenuItem("Stop Drawing");
+        stopDraw.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.stopDrawing();
+            }
+        });
+        Draw.add(stopDraw);
+
+
+        JMenuItem loader = new JMenuItem("As a project");
+        loader.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.loadFromComputer();
+            }
+        });
+        LoadProject.add(loader);
         LoadProject.add(new JMenuItem("Open Template"));
 
         JMenuItem saver = new JMenuItem("As a project");

@@ -1,6 +1,8 @@
 package SlideMgr;
 
 
+import FullWindow.MainFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -24,6 +26,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     Color brushColor = Color.BLACK;
     Integer brushWidth = 10;
     Integer brushHeight = 10;
+    Boolean activated = false; // This is the boolean that would make sure we can draw or not
 
     private BufferedImage bufferedImage;
 
@@ -88,21 +91,27 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
 //    TODO: Implement a GetBrushSize() method here so you can customize the size.
         xPos = me.getX();
         yPos = me.getY();
+        if (activated){
+        setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon("png/cur.png").getImage(),
+                new Point(0,0),"custom cursor"));}
+        else{setCursor(Cursor.getDefaultCursor());}
     }
 
     @Override
     public void mouseDragged(MouseEvent me)
     {
-        int x = me.getX(), y = me.getY();
-        validateImage();
+        if (activated) {
+            int x = me.getX(), y = me.getY();
+            validateImage();
 
-        // Paint directly into the bufferedImage here
-        Graphics g = bufferedImage.getGraphics();
-        g.setColor(brushColor);
-        g.drawOval(xPos, yPos, brushWidth, brushHeight);
-        repaint();
-        xPos = x;
-        yPos = y;
+            // Paint directly into the bufferedImage here
+            Graphics g = bufferedImage.getGraphics();
+            g.setColor(brushColor);
+            g.fillOval(xPos, yPos, brushWidth, brushHeight);
+            repaint();
+            xPos = x;
+            yPos = y;
+        }
     }
 
     public void loadDrawing(BufferedImage bi)
@@ -125,9 +134,14 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         return image;
     }
 
+    public void setActivated(Boolean activated) {
+        this.activated = activated;
+    }
+
     //unused abstract method
     @Override
     public void mouseClicked(MouseEvent me) {
+
     }
 
     @Override
