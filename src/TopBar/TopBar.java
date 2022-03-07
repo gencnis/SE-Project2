@@ -48,7 +48,7 @@ public class TopBar extends JPanel
         Add.add(new JMenuItem("Add New Slide"));
         Add.add(new JMenuItem("Add Slides Numbers"));
 
-//TODO: DO all your menu items like this. Then just call the action out of mainfram that you need done.
+        //TODO: DO all your menu items like this. Then just call the action out of mainfram that you need done.
         JMenuItem image = new JMenuItem("Image");
         image.addActionListener(new ActionListener()
                                     {
@@ -82,7 +82,14 @@ public class TopBar extends JPanel
         LoadProject.add(new JMenuItem("Open project from Device"));
         LoadProject.add(new JMenuItem("Open Template"));
 
-        Save.add(new JMenuItem("As Project"));
+        JMenuItem saver = new JMenuItem("As a project");
+        saver.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.saveAsProject();
+            }
+        });
+        Save.add(saver);
         Save.add(new JMenuItem("As Template"));
 
         Share.add(new JMenuItem("Via Email"));

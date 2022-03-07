@@ -15,7 +15,6 @@ import SlideMgr.Slide;
 import SlideMgr.SlideDeck;
 
 import javax.swing.*;
-import javax.swing.plaf.SliderUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,13 +42,20 @@ public class BottomBar extends JPanel
 
      public BottomBar( CardLayout slideShow, JPanel mainPanel)
     {
-
         buttons = new ArrayList<JButton>();
         this.slideShow = slideShow;
         this.mainPanel = mainPanel;
         //slideDeck = SlideDeck.getSlideDeck();
 
         this.setBackground(Color.decode("#B2D5DB"));
+        JButton next = new JButton("->");
+        next.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        JButton previous = new JButton("->");
+        previous.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        this.add(next);
+        this.add(previous);
+
 
 
 
@@ -123,15 +129,6 @@ public class BottomBar extends JPanel
 
 
 
-
-
-
-
-
-
-    // add function
-
-    // remove function
 
 
 }

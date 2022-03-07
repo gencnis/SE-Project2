@@ -184,8 +184,10 @@ public class MainFrame extends JFrame
     }
 
 
-
-
+    public static void saveAsProject() {
+        // TODO : PLEASE DO THIS ASAP
+        System.out.println("Tester: Project should be saved.");
+    }
 }
 
 
