@@ -10,8 +10,6 @@
 package TopBar;
 
 import FullWindow.MainFrame;
-import Item.Text;
-import SlideMgr.DrawingPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +22,7 @@ public class TopBar extends JPanel
 
 
     JMenu Add = new JMenu("Add|যোগ করুন");
-//TODO: Format stuff like this so I can access all your buttons
+    //TODO: Format stuff like this so I can access all your buttons
     ArrayList<JMenuItem> addItems;
 
     JMenu Insert = new JMenu("Insert|ঢোকান");
@@ -46,20 +44,28 @@ public class TopBar extends JPanel
         aa.setPreferredSize(new Dimension(860,50));
         aa.setBorder(BorderFactory.createEtchedBorder(0));
 
-        Add.add(new JMenuItem("Add New Slide"));
+        JMenuItem newSlide = new JMenuItem("Add New Slide");
+        newSlide.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.newSlide();
+            }
+        });
+
+        Add.add(newSlide);
         Add.add(new JMenuItem("Add Slides Numbers"));
 
         //TODO: DO all your menu items like this. Then just call the action out of mainfram that you need done.
         JMenuItem image = new JMenuItem("Image");
         image.addActionListener(new ActionListener()
-                                    {
-                                    //put in whatever dimensions you want
-                                    public void actionPerformed(ActionEvent e)
-                                    {
+        {
+            //put in whatever dimensions you want
+            public void actionPerformed(ActionEvent e)
+            {
 //          TODO:  //specify your dimensions somehow before putting them here
-                                        MainFrame.loadImage(e, 100, 100);
-                                    }
-                                });
+                MainFrame.loadImage(e, 100, 100);
+            }
+        });
 
         Insert.add(image);
 

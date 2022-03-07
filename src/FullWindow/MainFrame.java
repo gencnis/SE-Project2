@@ -18,7 +18,7 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.ArrayList;
+
 
 import static Utilities.ImageUtilities.setTargetImage;
 
@@ -33,15 +33,14 @@ public class MainFrame extends JFrame
     static Slide currentSlide;
 
 
-//Image loading variables
+    //Image loading variables
     private static final int baseSize = 128; //default image size variable, can add in our own to resize the image
 
     //get your desktop in most cases as a default directory
     static File home = FileSystemView.getFileSystemView().getHomeDirectory();
     static String basePath = home.getAbsolutePath();
-//Image Loading variables
 
-//Element Editing Variables
+    //Element Editing Variables
     static JComponent selectedItem = null;
 
 
@@ -60,7 +59,7 @@ public class MainFrame extends JFrame
         this.add(bb, BorderLayout.SOUTH);
 
 
-       // Thread.sleep(100);
+        // Thread.sleep(100);
 
 
         slideDeck = SlideDeck.getSlideDeck();
@@ -77,7 +76,7 @@ public class MainFrame extends JFrame
         currentSlide.setBackground(Color.GREEN);
 
         //slideDeck.removeSlide(); //removes current slide
-       //slideDeck.removeSlide(0); //removes slide at index
+        //slideDeck.removeSlide(0); //removes slide at index
 
         //use this when you want to display a different slide
         //For the second parameter:
@@ -89,10 +88,10 @@ public class MainFrame extends JFrame
 
 //image loading Button
 
-       // JPanel top = new JPanel();
-       ///JButton  addImg = new JButton("Add Img");
+        // JPanel top = new JPanel();
+        ///JButton  addImg = new JButton("Add Img");
         //addImg.addActionListener(new ActionListener() {
-            //put in whatever dimensions you want
+        //put in whatever dimensions you want
           /*  public void actionPerformed(ActionEvent e) {
                 loadImage(e, baseSize, baseSize);
             }
@@ -105,7 +104,7 @@ public class MainFrame extends JFrame
         //add(s, BorderLayout.CENTER);
 
 
-//image loading button
+        //image loading button
 
         this.add(mainPanel, BorderLayout.CENTER);
         this.setTitle("LearningMyFriend :শেখা ও শখা ");
@@ -124,7 +123,7 @@ public class MainFrame extends JFrame
         }
     }
 
-//   TODO: Call this with whatever your menu listener is and it will do all the stuff for you.
+    //TODO: Call this with whatever your menu listener is and it will do all the stuff for you.
     //happens when button is pressed, takes custom dimensions for an image
     public static void loadImage(ActionEvent e, int width, int height)
     {
@@ -199,6 +198,10 @@ public class MainFrame extends JFrame
 
     public static void stopDrawing() {
         currentSlide.setActivated(false);
+    }
+
+    public static void newSlide() {
+        slideDeck.addSlide();
     }
 }
 
