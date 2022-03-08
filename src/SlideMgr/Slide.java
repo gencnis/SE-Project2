@@ -39,9 +39,6 @@ public class Slide extends DrawingPanel
         items = new ArrayList<Item>();
         setLayout(null);
 
-// TODO: Fehmi: add JButtons to take you to the next and previous slides on the sides
-
-
     }
 
 

@@ -44,6 +44,7 @@ public class TopBar extends JPanel
         aa.setPreferredSize(new Dimension(860,50));
         aa.setBorder(BorderFactory.createEtchedBorder(0));
 
+        // Button
         JMenuItem newSlide = new JMenuItem("Add New Slide");
         newSlide.addActionListener(new ActionListener() {
             @Override
@@ -51,24 +52,25 @@ public class TopBar extends JPanel
                 MainFrame.newSlide();
             }
         });
-
         Add.add(newSlide);
+
+        // Button
         Add.add(new JMenuItem("Add Slides Numbers"));
 
-        //TODO: DO all your menu items like this. Then just call the action out of mainfram that you need done.
+        // Button
         JMenuItem image = new JMenuItem("Image");
         image.addActionListener(new ActionListener()
         {
             //put in whatever dimensions you want
             public void actionPerformed(ActionEvent e)
             {
-//          TODO:  //specify your dimensions somehow before putting them here
+                //TODO: specify your dimensions somehow before putting them here
                 MainFrame.loadImage(e, 100, 100);
             }
         });
-
         Insert.add(image);
 
+        // Button
         JMenuItem addText = new JMenuItem("Text");
         addText.addActionListener(new ActionListener() {
             @Override
@@ -77,13 +79,15 @@ public class TopBar extends JPanel
             }
         });
         Insert.add(addText);
+
+        // Button
         Insert.add(new JMenuItem("Equation"));
         Insert.add(new JMenuItem("Link"));
         Insert.add(new JMenuItem("Code"));
         Insert.add(new JMenuItem("Bullet List"));
 
 
-
+        // Button
         JMenuItem draw = new JMenuItem("Free Draw");
         draw.addActionListener(new ActionListener() {
             @Override
@@ -92,7 +96,9 @@ public class TopBar extends JPanel
             }
         });
         Draw.add(draw);
-        JMenuItem stopDraw = new JMenuItem("Stop Drawing");
+
+        // Button
+        JMenuItem stopDraw = new JMenuItem("Cursor : Stop Drawing");
         stopDraw.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -101,7 +107,17 @@ public class TopBar extends JPanel
         });
         Draw.add(stopDraw);
 
+        // Button
+        JMenuItem eraser = new JMenuItem("Eraser");
+        eraser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.eraser();
+            }
+        });
+        Draw.add(eraser);
 
+        // Button
         JMenuItem loader = new JMenuItem("As a project");
         loader.addActionListener(new ActionListener() {
             @Override
@@ -112,6 +128,7 @@ public class TopBar extends JPanel
         LoadProject.add(loader);
         LoadProject.add(new JMenuItem("Open Template"));
 
+        // Button
         JMenuItem saver = new JMenuItem("As a project");
         saver.addActionListener(new ActionListener() {
             @Override
@@ -120,13 +137,19 @@ public class TopBar extends JPanel
             }
         });
         Save.add(saver);
-        Save.add(new JMenuItem("As Template"));
 
+        // Button
+        Save.add(new JMenuItem("As Template"));
+        // Button
         Share.add(new JMenuItem("Via Email"));
         Share.add(new JMenuItem("Via Social Media"));
 
+
+        // Button
         Print.add(new JMenuItem("Print As PDF"));
 
+
+        // Button
         Present.add(new JMenuItem("Present Full Screen"));
 
 

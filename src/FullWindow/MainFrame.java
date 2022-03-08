@@ -47,9 +47,11 @@ public class MainFrame extends JFrame
 
     MainFrame() throws InterruptedException
     {
+
         slideShow = new CardLayout();
         mainPanel = new JPanel();
         mainPanel.setLayout(slideShow);
+
 
 
         TopBar tb = new TopBar(this);
@@ -113,6 +115,7 @@ public class MainFrame extends JFrame
         this.setVisible(true);
     }
 
+
     public static void main(String[] args)
     {
         try
@@ -149,9 +152,6 @@ public class MainFrame extends JFrame
 
     }
 
-    //adds slide on the end
-
-
     public static void updateSlideShow(Slide s, boolean isAdded)
     {
         if(isAdded)
@@ -177,31 +177,57 @@ public class MainFrame extends JFrame
         selectedItem = item;
     }
 
+    /**
+     * Invokes the text area creating function
+     */
     public static void insertText(){
         new Text(currentSlide);
-        System.out.println("MainFrame Text");
-    }
-    public static void draw(){
-        currentSlide.setActivated(true);
     }
 
-
+    /**
+     * Saves your project on your computer
+     */
     public static void saveAsProject() {
         // TODO : PLEASE DO THIS ASAP
         // TODO: Preferably have this call a method from the SlideDeck class
         System.out.println("Tester: Project should be saved.");
     }
 
+    /**
+     * Loads a previous project from your computer storage
+     */
     public static void loadFromComputer() {
         // TODO : PLEASE DO THIS ASAP
     }
 
+    /**
+     * Adds a new slide to the slide deck and displays it
+     */
+    public static void newSlide() {
+        slideDeck.addSlide();
+    }
+
+    /**
+     * Tells the cursor follower to paint the canvas if dragged
+     */
+    public static void draw(){
+        currentSlide.setBrushColor();
+        currentSlide.setActivated(true);
+    }
+
+    /**
+     * Tells the cursor follower to not paint the canvas if dragged
+     */
     public static void stopDrawing() {
         currentSlide.setActivated(false);
     }
 
-    public static void newSlide() {
-        slideDeck.addSlide();
+    /**
+     * Sets the color of the brush to the background color which should work as an eraser
+     */
+    public static void eraser() {
+        currentSlide.setBrushColor(currentSlide.getBackground());
+        currentSlide.setActivated(true);
     }
 }
 

@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 //LINE 33: NEEDS TO GET Brush Color
@@ -28,12 +29,22 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     Integer brushHeight = 10;
     Boolean activated = false; // This is the boolean that would make sure we can draw or not
 
+    HashMap<String, Color> colorMap; // here I save all of the color values for easy access
+
     private BufferedImage bufferedImage;
 
     DrawingPanel()
     {
         addMouseListener(this);
         addMouseMotionListener(this);
+
+        colorMap = new HashMap<>();
+        colorMap.put("BLACK", Color.BLACK );  // Black
+        colorMap.put("RED", Color.RED );    // Red
+        colorMap.put("GREEN", Color.GREEN );    // Green
+        colorMap.put("BLUE", Color.BLUE );    // Blue
+
+
     }
 
     // Make sure that the "bufferedImage" is non-null
@@ -82,7 +93,25 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         g.drawImage(bufferedImage, 0, 0, null);
     }
 
+    public Color getBrushColor() {
+        return brushColor;
+    }
 
+    public void setBrushColor(){
+        Object[] possibleValues = { "BLACK", "RED", "BLUE", "GREEN"};
+
+
+        Object selectedValue = JOptionPane.showInputDialog(null,
+                "Choose A Font Please: ", "Input",
+                JOptionPane.INFORMATION_MESSAGE, null,
+                possibleValues, possibleValues[0]);
+
+        System.out.println(selectedValue.toString());
+        setBrushColor(colorMap.get(selectedValue.toString()));
+    }
+    public void setBrushColor(Color brushColor) {
+        this.brushColor = brushColor;
+    }
 
     @Override
     public void mousePressed(MouseEvent me)
@@ -91,6 +120,8 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
 //    TODO: Implement a GetBrushSize() method here so you can customize the size.
         xPos = me.getX();
         yPos = me.getY();
+
+
         if (activated){
         setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon("png/cur.png").getImage(),
                 new Point(0,0),"custom cursor"));}

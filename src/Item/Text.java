@@ -14,6 +14,7 @@ import SlideMgr.*;
 
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Text implements Item{
 
@@ -30,8 +31,11 @@ public class Text implements Item{
      *                     slide on which you want that Item to be which is : currentSlide
      */
     public Text(Slide currentSlide){
+        Font font =  new Font(this.setFont().toString(), Font.BOLD, 20);
         ComponentResizer cr = new ComponentResizer();
         textArea = new JTextArea(textEntry);
+        textArea.setFont(font);
+        textArea.setLineWrap(true);
         cr.registerComponent(textArea);
 
         ComponentMover cm = new ComponentMover();
@@ -39,6 +43,16 @@ public class Text implements Item{
         cm.setDragInsets( cr.getDragInsets() );
 
         currentSlide.addText(textArea, this);
-           System.out.println("Text constructor");
+    }
+
+    Object setFont(){
+        Object[] possibleValues = { "Arial", "Helvetica", "Calibri", "Times New Roman"};
+
+
+        Object selectedValue = JOptionPane.showInputDialog(null,
+                "Choose A Font Please: ", "Input",
+                JOptionPane.INFORMATION_MESSAGE, null,
+                possibleValues, possibleValues[0]);
+        return selectedValue;
     }
 }

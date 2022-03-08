@@ -4,6 +4,7 @@ import BottomNavigation.BottomBar;
 import FullWindow.MainFrame;
 import com.sun.tools.javac.Main;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class SlideDeck
@@ -44,6 +45,7 @@ public class SlideDeck
     {
         Slide s = new Slide(slideCount);
         slideCount++;
+        s.setBackground(Color.WHITE);
         slides.add(index, s);
 
 
@@ -153,6 +155,9 @@ public class SlideDeck
         if (ref == null)
             ref = new SlideDeck();
         return ref;
+    }
+    public Slide getSlide(int n){
+        return slides.get(n);
     }
 
 
