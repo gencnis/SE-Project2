@@ -9,16 +9,17 @@
 
 package SlideMgr;
 
+import FullWindow.MainFrame;
 import Item.Item;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
 
 //Manages all of the Objects in the SlideShow
-public class Slide extends DrawingPanel
-{
+public class Slide extends DrawingPanel {
     ArrayList<JLabel> images;
     ArrayList<JTextArea> textAreas;
 
@@ -27,22 +28,101 @@ public class Slide extends DrawingPanel
 
     String slideID;
 
-
+    //manages if slide number is displayed or not
+    JLabel slideNumber;
+    boolean isSlideNumberShown = false;
 
     public Slide(Integer slideID)
     {
 
         this.slideID = slideID.toString();
 
+        //slide number initializatin
+        slideNumber = new JLabel();
+        initializeSlideNumber(100,100);  //change the parameters to change the size of the slide number text
+
         images = new ArrayList<JLabel>();
         textAreas = new ArrayList<>();
         items = new ArrayList<Item>();
         setLayout(null);
 
+
+// TODO: Fehmi: add JButtons to take you to the next and previous slides on the sides
+
+
     }
 
 
+    public void showSlideNumber(Dimension d)
+    {
 
+        slideNumber.setLocation((int)(d.width * .93), (int)(d.height * .6));
+
+        add(slideNumber);
+
+        revalidate();
+        repaint();
+        isSlideNumberShown = true;
+    }
+
+    public void removeSlideNumber()
+    {
+        remove(slideNumber);
+        revalidate();
+        repaint();
+        isSlideNumberShown = false;
+    }
+
+    public boolean getSlideNumberState()
+    {
+        return isSlideNumberShown;
+    }
+
+    public void upDateSlideNumber()
+
+    {
+        Integer number = SlideDeck.getSlideDeck().getSlides().indexOf(this);
+        number++;
+
+        Integer  totalSlides =  SlideDeck.getSlideDeck().getSlides().size();
+        slideNumber.setText(number.toString() + " / " + totalSlides.toString());
+    }
+
+    //resizes, recolors, and sets location of slide number to begin with
+    void initializeSlideNumber(int width, int height)
+    {
+        slideNumber.setSize(width,height); //necessary because null layout of slide makes location go wonky otherwise
+        slideNumber.setLocation(50, 20);
+        slideNumber.setForeground(Color.WHITE);
+
+        //make number displayable
+        DraggableHandler handler = new DraggableHandler(slideNumber, this);
+        slideNumber.addMouseListener(handler);
+        slideNumber.addMouseMotionListener(handler);
+        slideNumber.revalidate();
+        slideNumber.repaint();
+        //end slide number intialization
+
+
+        //the rest of this code is for making sure the text is set to fit inside the size of the set container
+        Font labelFont = slideNumber.getFont();
+        String labelText = slideNumber.getText();
+
+        int stringWidth = (int)(slideNumber.getWidth() * .9);
+        int componentWidth = slideNumber.getWidth();
+
+// Find out how much the font can grow in width.
+        double widthRatio = (double)componentWidth / (double)stringWidth;
+
+        int newFontSize = (int)(labelFont.getSize() * widthRatio);
+        int componentHeight = slideNumber.getHeight();
+
+// Pick a new font size so it will not be larger than the height of label.
+        int fontSizeToUse = Math.min(newFontSize, componentHeight);
+
+// Set the label's font size to the newly determined size.
+        slideNumber.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse));
+    }
 
     //run this to add an image from the button action
     //makes a JLabel, adds it to reference list

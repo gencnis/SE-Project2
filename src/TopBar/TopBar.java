@@ -43,8 +43,7 @@ public class TopBar extends JPanel
         aa.setBackground(Color.decode("#B2D5DB"));
         aa.setPreferredSize(new Dimension(860,50));
         aa.setBorder(BorderFactory.createEtchedBorder(0));
-
-        // Button
+        
         JMenuItem newSlide = new JMenuItem("Add New Slide");
         newSlide.addActionListener(new ActionListener() {
             @Override
@@ -80,7 +79,19 @@ public class TopBar extends JPanel
         });
         Insert.add(addText);
 
-        // Button
+        JMenuItem toggleSlideNumber = new JMenuItem("Display/Hide Slide Number");
+        toggleSlideNumber.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+
+                MainFrame.toggleSlideNumber();
+                System.out.println("Slide Number Toggled");
+            }
+        });
+        Insert.add(toggleSlideNumber);
+
+
         Insert.add(new JMenuItem("Equation"));
         Insert.add(new JMenuItem("Link"));
         Insert.add(new JMenuItem("Code"));
