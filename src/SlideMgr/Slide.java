@@ -93,7 +93,7 @@ public class Slide extends DrawingPanel {
     {
         slideNumber.setSize(width,height); //necessary because null layout of slide makes location go wonky otherwise
         slideNumber.setLocation(50, 20);
-        slideNumber.setForeground(Color.WHITE);
+        slideNumber.setForeground(Color.RED);
 
         //make number displayable
         DraggableHandler handler = new DraggableHandler(slideNumber, this);

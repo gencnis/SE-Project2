@@ -45,9 +45,12 @@ public class BottomBar extends JPanel{
     static JPanel mainPanel;
     ArrayList<JButton> buttons;
 
+    Color beginColor;
+
     JButton next;
     JButton previous;
-    public BottomBar(CardLayout slideShow, JPanel mainPanel) {
+    public BottomBar(CardLayout slideShow, JPanel mainPanel)
+    {
         buttons = new ArrayList<JButton>();
         this.slideShow = slideShow;
         this.mainPanel = mainPanel;
@@ -56,6 +59,8 @@ public class BottomBar extends JPanel{
         this.setBackground(Color.decode("#B2D5DB"));
         next = new JButton("→");
         previous = new JButton("←");
+
+        beginColor = next.getBackground();
 
         next.addActionListener(new ActionListener() {
             @Override
@@ -83,7 +88,8 @@ public class BottomBar extends JPanel{
 //TODO: You may need to rearrange all the buttons to make sure each one is pointing to the right slide.
 //if I insert a slide after 5 in a 10 slide show, slides 6-10 need to be updated
 
-    public void addSlideButton(Integer index, Slide s) {
+    public void addSlideButton(Integer index, Slide s)
+    {
 
         Integer temp = index + 1;
         JButton c = new JButton(temp.toString());
@@ -107,9 +113,33 @@ public class BottomBar extends JPanel{
         this.add(next, BorderLayout.LINE_START);
     }
 
+    //horribly inefficient but works at changing colors to the current slide
+    public void changeSlideButtonSelection()
+    {
+        Slide currentSlide= MainFrame.getCurrentSlide();
+        int currentSlideIndex = SlideDeck.getSlideDeck().getSlides().indexOf(currentSlide);
+
+        for (JButton b : buttons)
+        {
+            int buttonIndex = buttons.indexOf(b);
+            if(buttonIndex == currentSlideIndex)
+            {
+                b.setBackground(Color.BLUE);
+                b.setForeground(Color.WHITE);
+            }
+            else
+            {
+                b.setBackground(beginColor);
+                b.setForeground(Color.BLACK);
+            }
+
+
+        }
+    }
     //TODO: Figure out how to remove the buttons from the menu. You may need to rebuild all the buttons again.
     //this will be called via SlideDeck removeSlide()
-    public void removeSlideButton(Slide s) {
+    public void removeSlideButton(Slide s)
+    {
 
         int index = slideDeck.getSlides().indexOf(s);
         this.remove(index);
