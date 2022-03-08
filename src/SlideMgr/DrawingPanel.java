@@ -1,7 +1,6 @@
 package SlideMgr;
 
 
-import FullWindow.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -102,7 +100,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
 
 
         Object selectedValue = JOptionPane.showInputDialog(null,
-                "Choose A Font Please: ", "Input",
+                "Choose A Text Color Please: ", "Input",
                 JOptionPane.INFORMATION_MESSAGE, null,
                 possibleValues, possibleValues[0]);
 
