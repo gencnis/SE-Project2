@@ -48,10 +48,31 @@ public class TopBar extends JPanel
         newSlide.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainFrame.newSlide();
+                MainFrame.newSlide("WHITE");
             }
         });
+
         Add.add(newSlide);
+        JMenuItem paintedSlide = new JMenuItem("Add New Painted Slide");
+        paintedSlide.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                Object[] possibleValues = { "BLACK", "WHITE", "RED", "BLUE", "GREEN", "YELLOW"};
+
+                Object selectedValue = JOptionPane.showInputDialog(null,
+                        "Choose A Slide Color Please: ", "Input",
+                        JOptionPane.INFORMATION_MESSAGE, null,
+                        possibleValues, possibleValues[0]);
+
+
+                System.out.println(selectedValue.toString());
+                MainFrame.newSlide(selectedValue.toString());
+            }
+        });
+        Add.add(paintedSlide);
+
+
 
         // Button
         Add.add(new JMenuItem("Add Slides Numbers"));

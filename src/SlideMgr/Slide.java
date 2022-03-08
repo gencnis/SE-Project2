@@ -175,6 +175,10 @@ public class Slide extends DrawingPanel {
 
     }
 
+    void setColor(Color c ){
+        this.setBackground(c);
+    }
+
 
 
 }

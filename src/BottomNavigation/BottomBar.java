@@ -85,8 +85,8 @@ public class BottomBar extends JPanel{
         slideDeck = SlideDeck.getSlideDeck();
     }
 
-//TODO: You may need to rearrange all the buttons to make sure each one is pointing to the right slide.
-//if I insert a slide after 5 in a 10 slide show, slides 6-10 need to be updated
+    //TODO: You may need to rearrange all the buttons to make sure each one is pointing to the right slide.
+    //if I insert a slide after 5 in a 10 slide show, slides 6-10 need to be updated
 
     public void addSlideButton(Integer index, Slide s)
     {
@@ -108,7 +108,6 @@ public class BottomBar extends JPanel{
         if (index < slideDeck.getSlides().size() - 1) //if not adding on the end, have to rebuild the buttons;
         {
             rebuildDeck();
-
         }
         this.add(next, BorderLayout.LINE_START);
     }
@@ -125,15 +124,12 @@ public class BottomBar extends JPanel{
             if(buttonIndex == currentSlideIndex)
             {
                 b.setBackground(Color.BLUE);
-                b.setForeground(Color.WHITE);
             }
             else
             {
                 b.setBackground(beginColor);
                 b.setForeground(Color.BLACK);
             }
-
-
         }
     }
     //TODO: Figure out how to remove the buttons from the menu. You may need to rebuild all the buttons again.
@@ -162,7 +158,7 @@ public class BottomBar extends JPanel{
             index++;
         }
     }
-     static void moveForward(){
+    static void moveForward(){
             if (slideDeck.getSlides().indexOf(slideDeck.getCurrentSlide()) < slideDeck.getSlides().size() -1) {
                 MainFrame.showSlide(slideDeck.getSlide(slideDeck.getSlides().indexOf(slideDeck.getCurrentSlide()) + 1));
             } else {

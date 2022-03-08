@@ -13,7 +13,7 @@ import Item.Text;
 import TopBar.TopBar;
 import SlideMgr.*;
 import Utilities.IsKeyPressed;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -56,8 +56,7 @@ public class MainFrame extends JFrame
     //maintain user's window size and location
     static Dimension userDimensions;
     static Point userLocation;
-    static GraphicsDevice device = GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getScreenDevices()[0]; //get screen
+    static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]; //get screen
     static boolean isFullScreen = false;
 
     MainFrame() throws InterruptedException
@@ -219,7 +218,7 @@ public class MainFrame extends JFrame
 
     public static BottomBar getBottomBar() {return bb;}
 
-    public static void showSlide(@NotNull Slide s)
+    public static void showSlide(Slide s)
     {
         slideShow.show(mainPanel, s.getSlideID()); //need to provide ID so it shows the correct slide
         slideDeck.setCurrentSlide(s);
@@ -287,7 +286,8 @@ public class MainFrame extends JFrame
     /**
      * Adds a new slide to the slide deck and displays it
      */
-    public static void newSlide() {
+    public static void newSlide(String c) {
+        slideDeck.setSlideColor(c);
         slideDeck.addSlide();
     }
 

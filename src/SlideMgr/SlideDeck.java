@@ -3,8 +3,10 @@ package SlideMgr;
 import BottomNavigation.BottomBar;
 import FullWindow.MainFrame;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SlideDeck
 {
@@ -13,6 +15,7 @@ public class SlideDeck
     private static Slide currentSlide;
     private  Integer slideCount = 0; //unique identifier for every slide..don't think any reasonable actions would overflow
     static BottomBar bb;
+    HashMap<String, Color> colorMap; // here I save all of the color values for easy access
 
     //eed to add slides after this is made
     SlideDeck()
@@ -20,6 +23,12 @@ public class SlideDeck
         bb = MainFrame.getBottomBar();
         slides = new ArrayList<>();
 
+        colorMap = new HashMap<>();
+        colorMap.put("BLACK", Color.BLACK );  // Black
+        colorMap.put("RED", Color.RED );    // Red
+        colorMap.put("GREEN", Color.GREEN );    // Green
+        colorMap.put("BLUE", Color.BLUE );    // Blue
+        colorMap.put("YELLOW", Color.YELLOW);
 
     }
 
@@ -28,6 +37,7 @@ public class SlideDeck
     public  void addSlide()
     {
         Slide s = new Slide(slideCount);
+        s.setBackground(slideColor);
         slideCount++; //increment unique identifier
         slides.add(s);
 
@@ -39,12 +49,18 @@ public class SlideDeck
 
     }
 
+    Color slideColor = Color.WHITE;
+
+    public void setSlideColor(String c) {
+        this.slideColor = colorMap.get(c);
+    }
 
     public void addSlide(Integer index)
     {
+
         Slide s = new Slide(slideCount);
+        s.setBackground(slideColor);
         slideCount++;
-        s.setBackground(Color.WHITE);
         slides.add(index, s);
 
 

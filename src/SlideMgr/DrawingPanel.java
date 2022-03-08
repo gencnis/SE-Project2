@@ -51,7 +51,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     {
         if (bufferedImage == null)
         {
-            //geets you a new buffered image
+            //gets you a new buffered image
             bufferedImage = new BufferedImage(
                     getWidth(), getHeight(),
                     BufferedImage.TYPE_INT_ARGB);
@@ -61,7 +61,6 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
             g.setColor(getBackground());
             g.fillRect(0,0,getWidth(),getHeight());
             g.dispose();
-
         }
 
         if (bufferedImage.getWidth() != getWidth() ||
@@ -87,7 +86,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         validateImage();
 
         // Paint the bufferedImage which stores
-        // what was drawn until now
+        // What was drawn until now
         g.drawImage(bufferedImage, 0, 0, null);
     }
 
@@ -97,7 +96,6 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
 
     public void setBrushColor(){
         Object[] possibleValues = { "BLACK", "RED", "BLUE", "GREEN"};
-
 
         Object selectedValue = JOptionPane.showInputDialog(null,
                 "Choose A Text Color Please: ", "Input",
@@ -114,8 +112,8 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     @Override
     public void mousePressed(MouseEvent me)
     {
-//  //TODO:Implement a GetBrushColor() method here so you can customize the color.
-//    TODO: Implement a GetBrushSize() method here so you can customize the size.
+        //TODO:Implement a GetBrushColor() method here so you can customize the color.
+        //TODO: Implement a GetBrushSize() method here so you can customize the size.
         xPos = me.getX();
         yPos = me.getY();
 
@@ -188,7 +186,5 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     @Override
     public void mouseMoved(MouseEvent me) {
     }
-
-
 
 }
