@@ -2,7 +2,6 @@ package SlideMgr;
 
 import BottomNavigation.BottomBar;
 import FullWindow.MainFrame;
-import com.sun.tools.javac.Main;
 
 import java.util.ArrayList;
 
@@ -34,7 +33,7 @@ public class SlideDeck
         MainFrame.updateSlideShow(s, true);
 
         bb.addSlideButton(slides.indexOf(s), s);
-
+        updateSlideNumDisplay();
         MainFrame.showSlide(s);
 
     }
@@ -50,7 +49,7 @@ public class SlideDeck
         MainFrame.updateSlideShow(s, true);
         bb.addSlideButton(slides.indexOf(s), s);
        // currentSlide = s;
-
+        updateSlideNumDisplay(); //updates numbers on slides
         MainFrame.showSlide(s);
     }
 
@@ -81,8 +80,10 @@ public class SlideDeck
 //          TODO: Call whatever you need to update the Front End bottom bar buttons here.
             bb.removeSlideButton(temp);
             slides.remove(temp);
+            updateSlideNumDisplay(); //updates numbers on slides
             MainFrame.updateSlideShow(temp, false); //removes from slideshow
             temp.clearSlide();
+
             //temp gets destroyed after this
 
         }
@@ -142,7 +143,13 @@ public class SlideDeck
 
     public  Slide getCurrentSlide(){return currentSlide;}
 
-
+    public void updateSlideNumDisplay()
+    {
+        for (Slide s: slides)
+        {
+            s.upDateSlideNumber();
+        }
+    }
 
 
     public ArrayList<Slide> getSlides(){return slides;}

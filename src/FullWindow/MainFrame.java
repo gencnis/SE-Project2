@@ -32,6 +32,8 @@ public class MainFrame extends JFrame
     static BottomBar bb;
     static Slide currentSlide;
 
+    static MainFrame mainFrame;
+
 
 //Image loading variables
     private static final int baseSize = 128; //default image size variable, can add in our own to resize the image
@@ -48,6 +50,7 @@ public class MainFrame extends JFrame
 
     MainFrame() throws InterruptedException
     {
+
         slideShow = new CardLayout();
         mainPanel = new JPanel();
         mainPanel.setLayout(slideShow);
@@ -118,7 +121,8 @@ public class MainFrame extends JFrame
     {
         try
         {
-            new MainFrame();
+            mainFrame = new MainFrame();
+
         } catch (InterruptedException e) {
             System.err.format("IOException: %s%n", e);
         }
@@ -182,6 +186,28 @@ public class MainFrame extends JFrame
         new Text(currentSlide);
         System.out.println("MainFrame Text");
     }
+
+    public static void  toggleSlideNumber()
+    {
+
+        boolean b = currentSlide.getSlideNumberState();
+
+        if(b)
+        {
+
+            currentSlide.removeSlideNumber();
+        }
+        else
+        {
+
+            currentSlide.showSlideNumber(mainFrame.getSize());
+        }
+
+
+
+    }
+
+
 
 
     public static void saveAsProject() {

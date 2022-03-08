@@ -46,7 +46,7 @@ public class TopBar extends JPanel
         aa.setBorder(BorderFactory.createEtchedBorder(0));
 
         Add.add(new JMenuItem("Add New Slide"));
-        Add.add(new JMenuItem("Add Slides Numbers"));
+
 
         //TODO: DO all your menu items like this. Then just call the action out of mainfram that you need done.
         JMenuItem image = new JMenuItem("Image");
@@ -72,6 +72,20 @@ public class TopBar extends JPanel
             }
         });
         Insert.add(addText);
+
+        JMenuItem toggleSlideNumber = new JMenuItem("Display/Hide Slide Number");
+        toggleSlideNumber.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+
+                MainFrame.toggleSlideNumber();
+                System.out.println("Slide Number Toggled");
+            }
+        });
+        Insert.add(toggleSlideNumber);
+
+
         Insert.add(new JMenuItem("Equation"));
         Insert.add(new JMenuItem("Link"));
         Insert.add(new JMenuItem("Code"));
