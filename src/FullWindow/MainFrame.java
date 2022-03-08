@@ -20,11 +20,14 @@ import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.File;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Key;
 
 
 import static Utilities.ImageUtilities.setTargetImage;
+import static javax.swing.JFileChooser.SAVE_DIALOG;
 
 public class MainFrame extends JFrame
 {
@@ -339,6 +342,189 @@ public class MainFrame extends JFrame
 
     }
 
+  /*  protected void save(ActionEvent e)
+    {
+        File file;
+        String savePath = basePath;   //where you select to save
+        String fileName = "nothingSaved";   //the file name you wish to save to
+        String newProjectDir = basePath; //the folder that will be made to save the project in
+
+        //variables ot make a separate folder for images
+        Path resourcesDir; //the path to the resources folder that holds all images
+        File dirMaker; //makes new project folders
+
+        //opens a file explorer on the desktop
+        JFileChooser fc = new JFileChooser(basePath);
+        fc.setCurrentDirectory(new java.io.File(basePath));
+        fc.setDialogTitle("Select Folder To Save");
+
+        fc.setFileFilter(new ProjectFileFilter());
+        //
+        // disable the "All files" option.
+        //
+        fc.setAcceptAllFileFilterUsed(false);
+
+        if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) //if selected item is folder
+        {
+            //get out file path from the explorer
+            file = fc.getSelectedFile();
+
+            if(file.exists() && fc.getDialogType() == SAVE_DIALOG)
+            {
+                int result = JOptionPane.showConfirmDialog(this, "The file exists, overwrite?", "Existing file", JOptionPane.YES_NO_CANCEL_OPTION);
+
+                //overwrite file prompt
+                switch (result) {
+                    case JOptionPane.YES_OPTION:
+                        savePath = fc.getSelectedFile().getAbsolutePath();
+                        fileName = fc.getSelectedFile().toString();
+                        //fileName = fileName + ".ser";
+
+                        //make a path variable to write to
+                        Path pathToFolder = Path.of(savePath);
+                        Path pathToFile = pathToFolder.resolve(fileName);
+                        return;
+                    case JOptionPane.NO_OPTION:
+                        return;
+                    case JOptionPane.CLOSED_OPTION:
+                        return;
+                    case JOptionPane.CANCEL_OPTION:
+                        //cancelSelection();
+                        return;
+                }
+            }
+            else
+            {
+                savePath = fc.getSelectedFile().getAbsolutePath();
+
+                fileName = fc.getSelectedFile().toString();
+                System.out.println( fileName);
+                newProjectDir = savePath; //makes a project folder the same name as when your project
+
+
+                fileName = fileName + ".ser";
+
+
+                //make a new Folder to save the project in
+
+                //dirMaker = new File(newProjectDir);
+                //dirMaker.mkdir();
+
+                //make a new resources folder in that project path
+                String recDir = savePath + " sResources";
+                resourcesDir = Paths.get(recDir);
+
+                dirMaker = new File(String.valueOf(resourcesDir));
+                dirMaker.mkdir();
+
+
+
+
+
+
+            }
+
+
+            //make a path variable to write to
+            Path pathToFolder = Paths.get(newProjectDir);
+            Path pathToFile = pathToFolder.resolve(fileName);
+
+
+
+//TODO: back up images to save here
+            try {
+
+                //loads serialized file
+                FileOutputStream fileOut =
+                        new FileOutputStream(String.valueOf(pathToFile));
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                //TODO: make this work with all slides
+                out.writeObject(s);
+                out.close();
+                fileOut.close();
+                System.out.printf("Saved Project is saved to " + String.valueOf(pathToFile));
+            } catch (IOException i) {
+                i.printStackTrace();
+            }
+
+        } else {
+            System.out.println("No Selection ");
+            file = null;
+        }
+
+
+    }
+
+
+    protected void load(ActionEvent e)
+    {
+        File file;
+        String loadPath = basePath;
+        String resourcesDir = basePath;
+        String fileName = "nothingSaved";
+
+        //opens a file explorer on the desktop
+        JFileChooser fc = new JFileChooser(basePath);
+        fc.setCurrentDirectory(new java.io.File(basePath));
+        fc.setDialogTitle("Select Folder To Save");
+
+        fc.setFileFilter(new ProjectFileFilter());
+        //
+        // disable the "All files" option.
+        //
+        fc.setAcceptAllFileFilterUsed(false);
+        //fc.showSaveDialog(null);
+        //
+        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) //if selected item is folder
+        {
+
+            loadPath = fc.getSelectedFile().getAbsolutePath();
+
+            resourcesDir = loadPath + "Resources";
+
+
+
+
+
+
+
+            try {
+                FileInputStream fileIn = new FileInputStream(loadPath);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                //TODO: Make this work for Arraylist of slides
+                Slide slide = (Slide) in.readObject();
+                in.close();
+                fileIn.close();
+                s = slide;
+                add(s, BorderLayout.CENTER);
+                revalidate();
+                repaint();
+            } catch (IOException i) {
+                i.printStackTrace();
+                return;
+            } catch (ClassNotFoundException c) {
+                System.out.println("Employee class not found");
+                c.printStackTrace();
+                return;
+            }
+
+        } else {
+            System.out.println("No Selection ");
+            file = null;
+        }
+
+    }
+
+
+
+
+
+    protected void clear(ActionEvent e)
+    {
+        remove(s);
+        revalidate();
+        repaint();
+    }*/
 
 }
 
