@@ -12,7 +12,6 @@ import BottomNavigation.BottomBar;
 import Item.Text;
 import TopBar.TopBar;
 import SlideMgr.*;
-import Utilities.IsKeyPressed;
 //import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -21,13 +20,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.Key;
 
 
 import static Utilities.ImageUtilities.setTargetImage;
-import static javax.swing.JFileChooser.SAVE_DIALOG;
 
 public class MainFrame extends JFrame
 {
@@ -61,7 +56,6 @@ public class MainFrame extends JFrame
 
     MainFrame() throws InterruptedException
     {
-
         slideShow = new CardLayout();
         mainPanel = new JPanel();
         mainPanel.setLayout(slideShow);
@@ -101,6 +95,22 @@ public class MainFrame extends JFrame
         this.setSize(1000,500);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setVisible(true);
+
+
+        /**
+         * Got this code from the forum post attached below please refer to it for futher explanation
+         * https://stackoverflow.com/questions/16530775/keylistener-not-working-for-jpanel
+         */
+        ActionMap actionMap = mainPanel.getActionMap();
+        InputMap inputMap = mainPanel.getInputMap(2);
+
+        String vkF = "VK_F";
+        String vkESCAPE = "VK_ESCAPE";
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, 0), vkF);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), vkESCAPE);
+
+        actionMap.put(vkF, new KeyAction(vkF));
+        actionMap.put(vkESCAPE, new KeyAction(vkESCAPE));
     }
 
 
@@ -116,7 +126,7 @@ public class MainFrame extends JFrame
             System.err.format("IOException: %s%n", e);
         }
 
-
+/*
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
 
             @Override
@@ -178,7 +188,7 @@ public class MainFrame extends JFrame
                     return false;
                 }
             }
-        });
+        }); */
     }
 
     //happens when button is pressed, takes custom dimensions for an image
@@ -238,7 +248,12 @@ public class MainFrame extends JFrame
      * Invokes the text area creating function
      */
     public static void insertText(){
-        new Text(currentSlide);
+        Text t = new Text(currentSlide);
+        if(t.getTextSize() < 15){
+            JOptionPane.showMessageDialog(mainFrame, "Selected text size might appear small when projected.",
+                    "Text size Warning", JOptionPane.WARNING_MESSAGE);
+
+        }
     }
 
     //TODO: Fehmi, provide some cool background colors to change to.
@@ -266,9 +281,6 @@ public class MainFrame extends JFrame
 
 
     }
-
-
-
 
     public static void saveAsProject() {
         // TODO : PLEASE DO THIS ASAP
@@ -322,12 +334,25 @@ public class MainFrame extends JFrame
 
     public static void fullScreen()
     {
+
         mainFrame.remove(tb);
         mainFrame.remove(bb);
         //mainFrame.setUndecorated(true); //removes the window border around it
         userLocation = mainFrame.getLocation();
         userDimensions = mainFrame.getSize();
         device.setFullScreenWindow(mainFrame);
+
+
+
+        //Another way of doing it, I tried it and it worked smoothly
+        /*
+        tb.setVisible(false);
+        bb.setVisible(false);
+        mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        mainFrame.setVisible(true);
+        userLocation = mainFrame.getLocation();
+        userDimensions = mainFrame.getSize();
+           */
     }
 
     public static void escapeFullScreen()
@@ -337,12 +362,40 @@ public class MainFrame extends JFrame
         mainFrame.add(bb, BorderLayout.SOUTH);
        // mainFrame.setUndecorated(false); //adds the window border around
         device.setFullScreenWindow(null);
+
+        //Another way of doing it, I tried it and it worked smoothly
+        /*
+        tb.setVisible(true);
+        bb.setVisible(true);
         mainFrame.setSize(userDimensions);
         mainFrame.setLocation(userLocation);
+        isFullScreen= false;
+        */
 
     }
 
-  /*  protected void save(ActionEvent e)
+    public static void removed() {
+        slideDeck.removeSlide();
+    }
+
+    private class KeyAction extends AbstractAction {
+        public KeyAction(String actionCommand) {
+            putValue(ACTION_COMMAND_KEY, actionCommand);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvt) {
+            escapeFullScreen();
+            System.out.println(actionEvt.getActionCommand() + " pressed");
+        }
+    }
+
+
+
+
+
+
+  /*protected void save(ActionEvent e)
     {
         File file;
         String savePath = basePath;   //where you select to save

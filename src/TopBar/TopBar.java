@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class TopBar extends JPanel
@@ -43,7 +44,10 @@ public class TopBar extends JPanel
         aa.setBackground(Color.decode("#B2D5DB"));
         aa.setPreferredSize(new Dimension(860,50));
         aa.setBorder(BorderFactory.createEtchedBorder(0));
-        
+        UIManager.put("MenuBar.background", Color.ORANGE);
+
+
+
         JMenuItem newSlide = new JMenuItem("Add New Slide");
         newSlide.addActionListener(new ActionListener() {
             @Override
@@ -51,8 +55,8 @@ public class TopBar extends JPanel
                 MainFrame.newSlide("WHITE");
             }
         });
-
         Add.add(newSlide);
+
         JMenuItem paintedSlide = new JMenuItem("Add New Painted Slide");
         paintedSlide.addActionListener(new ActionListener() {
             @Override
@@ -65,12 +69,20 @@ public class TopBar extends JPanel
                         JOptionPane.INFORMATION_MESSAGE, null,
                         possibleValues, possibleValues[0]);
 
-
                 System.out.println(selectedValue.toString());
                 MainFrame.newSlide(selectedValue.toString());
             }
         });
         Add.add(paintedSlide);
+
+        JMenuItem removed = new JMenuItem("Remove Current Slide");
+        removed.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.removed();
+            }
+        });
+        Add.add(removed);
 
 
 
@@ -181,8 +193,18 @@ public class TopBar extends JPanel
         Print.add(new JMenuItem("Print As PDF"));
 
 
+
+
         // Button
-        Present.add(new JMenuItem("Present Full Screen"));
+        JMenuItem PRESENTER = new JMenuItem("Present Full Screen");
+        PRESENTER.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.fullScreen();
+            }
+        });
+        Present.add(PRESENTER);
+
 
 
 
