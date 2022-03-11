@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
         imgLabel.revalidate();
         imgLabel.repaint();
  */
-class DraggableHandler extends MouseInputAdapter
+class DraggableHandler extends MouseInputAdapter implements java.io.Serializable
 {
     JComponent item; //handles every item on a JPanel
     Point clickPoint;

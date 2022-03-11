@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 //Manages all of the Objects in the SlideShow
 public class Slide extends DrawingPanel {
-    ArrayList<JLabel> images;
+    ArrayList<ImgLabel> images;
     ArrayList<JTextArea> textAreas;
 
     //This a test
@@ -41,7 +41,7 @@ public class Slide extends DrawingPanel {
         slideNumber = new JLabel();
         initializeSlideNumber(100,100);  //change the parameters to change the size of the slide number text
 
-        images = new ArrayList<JLabel>();
+        images = new ArrayList<ImgLabel>();
         textAreas = new ArrayList<>();
         items = new ArrayList<Item>();
         setLayout(null);
@@ -128,7 +128,7 @@ public class Slide extends DrawingPanel {
     //makes a JLabel, adds it to reference list
     public void addImageToSlide(ImageIcon icon)
     {
-        JLabel imgLabel = new JLabel(icon);
+        ImgLabel imgLabel = new ImgLabel(icon, this);
 
 
         imgLabel.setSize(100, 100);
@@ -137,13 +137,6 @@ public class Slide extends DrawingPanel {
         images.add(imgLabel);
         add(imgLabel);
 
-        //makes things draggable
-        DraggableHandler handler = new DraggableHandler(imgLabel, this);
-        imgLabel.addMouseListener(handler);
-        imgLabel.addMouseMotionListener(handler);
-        imgLabel.revalidate();
-        imgLabel.repaint();
-        //end makes things draggable
     }
 
     public void clearSlide() //basically deletes everything on a slide
