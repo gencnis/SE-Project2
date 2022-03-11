@@ -136,6 +136,8 @@ public class Slide extends DrawingPanel {
 
         images.add(imgLabel);
         add(imgLabel);
+        this.revalidate();
+        this.repaint();
 
     }
 
