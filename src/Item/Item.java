@@ -10,6 +10,8 @@
 package Item;
 
 
+import javax.swing.*;
+
 public interface Item
 {
 

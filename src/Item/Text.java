@@ -14,9 +14,12 @@ import SlideMgr.*;
 
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import java.awt.*;
+import java.awt.event.FocusListener;
 
-public class Text implements Item, java.io.Serializable
+public class Text extends JComponent implements Item, java.io.Serializable
 {
 
     public JTextArea textArea;
@@ -39,11 +42,9 @@ public class Text implements Item, java.io.Serializable
         textArea.setFont(font);
         textArea.setLineWrap(true);
         cr.registerComponent(textArea);
-
         ComponentMover cm = new ComponentMover();
         cm.registerComponent(textArea);
         cm.setDragInsets( cr.getDragInsets() );
-
         currentSlide.addText(textArea, this);
     }
 
@@ -67,13 +68,13 @@ public class Text implements Item, java.io.Serializable
      *
      * Same thing as above but instead of returning a value, we go ahead and set a global variable corresponding.
      */
-    void setSize(){
-        Object[] possibleValues = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70};
+    void setSize() {
+        Object[] possibleValues = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70};
 
         Object selectedValue = JOptionPane.showInputDialog(null,
                 "Choose the text Size Please: ", "Input",
                 JOptionPane.INFORMATION_MESSAGE, null,
-                possibleValues, possibleValues[0]);
+                possibleValues, possibleValues[ 0 ]);
         textSize = Integer.parseInt(selectedValue.toString());
     }
 

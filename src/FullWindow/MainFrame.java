@@ -9,6 +9,7 @@
 package FullWindow;
 
 import BottomNavigation.BottomBar;
+import Item.BulletList;
 import Item.Text;
 import TopBar.TopBar;
 import SlideMgr.*;
@@ -60,6 +61,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
     static Point userLocation;
     static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]; //get screen
     static boolean isFullScreen = false;
+    static BulletList currentBulletList;
 
     MainFrame() throws InterruptedException
     {
@@ -109,16 +111,21 @@ public class MainFrame extends JFrame implements java.io.Serializable
          * Got this code from the forum post attached below please refer to it for futher explanation
          * https://stackoverflow.com/questions/16530775/keylistener-not-working-for-jpanel
          */
+
         ActionMap actionMap = mainPanel.getActionMap();
-        InputMap inputMap = mainPanel.getInputMap(2);
+        InputMap inputMap = mainPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+
 
         String vkF = "VK_F";
         String vkESCAPE = "VK_ESCAPE";
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, 0), vkF);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), vkESCAPE);
 
+
         actionMap.put(vkF, new KeyAction(vkF));
         actionMap.put(vkESCAPE, new KeyAction(vkESCAPE));
+
     }
 
 
@@ -818,7 +825,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
     public static void eraser()
     {
        currentSlide.setBrushColor(currentSlide.getBackground());
-        currentSlide.setActivated(true);
+       currentSlide.setActivated(true);
     }
 
     public static Slide getCurrentSlide()
@@ -829,82 +836,107 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
     public static void fullScreen()
     {
-
+        /*
         mainFrame.remove(tb);
         mainFrame.remove(bb);
-        //mainFrame.setUndecorated(true); //removes the window border around it
+        mainFrame.setUndecorated(true); //removes the window border around it
         userLocation = mainFrame.getLocation();
         userDimensions = mainFrame.getSize();
         device.setFullScreenWindow(mainFrame);
         for (Slide s: slideDeck.getSlides())
         {
-          // s.getDimensions();
-           // s.presentBGSize();
+           s.getDimensions();
+           s.presentBGSize();
         }
+        */
+
 
 
 
         //Another way of doing it, I tried it and it worked smoothly
-        /*
+
         tb.setVisible(false);
         bb.setVisible(false);
         mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         mainFrame.setVisible(true);
         userLocation = mainFrame.getLocation();
         userDimensions = mainFrame.getSize();
-           */
+        isFullScreen = true;
+
     }
 
     public static void escapeFullScreen()
     {
-
+        /*
         mainFrame.add(tb, BorderLayout.NORTH);
         mainFrame.add(bb, BorderLayout.SOUTH);
         for (Slide s: slideDeck.getSlides())
         {
-
-          //  s.resetBGPosition();
+            s.resetBGPosition();
         }
         device.setFullScreenWindow(null);
         for (Slide s: slideDeck.getSlides())
         {
-
-          //  s.resetBGSize();
+            s.resetBGSize();
         }
 
-       // mainFrame.setUndecorated(false); //adds the window border around
-
-
-
+        mainFrame.setUndecorated(false); //adds the window border around
+        */
 
         //Another way of doing it, I tried it and it worked smoothly
-        /*
+
         tb.setVisible(true);
         bb.setVisible(true);
         mainFrame.setSize(userDimensions);
         mainFrame.setLocation(userLocation);
         isFullScreen= false;
-        */
+
 
     }
 
-    public static void removed() {
-        slideDeck.removeSlide();
-    }
-
-    public static BottomBar getBottomBar() { return bb;}
-
-    private class KeyAction extends AbstractAction {
+    /**
+     * This is what connects our key strokes to the actual mehtods we have
+     */
+    public class KeyAction extends AbstractAction {
         public KeyAction(String actionCommand) {
             putValue(ACTION_COMMAND_KEY, actionCommand);
         }
 
         @Override
         public void actionPerformed(ActionEvent actionEvt) {
-            escapeFullScreen();
-            System.out.println(actionEvt.getActionCommand() + " pressed");
+            if(actionEvt.getActionCommand().equals("VK_ESCAPE")){
+                currentBulletList.addBullet();
+            }
+            if(actionEvt.getActionCommand().equals("VK_ESCAPE") || actionEvt.getActionCommand().equals("VK_F")) {
+                if (isFullScreen) {
+                    escapeFullScreen();
+                    System.out.println(actionEvt.getActionCommand() + " pressed");
+                }
+            }
         }
     }
+
+    /**
+     * This method is the same as the TextArea method, the difference here is that it will have a key listener for the Enter key
+     * that way each time the user hits enter, it goes back to line and adds a bullet
+     */
+
+    public static void bullet() {
+        currentBulletList = new BulletList(currentSlide);
+        if(currentBulletList.getTextSize() < 15){
+            JOptionPane.showMessageDialog(mainFrame, "Selected text size might appear small when projected.",
+                    "Text size Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    /**
+     * Removes slide by accessing the SlideDeck
+     */
+    public static void removed() {
+        slideDeck.removeSlide();
+    }
+
+    public static BottomBar getBottomBar() { return bb;}
 
     public static GraphicsDevice getDevice()
     {

@@ -199,6 +199,16 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         repaint();
     }
 
+    public void addBulletList(JTextArea s, Item t){
+        s.setBounds(50, 50, 150, 150);
+
+        //textAreas.add(s); // intial list i added to
+        items.add(t);      // to test out the arrayList of items theory
+        add(s);
+        System.out.println("BulletList should be inserted");
+        repaint();
+    }
+
     public void writeDrawing(Path p) throws IOException
     {
         //TODO:include slideID with drawing so can easily sort through the images

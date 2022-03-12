@@ -84,8 +84,6 @@ public class TopBar extends JPanel implements java.io.Serializable
         });
         Add.add(removed);
 
-
-
         // Button
         Add.add(new JMenuItem("Add Slides Numbers"));
 
@@ -128,7 +126,16 @@ public class TopBar extends JPanel implements java.io.Serializable
         Insert.add(new JMenuItem("Equation"));
         Insert.add(new JMenuItem("Link"));
         Insert.add(new JMenuItem("Code"));
-        Insert.add(new JMenuItem("Bullet List"));
+
+        // Button
+        JMenuItem bullet = new JMenuItem("Bullet List");
+        bullet.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.bullet();
+            }
+        });
+        Insert.add(bullet);
 
         JMenuItem slideBG = new JMenuItem("Slide Background Image");
         slideBG.addActionListener(new ActionListener() {
