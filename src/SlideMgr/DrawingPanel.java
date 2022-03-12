@@ -37,6 +37,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
 
     transient  Toolkit toolkit;
     transient static Cursor brushCursor;
+    transient static Cursor eraserCursor;
     DrawingPanel()
     {
         addMouseListener(this);
@@ -45,6 +46,8 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         toolkit =  Toolkit.getDefaultToolkit();
         brushCursor = toolkit.createCustomCursor(new ImageIcon("png/cur.png").getImage(),
                                                new Point(0,0),"custom cursor");
+        toolkit.createCustomCursor(new ImageIcon("png/erase.png").getImage(),
+                new Point(0,0),"custom cursor");
         colorMap = new HashMap<>();
         colorMap.put("BLACK", Color.BLACK );  // Black
         colorMap.put("RED", Color.RED );    // Red
@@ -102,6 +105,10 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     public Color getBrushColor() {
         return brushColor;
     }
+    public void setBrushSize(int n){
+        brushHeight = n;
+        brushWidth  = n;
+    }
 
     public void setBrushColor()
     {
@@ -119,7 +126,10 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         this.brushColor = brushColor;
     }
 
-
+    public void eraser(){
+        setCursor(eraserCursor);
+        setBrushSize(50);
+    }
 
 
     @Override
@@ -134,6 +144,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
        if (activated)
        {
         setCursor(brushCursor);
+        setBrushSize(10);
        }
         else{
             setCursor(Cursor.getDefaultCursor());

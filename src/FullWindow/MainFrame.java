@@ -825,6 +825,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
     public static void eraser()
     {
        currentSlide.setBrushColor(currentSlide.getBackground());
+       currentSlide.eraser();
        currentSlide.setActivated(true);
     }
 
