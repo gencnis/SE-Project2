@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SlideDeck
+public class SlideDeck implements java.io.Serializable
 {
     private static SlideDeck ref;
     private static ArrayList<Slide> slides;
@@ -16,7 +16,7 @@ public class SlideDeck
     private  Integer slideCount = 0; //unique identifier for every slide..don't think any reasonable actions would overflow
     static BottomBar bb;
     HashMap<String, Color> colorMap; // here I save all of the color values for easy access
-
+    Color slideColor = Color.WHITE;
     //eed to add slides after this is made
     SlideDeck()
     {
@@ -24,7 +24,7 @@ public class SlideDeck
         slides = new ArrayList<>();
 
         colorMap = new HashMap<>();
-        colorMap.put("BLACK", Color.BLACK );  // Black
+        //colorMap.put("BLACK", Color.BLACK );  // Black
         colorMap.put("RED", Color.RED );    // Red
         colorMap.put("GREEN", Color.GREEN );    // Green
         colorMap.put("BLUE", Color.BLUE );    // Blue
@@ -49,7 +49,18 @@ public class SlideDeck
 
     }
 
-    Color slideColor = Color.WHITE;
+    public void addSlide(Slide s)
+    {
+        slideCount++; //increment unique identifier
+        slides.add(s);
+
+        MainFrame.updateSlideShow(s, true);
+
+        bb.addSlideButton(slides.indexOf(s), s);
+        updateSlideNumDisplay();
+        MainFrame.showSlide(s);
+    }
+
 
     public void setSlideColor(String c) {
         this.slideColor = colorMap.get(c);
@@ -59,7 +70,7 @@ public class SlideDeck
     {
 
         Slide s = new Slide(slideCount);
-        s.setBackground(slideColor);
+        s.changeBGColor(slideColor);;
         slideCount++;
         slides.add(index, s);
 
@@ -178,6 +189,11 @@ public class SlideDeck
         if (ref == null)
             ref = new SlideDeck();
         return ref;
+    }
+
+    public static void setDeck(SlideDeck slideDeck)
+    {
+        ref = slideDeck;
     }
     public Slide getSlide(int n){
         return slides.get(n);

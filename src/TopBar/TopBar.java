@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-public class TopBar extends JPanel
+public class TopBar extends JPanel implements java.io.Serializable
 {
 
 
@@ -62,7 +62,7 @@ public class TopBar extends JPanel
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                Object[] possibleValues = { "BLACK", "WHITE", "RED", "BLUE", "GREEN", "YELLOW"};
+                Object[] possibleValues = { "WHITE", "RED", "BLUE", "GREEN", "YELLOW"};
 
                 Object selectedValue = JOptionPane.showInputDialog(null,
                         "Choose A Slide Color Please: ", "Input",
@@ -177,7 +177,7 @@ public class TopBar extends JPanel
         saver.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MainFrame.saveAsProject();
+                MainFrame.saveAsProject(e);
             }
         });
         Save.add(saver);

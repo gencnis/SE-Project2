@@ -16,7 +16,8 @@ import SlideMgr.*;
 import javax.swing.*;
 import java.awt.*;
 
-public class Text implements Item{
+public class Text implements Item, java.io.Serializable
+{
 
     public JTextArea textArea;
     public String textEntry = "Insert Text here\n";                  // The text entry that the user will enter / edit

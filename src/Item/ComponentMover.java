@@ -31,7 +31,7 @@ import javax.swing.SwingUtilities;
  *  Components can be registered when the class is created. Additional
  *  components can be added at any time using the registerComponent() method.
  */
-public class ComponentMover extends MouseAdapter
+public class ComponentMover extends MouseAdapter implements java.io.Serializable
 {
     private Insets dragInsets = new Insets(0, 0, 0, 0);
     private Dimension snapSize = new Dimension(1, 1);

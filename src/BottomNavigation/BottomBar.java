@@ -27,7 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class BottomBar extends JPanel{
+public class BottomBar extends JPanel implements java.io.Serializable
+{
     //Arraylist should hold all of the slides
     //ArrayList<PresentationSlide> slides = new ArrayList<>();
 
@@ -148,7 +149,18 @@ public class BottomBar extends JPanel{
 
     }
 
-    void rebuildDeck() {
+    public void clearAllButtons()
+    {
+        for(JButton b : buttons)
+        {
+            this.remove(b);
+
+        }
+        buttons.clear();
+    }
+
+    public void rebuildDeck()
+    {
         this.removeAll();
         this.add(previous, BorderLayout.LINE_END);
         Integer index = 1;

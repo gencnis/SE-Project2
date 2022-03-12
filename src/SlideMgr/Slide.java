@@ -12,25 +12,38 @@ package SlideMgr;
 import FullWindow.MainFrame;
 import Item.Item;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 
 //Manages all of the Objects in the SlideShow
-public class Slide extends DrawingPanel {
+public class Slide extends DrawingPanel implements java.io.Serializable
+{
+    //Serial ID number needed for every class
+    private static final long serialVersionUID = -4751816768152150898L;
+
     ArrayList<ImgLabel> images;
-    ArrayList<JTextArea> textAreas;
+
+    //TODO: make serializable
+    transient ArrayList<JTextArea> textAreas;
 
     //This a test
-    ArrayList<Item> items;
+   transient ArrayList<Item> items;
 
     String slideID;
 
     //manages if slide number is displayed or not
     JLabel slideNumber;
     boolean isSlideNumberShown = false;
+
+    //unnecessary variable to hold color. Delete this later
+    Color bgColor;
 
     public Slide(Integer slideID)
     {
@@ -167,13 +180,27 @@ public class Slide extends DrawingPanel {
         items.add(t);      // to test out the arrayList of items theory
         add(s);
         System.out.println("Text should be inserted");
+        repaint();
+    }
 
+    public void writeDrawing(Path p) throws IOException
+    {
+        //TODO:include slideID with drawing so can easily sort through the images
+        String path = String.valueOf(p) + "\\" + slideID + "-drawing.png";
+       // System.out.println(path);
+        if(drawnImage != null)
+            ImageIO.write(drawnImage, "png", new File(path));
     }
 
     void setColor(Color c ){
         this.setBackground(c);
     }
 
+    public void changeBGColor(Color color)
+    {
+        bgColor = color;
+        this.setBackground(color);
+    }
 
 
 }

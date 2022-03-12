@@ -2,12 +2,16 @@ package SlideMgr;
 
 
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 
 
@@ -18,24 +22,29 @@ import java.util.HashMap;
 //Original and Third Post
 
 
-public class DrawingPanel extends JPanel implements MouseListener, MouseMotionListener
+public class DrawingPanel extends JPanel implements MouseListener, MouseMotionListener, java.io.Serializable
 {
 
-    private int xPos, yPos;//mouse positions
+    private Integer xPos, yPos;//mouse positions
     Color brushColor = Color.BLACK;
     Integer brushWidth = 10;
     Integer brushHeight = 10;
     Boolean activated = false; // This is the boolean that would make sure we can draw or not
 
-    HashMap<String, Color> colorMap; // here I save all of the color values for easy access
+   HashMap<String, Color> colorMap; // here I save all of the color values for easy access
 
-    private BufferedImage bufferedImage;
+    transient protected   BufferedImage drawnImage;
 
+    transient  Toolkit toolkit;
+    transient static Cursor brushCursor;
     DrawingPanel()
     {
         addMouseListener(this);
         addMouseMotionListener(this);
 
+        toolkit =  Toolkit.getDefaultToolkit();
+        brushCursor = toolkit.createCustomCursor(new ImageIcon("png/cur.png").getImage(),
+                                               new Point(0,0),"custom cursor");
         colorMap = new HashMap<>();
         colorMap.put("BLACK", Color.BLACK );  // Black
         colorMap.put("RED", Color.RED );    // Red
@@ -49,22 +58,22 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     // and has the same size as this panel
     private void validateImage()
     {
-        if (bufferedImage == null)
+        if (drawnImage == null)
         {
             //gets you a new buffered image
-            bufferedImage = new BufferedImage(
+            drawnImage = new BufferedImage(
                     getWidth(), getHeight(),
                     BufferedImage.TYPE_INT_ARGB);
 
             //tests it for drawability
-            Graphics g = bufferedImage.getGraphics();
+            Graphics g = drawnImage.getGraphics();
             g.setColor(getBackground());
             g.fillRect(0,0,getWidth(),getHeight());
             g.dispose();
         }
 
-        if (bufferedImage.getWidth() != getWidth() ||
-                bufferedImage.getHeight() != getHeight())
+        if (drawnImage.getWidth() != getWidth() ||
+                drawnImage.getHeight() != getHeight())
         {
             BufferedImage newBufferedImage = new BufferedImage(
                     getWidth(), getHeight(),
@@ -72,9 +81,9 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
             Graphics g = newBufferedImage.getGraphics();
             g.setColor(getBackground());
             g.fillRect(0,0,getWidth(),getHeight());
-            g.drawImage(bufferedImage, 0,0,null);
+            g.drawImage(drawnImage, 0,0,null);
             g.dispose();
-            bufferedImage = newBufferedImage;
+            drawnImage = newBufferedImage;
         }
     }
 
@@ -87,14 +96,15 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
 
         // Paint the bufferedImage which stores
         // What was drawn until now
-        g.drawImage(bufferedImage, 0, 0, null);
+        g.drawImage(drawnImage, 0, 0, null);
     }
 
     public Color getBrushColor() {
         return brushColor;
     }
 
-    public void setBrushColor(){
+    public void setBrushColor()
+    {
         Object[] possibleValues = { "BLACK", "RED", "BLUE", "GREEN"};
 
         Object selectedValue = JOptionPane.showInputDialog(null,
@@ -109,6 +119,9 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         this.brushColor = brushColor;
     }
 
+
+
+
     @Override
     public void mousePressed(MouseEvent me)
     {
@@ -118,21 +131,26 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         yPos = me.getY();
 
 
-        if (activated){
-        setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon("png/cur.png").getImage(),
-                new Point(0,0),"custom cursor"));}
-        else{setCursor(Cursor.getDefaultCursor());}
+       if (activated)
+       {
+        setCursor(brushCursor);
+       }
+        else{
+            setCursor(Cursor.getDefaultCursor());
+        }
+        repaint();
     }
 
     @Override
     public void mouseDragged(MouseEvent me)
     {
-        if (activated) {
+        if (activated)
+        {
             int x = me.getX(), y = me.getY();
             validateImage();
 
             // Paint directly into the bufferedImage here
-            Graphics g = bufferedImage.getGraphics();
+            Graphics g = drawnImage.getGraphics();
             g.setColor(brushColor);
             g.fillOval(xPos, yPos, brushWidth, brushHeight);
             repaint();
@@ -144,8 +162,16 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     public void loadDrawing(BufferedImage bi)
     {
         //opens a message dialog and displays the image parameter
-        JOptionPane.showMessageDialog(null, new JLabel(new ImageIcon(bi)));
-        System.out.println("w:" + bi.getWidth() + " h:" + bi.getHeight());
+        // JOptionPane.showMessageDialog(null, new JLabel(new ImageIcon(bi)));
+        //System.out.println("w:" + bi.getWidth() + " h:" + bi.getHeight());
+
+        drawnImage = bi;
+
+        Graphics g = drawnImage.getGraphics();
+        validateImage();
+        g.drawImage(drawnImage, 0, 0, null);
+
+
     }
 
     public BufferedImage getScreenShot()
@@ -156,10 +182,12 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         BufferedImage image = new BufferedImage(
                 getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
         Graphics g = image.getGraphics();
-        g.drawImage(bufferedImage, 0, 0, null);
+        g.drawImage(drawnImage, 0, 0, null);
         g.dispose();
         return image;
     }
+
+
 
     public void setActivated(Boolean activated) {
         this.activated = activated;

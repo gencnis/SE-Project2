@@ -14,17 +14,23 @@ import TopBar.TopBar;
 import SlideMgr.*;
 //import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 import static Utilities.ImageUtilities.setTargetImage;
+import static javax.swing.JFileChooser.SAVE_DIALOG;
 
-public class MainFrame extends JFrame
+public class MainFrame extends JFrame implements java.io.Serializable
 {
     static SlideDeck slideDeck;
 
@@ -77,13 +83,14 @@ public class MainFrame extends JFrame
         bb.initializeBB();
         slideDeck.addSlide();
 
-        currentSlide.setBackground(Color.BLACK);
+
+        currentSlide.changeBGColor(Color.WHITE);
         slideDeck.addSlide();
-        currentSlide.setBackground(Color.BLUE);
+        currentSlide.changeBGColor(Color.BLUE);
         slideDeck.addSlide();
-        currentSlide.setBackground(Color.YELLOW);
+        currentSlide.changeBGColor(Color.YELLOW);
         slideDeck.addSlide(1);
-        currentSlide.setBackground(Color.GREEN);
+        currentSlide.changeBGColor(Color.GREEN);
 
         //slideDeck.removeSlide(); //removes current slide
         //slideDeck.removeSlide(0); //removes slide at index
@@ -126,69 +133,6 @@ public class MainFrame extends JFrame
             System.err.format("IOException: %s%n", e);
         }
 
-/*
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
-
-            @Override
-            public boolean dispatchKeyEvent(KeyEvent ke)
-            {
-                synchronized (IsKeyPressed.class)
-                {
-                    switch (ke.getID())
-                    {
-                        case KeyEvent.KEY_PRESSED:
-                            if (ke.getKeyCode() == KeyEvent.VK_F)
-                            {
-                                //f key is pressed
-                                //TODO: implement full screen
-                                if(!isFullScreen)
-                                    fullScreen();
-                                else
-                                    escapeFullScreen();
-                            }
-                            else if(ke.getKeyCode() == KeyEvent.VK_ESCAPE)
-                            {
-                                //escape key is pressed
-                                //TODO: implement escape full screen
-                                if(isFullScreen)
-                                    escapeFullScreen();
-                            }
-                            else if(ke.getKeyCode() == 39)  //right arrow key code
-                            {
-                                //goes to next slide
-                                int size = slideDeck.getSlides().size();
-                                int index = slideDeck.getSlides().indexOf(currentSlide);
-                                if( index < (size - 1))
-                                {
-                                    Slide next = SlideDeck.getSlideDeck().getSlides().get(index +1);
-                                    showSlide(next);
-                                }
-                            }
-                            else if(ke.getKeyCode() == 37) //left arrow keycode
-                            {
-                                //goes to previous slide
-
-                                int index = slideDeck.getSlides().indexOf(currentSlide);
-                                if( index > 0)
-                                {
-                                    Slide prev = SlideDeck.getSlideDeck().getSlides().get(index -1);
-                                    showSlide(prev);
-                                }
-                            }
-                            break;
-
-                        case KeyEvent.KEY_RELEASED:
-                            if (ke.getKeyCode() == KeyEvent.VK_W)
-                            {
-
-                                //wPressed = false;
-                            }
-                            break;
-                    }
-                    return false;
-                }
-            }
-        }); */
     }
 
     //happens when button is pressed, takes custom dimensions for an image
@@ -282,17 +226,279 @@ public class MainFrame extends JFrame
 
     }
 
-    public static void saveAsProject() {
+    public static void saveAsProject(ActionEvent e)
+    {
         // TODO : PLEASE DO THIS ASAP
         // TODO: Preferably have this call a method from the SlideDeck class
+
+        File file;
+        String savePath = basePath;   //where you select to save
+        String fileName = "nothingSaved";   //the file name you wish to save to
+        String newProjectDir = basePath; //the folder that will be made to save the project in
+
+        //variables ot make a separate folder for images
+        Path resourcesDir = null; //the path to the resources folder that holds all images
+        File dirMaker; //makes new project folders
+
+        //opens a file explorer on the desktop
+        JFileChooser fc = new JFileChooser(basePath);
+        fc.setCurrentDirectory(new java.io.File(basePath));
+        fc.setDialogTitle("Select Folder To Save");
+
+        fc.setFileFilter(new ProjectFileFilter());
+        //
+        // disable the "All files" option.
+        //
+        fc.setAcceptAllFileFilterUsed(false);
+
+        //TODO: overwriting the same file does not work right now,  I think it is this line that is doing it
+        if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) //if selected item is folder
+        {
+            //get out file path from the explorer
+            file = fc.getSelectedFile();
+
+            if(file.exists() && fc.getDialogType() == SAVE_DIALOG)
+            {
+                int result = JOptionPane.showConfirmDialog(mainFrame, "The file exists, overwrite?", "Existing file", JOptionPane.YES_NO_CANCEL_OPTION);
+
+                //overwrite file prompt
+                switch (result) {
+                    case JOptionPane.YES_OPTION:
+                        savePath = fc.getSelectedFile().getAbsolutePath();
+                        fileName = fc.getSelectedFile().toString();
+                        //fileName = fileName + ".ser";
+
+                        //make a path variable to write to
+                        Path pathToFolder = Path.of(savePath);
+                        Path pathToFile = pathToFolder.resolve(fileName);
+
+                        //get resources folder directory
+                        String recDir = savePath ;
+                        recDir = recDir.replace(".ser", "");
+                        recDir = recDir + " Resources";
+
+
+                        resourcesDir = Paths.get(recDir);
+
+                        //makes sure has a resources folder if ti doesn't exist
+                        if(!Files.exists(resourcesDir))
+                        {
+
+                            dirMaker = new File(String.valueOf(resourcesDir));
+                            dirMaker.mkdir();
+                        }
+                        return;
+                    case JOptionPane.NO_OPTION:
+                        return;
+                    case JOptionPane.CLOSED_OPTION:
+                        return;
+                    case JOptionPane.CANCEL_OPTION:
+                        //cancelSelection();
+                        return;
+                }
+            }
+            else
+            {
+                savePath = fc.getSelectedFile().getAbsolutePath();
+
+                fileName = fc.getSelectedFile().toString();
+                // System.out.println( fileName);
+                newProjectDir = savePath; //makes a project folder the same name as when your project
+
+
+                fileName = fileName + ".ser";
+
+
+                //make a new Folder to save the project in
+
+                //dirMaker = new File(newProjectDir);
+                //dirMaker.mkdir();
+
+                //make a new resources folder in that project path
+                String recDir = savePath + " Resources";
+                resourcesDir = Paths.get(recDir);
+
+                dirMaker = new File(String.valueOf(resourcesDir));
+                dirMaker.mkdir();
+
+
+
+
+
+
+            }
+
+
+            //make a path variable to write to
+            Path pathToFolder = Paths.get(newProjectDir);
+            Path pathToFile = pathToFolder.resolve(fileName);
+
+
+
+
+            try {
+
+                //loads serialized file
+                FileOutputStream fileOut =
+                        new FileOutputStream(String.valueOf(pathToFile));
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                //TODO: make this work with all slides
+                out.writeObject(slideDeck.getSlides().size());  //make sure we know how many slides we saved
+
+                for(Slide s : slideDeck.getSlides())
+                {
+                    s.setCursor(Cursor.getDefaultCursor());
+                    out.writeObject(s);
+                }
+
+                out.close();
+                fileOut.close();
+                System.out.printf("Saved Project is saved to " + String.valueOf(pathToFile));
+
+
+                //write all drawing to the Resources folder
+                for (Slide s: slideDeck.getSlides())
+                {
+                    s.writeDrawing(resourcesDir);
+                }
+
+
+
+            } catch (IOException i)
+            {
+                i.printStackTrace();
+            }
+
+        } else {
+            System.out.println("No Selection ");
+            file = null;
+        }
+
+
+
+
+
+
         System.out.println("Tester: Project should be saved.");
     }
 
     /**
      * Loads a previous project from your computer storage
      */
-    public static void loadFromComputer() {
-        // TODO : PLEASE DO THIS ASAP
+    public static void loadFromComputer()
+    {
+        File file;
+        String loadPath = basePath;
+        String resourcesDir = basePath;
+        String fileName = "nothingSaved";
+
+
+        //opens a file explorer on the desktop
+        JFileChooser fc = new JFileChooser(basePath);
+        fc.setCurrentDirectory(new java.io.File(basePath));
+        fc.setDialogTitle("Select Folder To Save");
+
+        fc.setFileFilter(new ProjectFileFilter());
+        //
+        // disable the "All files" option.
+        //
+        fc.setAcceptAllFileFilterUsed(false);
+        //fc.showSaveDialog(null);
+        //
+        if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) //if selected item is folder
+        {
+
+            loadPath = fc.getSelectedFile().getAbsolutePath();
+
+            //gets path to resources folder
+            resourcesDir = loadPath.replace(".ser", "");
+            resourcesDir = resourcesDir + " Resources";
+
+
+
+
+
+
+
+
+            try
+            {
+                FileInputStream fileIn = new FileInputStream(loadPath);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+
+                //clear all slides and buttons from current show
+                for (Slide s: slideDeck.getSlides())
+                {
+
+                    updateSlideShow(s, false);
+
+                }
+                bb.clearAllButtons();
+                slideDeck.getSlides().clear();
+
+
+                int deckSize = (Integer) in.readObject();
+                System.out.println("New project size: " + deckSize);
+                //remove all currentSlides in show
+
+
+                int counter = 0;
+                //add all slides back to show
+                //displays final slide at end of adding. can change that later
+                while(counter < deckSize)
+                {
+                    Slide s = (Slide) in.readObject();
+                    slideDeck.addSlide(s);
+                    counter++;
+                }
+
+                in.close();
+                fileIn.close();
+
+                //code for reimporting a new slideDeck
+                //loads the first slide in the slide show first
+                showSlide(slideDeck.getSlides().get(0));
+
+
+
+                //TODO: load Drawn Images for each slide
+
+                for(Slide s : slideDeck.getSlides())
+                {
+
+
+                    if(Files.exists(Path.of(resourcesDir.concat("\\" + s.getSlideID() + "-drawing.png"))))
+                    {
+                        BufferedImage drawing =  ImageIO.read(new File(String.valueOf(resourcesDir) + "\\" + s.getSlideID() + "-drawing.png"));
+                        s.loadDrawing(drawing);
+                    }
+                    else
+                    {
+                        System.out.println("Drawing not Found for slide " + slideDeck.getSlides().indexOf(s) );
+                    }
+                }
+
+
+                in.close();
+                fileIn.close();
+
+
+
+                mainFrame.revalidate();
+                mainFrame.repaint();
+            } catch (IOException i) {
+                i.printStackTrace();
+                return;
+            } catch (ClassNotFoundException c) {
+                System.out.println("Employee class not found");
+                c.printStackTrace();
+                return;
+            }
+
+        } else {
+            System.out.println("No Selection ");
+            file = null;
+        }
     }
 
     /**
@@ -306,7 +512,10 @@ public class MainFrame extends JFrame
     /**
      * Tells the cursor follower to paint the canvas if dragged
      */
-    public static void draw(){
+
+
+    public static void draw()
+    {
         currentSlide.setBrushColor();
         currentSlide.setActivated(true);
     }
@@ -314,15 +523,19 @@ public class MainFrame extends JFrame
     /**
      * Tells the cursor follower to not paint the canvas if dragged
      */
-    public static void stopDrawing() {
+    public static void stopDrawing()
+    {
+        currentSlide.setCursor(Cursor.getDefaultCursor());;
         currentSlide.setActivated(false);
     }
 
     /**
      * Sets the color of the brush to the background color which should work as an eraser
      */
-    public static void eraser() {
-        currentSlide.setBrushColor(currentSlide.getBackground());
+    //TODO: set cursor to an eraser image
+    public static void eraser()
+    {
+       currentSlide.setBrushColor(currentSlide.getBackground());
         currentSlide.setActivated(true);
     }
 
@@ -389,195 +602,6 @@ public class MainFrame extends JFrame
             System.out.println(actionEvt.getActionCommand() + " pressed");
         }
     }
-
-
-
-
-
-
-  /*protected void save(ActionEvent e)
-    {
-        File file;
-        String savePath = basePath;   //where you select to save
-        String fileName = "nothingSaved";   //the file name you wish to save to
-        String newProjectDir = basePath; //the folder that will be made to save the project in
-
-        //variables ot make a separate folder for images
-        Path resourcesDir; //the path to the resources folder that holds all images
-        File dirMaker; //makes new project folders
-
-        //opens a file explorer on the desktop
-        JFileChooser fc = new JFileChooser(basePath);
-        fc.setCurrentDirectory(new java.io.File(basePath));
-        fc.setDialogTitle("Select Folder To Save");
-
-        fc.setFileFilter(new ProjectFileFilter());
-        //
-        // disable the "All files" option.
-        //
-        fc.setAcceptAllFileFilterUsed(false);
-
-        if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) //if selected item is folder
-        {
-            //get out file path from the explorer
-            file = fc.getSelectedFile();
-
-            if(file.exists() && fc.getDialogType() == SAVE_DIALOG)
-            {
-                int result = JOptionPane.showConfirmDialog(this, "The file exists, overwrite?", "Existing file", JOptionPane.YES_NO_CANCEL_OPTION);
-
-                //overwrite file prompt
-                switch (result) {
-                    case JOptionPane.YES_OPTION:
-                        savePath = fc.getSelectedFile().getAbsolutePath();
-                        fileName = fc.getSelectedFile().toString();
-                        //fileName = fileName + ".ser";
-
-                        //make a path variable to write to
-                        Path pathToFolder = Path.of(savePath);
-                        Path pathToFile = pathToFolder.resolve(fileName);
-                        return;
-                    case JOptionPane.NO_OPTION:
-                        return;
-                    case JOptionPane.CLOSED_OPTION:
-                        return;
-                    case JOptionPane.CANCEL_OPTION:
-                        //cancelSelection();
-                        return;
-                }
-            }
-            else
-            {
-                savePath = fc.getSelectedFile().getAbsolutePath();
-
-                fileName = fc.getSelectedFile().toString();
-                System.out.println( fileName);
-                newProjectDir = savePath; //makes a project folder the same name as when your project
-
-
-                fileName = fileName + ".ser";
-
-
-                //make a new Folder to save the project in
-
-                //dirMaker = new File(newProjectDir);
-                //dirMaker.mkdir();
-
-                //make a new resources folder in that project path
-                String recDir = savePath + " sResources";
-                resourcesDir = Paths.get(recDir);
-
-                dirMaker = new File(String.valueOf(resourcesDir));
-                dirMaker.mkdir();
-
-
-
-
-
-
-            }
-
-
-            //make a path variable to write to
-            Path pathToFolder = Paths.get(newProjectDir);
-            Path pathToFile = pathToFolder.resolve(fileName);
-
-
-
-//TODO: back up images to save here
-            try {
-
-                //loads serialized file
-                FileOutputStream fileOut =
-                        new FileOutputStream(String.valueOf(pathToFile));
-                ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                //TODO: make this work with all slides
-                out.writeObject(s);
-                out.close();
-                fileOut.close();
-                System.out.printf("Saved Project is saved to " + String.valueOf(pathToFile));
-            } catch (IOException i) {
-                i.printStackTrace();
-            }
-
-        } else {
-            System.out.println("No Selection ");
-            file = null;
-        }
-
-
-    }
-
-
-    protected void load(ActionEvent e)
-    {
-        File file;
-        String loadPath = basePath;
-        String resourcesDir = basePath;
-        String fileName = "nothingSaved";
-
-        //opens a file explorer on the desktop
-        JFileChooser fc = new JFileChooser(basePath);
-        fc.setCurrentDirectory(new java.io.File(basePath));
-        fc.setDialogTitle("Select Folder To Save");
-
-        fc.setFileFilter(new ProjectFileFilter());
-        //
-        // disable the "All files" option.
-        //
-        fc.setAcceptAllFileFilterUsed(false);
-        //fc.showSaveDialog(null);
-        //
-        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) //if selected item is folder
-        {
-
-            loadPath = fc.getSelectedFile().getAbsolutePath();
-
-            resourcesDir = loadPath + "Resources";
-
-
-
-
-
-
-
-            try {
-                FileInputStream fileIn = new FileInputStream(loadPath);
-                ObjectInputStream in = new ObjectInputStream(fileIn);
-                //TODO: Make this work for Arraylist of slides
-                Slide slide = (Slide) in.readObject();
-                in.close();
-                fileIn.close();
-                s = slide;
-                add(s, BorderLayout.CENTER);
-                revalidate();
-                repaint();
-            } catch (IOException i) {
-                i.printStackTrace();
-                return;
-            } catch (ClassNotFoundException c) {
-                System.out.println("Employee class not found");
-                c.printStackTrace();
-                return;
-            }
-
-        } else {
-            System.out.println("No Selection ");
-            file = null;
-        }
-
-    }
-
-
-
-
-
-    protected void clear(ActionEvent e)
-    {
-        remove(s);
-        revalidate();
-        repaint();
-    }*/
 
 }
 
