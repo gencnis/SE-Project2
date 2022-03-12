@@ -27,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 
+import static Utilities.ImageUtilities.setTargetBackground;
 import static Utilities.ImageUtilities.setTargetImage;
 import static javax.swing.JFileChooser.SAVE_DIALOG;
 
@@ -136,6 +137,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
     }
 
     //happens when button is pressed, takes custom dimensions for an image
+    //select an image from file explorer and set the size
     public static void loadImage(ActionEvent e, int width, int height)
     {
         //opens a file explorer on the desktop
@@ -147,7 +149,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
             if (res == JFileChooser.APPROVE_OPTION)
             {
                 File file = fc.getSelectedFile();
-                setTargetImage(file, width, height, slideDeck.getCurrentSlide());  //loads up the image file for us to use
+                setTargetImage(file, width, height,  currentSlide);  //loads up the image file for us to use
             } //Image Not Found
             else {
                 JOptionPane.showMessageDialog(null,
@@ -157,6 +159,37 @@ public class MainFrame extends JFrame implements java.io.Serializable
         } catch (Exception iOException)
         {
         }
+
+    }
+
+    //select an image to laod to the background.
+    //has set reduced opacity t make it less obtrusive
+    public static void loadBackground(ActionEvent e)
+    {
+        JFileChooser fc = new JFileChooser(basePath);
+        fc.setFileFilter(new ImageFileFilter());  //filters out non-image items
+        int res = fc.showOpenDialog(null);
+        // Image found
+        try {
+            if (res == JFileChooser.APPROVE_OPTION)
+            {
+                File file = fc.getSelectedFile();
+                setTargetBackground(file, slideDeck.getCurrentSlide());  //loads up the image file for us to use
+            } //Image Not Found
+            else {
+                JOptionPane.showMessageDialog(null,
+                        "An JPEG or PNG file must be selected. \nCancelling Action.", "Invalid File Chosen",
+                        JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception iOException)
+        {
+        }
+    }
+
+    public static void loadBackground(BufferedImage bufferedImage)
+    {
+
+                setTargetBackground(bufferedImage, slideDeck.getCurrentSlide());  //loads up the image file for us to use
 
     }
 
@@ -170,8 +203,8 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
     }
 
-    public static BottomBar getBottomBar() {return bb;}
 
+    //displays the provided slide
     public static void showSlide(Slide s)
     {
         slideShow.show(mainPanel, s.getSlideID()); //need to provide ID so it shows the correct slide
@@ -803,6 +836,11 @@ public class MainFrame extends JFrame implements java.io.Serializable
         userLocation = mainFrame.getLocation();
         userDimensions = mainFrame.getSize();
         device.setFullScreenWindow(mainFrame);
+        for (Slide s: slideDeck.getSlides())
+        {
+          // s.getDimensions();
+           // s.presentBGSize();
+        }
 
 
 
@@ -822,8 +860,22 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
         mainFrame.add(tb, BorderLayout.NORTH);
         mainFrame.add(bb, BorderLayout.SOUTH);
-       // mainFrame.setUndecorated(false); //adds the window border around
+        for (Slide s: slideDeck.getSlides())
+        {
+
+          //  s.resetBGPosition();
+        }
         device.setFullScreenWindow(null);
+        for (Slide s: slideDeck.getSlides())
+        {
+
+          //  s.resetBGSize();
+        }
+
+       // mainFrame.setUndecorated(false); //adds the window border around
+
+
+
 
         //Another way of doing it, I tried it and it worked smoothly
         /*
@@ -840,6 +892,8 @@ public class MainFrame extends JFrame implements java.io.Serializable
         slideDeck.removeSlide();
     }
 
+    public static BottomBar getBottomBar() { return bb;}
+
     private class KeyAction extends AbstractAction {
         public KeyAction(String actionCommand) {
             putValue(ACTION_COMMAND_KEY, actionCommand);
@@ -850,6 +904,11 @@ public class MainFrame extends JFrame implements java.io.Serializable
             escapeFullScreen();
             System.out.println(actionEvt.getActionCommand() + " pressed");
         }
+    }
+
+    public static GraphicsDevice getDevice()
+    {
+        return device;
     }
 
 }

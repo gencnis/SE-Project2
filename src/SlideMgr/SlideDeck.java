@@ -136,6 +136,8 @@ public class SlideDeck implements java.io.Serializable
 
     }
 
+    public static BottomBar getBottomBar(){return bb;}
+
     public static void removeSlide(Integer index) //remove specified slide
     {
         Slide previousSlide;

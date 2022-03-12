@@ -11,11 +11,14 @@ package SlideMgr;
 
 import FullWindow.MainFrame;
 import Item.Item;
+import Utilities.ImageUtilities;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -45,6 +48,14 @@ public class Slide extends DrawingPanel implements java.io.Serializable
     //unnecessary variable to hold color. Delete this later
     Color bgColor;
 
+    JLabel backgroundImage;
+    float bgAlpha = .5f;
+    transient BufferedImage backGround = null;
+    int ogWidth;
+    int ogHeight;
+    boolean isBGSet = false;
+    Point BGLocation;
+
     public Slide(Integer slideID)
     {
 
@@ -58,6 +69,11 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         textAreas = new ArrayList<>();
         items = new ArrayList<Item>();
         setLayout(null);
+
+
+        backgroundImage = new JLabel();
+        BGLocation = new Point();
+
 
 
 // TODO: Fehmi: add JButtons to take you to the next and previous slides on the sides
@@ -192,9 +208,86 @@ public class Slide extends DrawingPanel implements java.io.Serializable
             ImageIO.write(drawnImage, "png", new File(path));
     }
 
-    void setColor(Color c ){
-        this.setBackground(c);
+
+
+    public void loadBackgroundImage(ImageIcon icon)
+    {
+
+
+        backgroundImage.setIcon(icon);
+
+
+       backgroundImage.setSize(this.getWidth(), this.getHeight());
+
+       //doesn't work, want to watch window size dynamically
+        backgroundImage.addComponentListener(new ComponentAdapter() {
+
+                                                 @Override
+                                                 public void componentResized(ComponentEvent e) {
+                                                     int w = getWidth();
+                                                     int h = getHeight();
+                                                     backgroundImage.setSize(w, h);
+                                                 }
+                                             });
+
+
+        add(backgroundImage);
+
+       /* Graphics2D g2 = (Graphics2D) getGraphics();
+        Composite old = g2.getComposite();
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .3f));
+        //float x = (getWidth() - backgroundImage.getWidth())/2;
+        //float y = (getHeight()- backgroundImage.getHeight())/2;
+        g2.drawRenderedImage((RenderedImage) backgroundImage, AffineTransform.getTranslateInstance(getWidth(), getHeight()));
+        g2.setComposite(old);*/
+
+        if(!isBGSet)
+        {
+            this.setComponentZOrder(backgroundImage, 10000);
+            isBGSet = true;
+        }
+
+
+        backgroundImage.setOpaque(false);
+       backgroundImage.revalidate();
+       backgroundImage.repaint();
+        this.revalidate();
+        this.repaint();
     }
+
+    public void presentBGSize()
+    {
+        if(backGround != null)
+        {
+
+
+            ImageUtilities.setTargetBackground(backGround, this);
+        }
+
+    }
+    public void resetBGPosition()
+    {
+        backgroundImage.setLocation(BGLocation.x,BGLocation.y);
+    }
+    public void resetBGSize()
+    {
+
+        backgroundImage = new JLabel();
+
+
+
+
+        ImageUtilities.setTargetBackground(backGround,  this);
+
+    }
+
+    public void getDimensions()
+    {
+
+        BGLocation.setLocation(backgroundImage.getLocation());
+    }
+
+    public void setBackGround(BufferedImage bi){backGround = bi;}
 
     public void changeBGColor(Color color)
     {

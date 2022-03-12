@@ -130,6 +130,15 @@ public class TopBar extends JPanel implements java.io.Serializable
         Insert.add(new JMenuItem("Code"));
         Insert.add(new JMenuItem("Bullet List"));
 
+        JMenuItem slideBG = new JMenuItem("Slide Background Image");
+        slideBG.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.loadBackground(e);
+            }
+        });
+        Insert.add(slideBG);
+
 
         // Button
         JMenuItem draw = new JMenuItem("Free Draw");
