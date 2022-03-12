@@ -226,10 +226,11 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
     }
 
+    //gets a save directory from user and makes a .ser file and resources folder.
+    //writes each slide to the ser file and saves out the drawn background image to the resources folder
     public static void saveAsProject(ActionEvent e)
     {
-        // TODO : PLEASE DO THIS ASAP
-        // TODO: Preferably have this call a method from the SlideDeck class
+
 
         File file;
         String savePath = basePath;   //where you select to save
@@ -384,6 +385,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
     /**
      * Loads a previous project from your computer storage
+     * Loads a ser file and loads drawn backgrounds for each slide from adjacent resources folder
      */
     public static void loadFromComputer()
     {
@@ -396,7 +398,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
         //opens a file explorer on the desktop
         JFileChooser fc = new JFileChooser(basePath);
         fc.setCurrentDirectory(new java.io.File(basePath));
-        fc.setDialogTitle("Select Folder To Save");
+        fc.setDialogTitle("Select Folder To Load");
 
         fc.setFileFilter(new ProjectFileFilter());
         //
@@ -500,6 +502,253 @@ public class MainFrame extends JFrame implements java.io.Serializable
             file = null;
         }
     }
+
+
+    public static void saveTemplate(ActionEvent e)
+    {
+        File file;
+        String savePath = basePath;   //where you select to save
+        String fileName = "nothingSaved";   //the file name you wish to save to
+        String newProjectDir = basePath; //the folder that will be made to save the project in
+
+        //variables ot make a separate folder for images
+        Path resourcesDir = null; //the path to the resources folder that holds all images
+        File dirMaker; //makes new project folders
+
+        //opens a file explorer on the desktop
+        JFileChooser fc = new JFileChooser(basePath);
+        fc.setCurrentDirectory(new java.io.File(basePath));
+        fc.setDialogTitle("Select Folder To Save");
+
+        fc.setFileFilter(new TemplateFileFilter());
+        //
+        // disable the "All files" option.
+        //
+        fc.setAcceptAllFileFilterUsed(false);
+
+        //TODO: overwriting the same file does not work right now,  I think it is this line that is doing it
+        if (fc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) //if selected item is folder
+        {
+            //get out file path from the explorer
+            file = fc.getSelectedFile();
+
+            if(file.exists() && fc.getDialogType() == SAVE_DIALOG)
+            {
+                int result = JOptionPane.showConfirmDialog(mainFrame, "The file exists, overwrite?", "Existing file", JOptionPane.YES_NO_CANCEL_OPTION);
+
+                //overwrite file prompt
+                switch (result) {
+                    case JOptionPane.YES_OPTION:
+                        savePath = fc.getSelectedFile().getAbsolutePath();
+                        fileName = fc.getSelectedFile().toString();
+                        //fileName = fileName + ".ser";
+
+                        //make a path variable to write to
+                        Path pathToFolder = Path.of(savePath);
+                        Path pathToFile = pathToFolder.resolve(fileName);
+
+                        //get resources folder directory
+                        String recDir = savePath ;
+                        recDir = recDir.replace(".template", "");
+                        recDir = recDir + " Template Resources";
+
+
+                        resourcesDir = Paths.get(recDir);
+
+                        //makes sure has a resources folder if ti doesn't exist
+                        if(!Files.exists(resourcesDir))
+                        {
+
+                            dirMaker = new File(String.valueOf(resourcesDir));
+                            dirMaker.mkdir();
+                        }
+                        return;
+                    case JOptionPane.NO_OPTION:
+                        return;
+                    case JOptionPane.CLOSED_OPTION:
+                        return;
+                    case JOptionPane.CANCEL_OPTION:
+                        //cancelSelection();
+                        return;
+                }
+            }
+            else
+            {
+                savePath = fc.getSelectedFile().getAbsolutePath();
+
+                fileName = fc.getSelectedFile().toString();
+                // System.out.println( fileName);
+                newProjectDir = savePath; //makes a project folder the same name as when your project
+
+
+                fileName = fileName + ".template";
+
+
+                //make a new Folder to save the project in
+
+                //dirMaker = new File(newProjectDir);
+                //dirMaker.mkdir();
+
+                //make a new resources folder in that project path
+                String recDir = savePath + " Template Resources";
+                resourcesDir = Paths.get(recDir);
+
+                dirMaker = new File(String.valueOf(resourcesDir));
+                dirMaker.mkdir();
+
+
+
+
+
+
+            }
+
+
+            //make a path variable to write to
+            Path pathToFolder = Paths.get(newProjectDir);
+            Path pathToFile = pathToFolder.resolve(fileName);
+
+
+
+
+            try {
+
+                //loads serialized file
+                FileOutputStream fileOut =
+                        new FileOutputStream(String.valueOf(pathToFile));
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+
+
+
+
+                //only saves out current slide
+                out.writeObject(currentSlide);
+
+
+                out.close();
+                fileOut.close();
+                System.out.println("Saved Project is saved to " + String.valueOf(pathToFile));
+
+
+                //write all drawing to the Resources folder
+
+                currentSlide.writeDrawing(resourcesDir);
+
+
+
+
+            } catch (IOException i)
+            {
+                i.printStackTrace();
+            }
+
+        } else {
+            System.out.println("No Selection ");
+            file = null;
+        }
+
+        System.out.println("Template was saved");
+
+    }
+
+    public static void loadTemplate(ActionEvent e)
+    {
+        File file;
+        String loadPath = basePath;
+        String resourcesDir = basePath;
+        String fileName = "nothingSaved";
+
+
+        //opens a file explorer on the desktop
+        JFileChooser fc = new JFileChooser(basePath);
+        fc.setCurrentDirectory(new java.io.File(basePath));
+        fc.setDialogTitle("Select Folder To Load");
+
+        fc.setFileFilter(new TemplateFileFilter());
+        //
+        // disable the "All files" option.
+        //
+        fc.setAcceptAllFileFilterUsed(false);
+        //fc.showSaveDialog(null);
+        //
+        if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) //if selected item is folder
+        {
+
+            loadPath = fc.getSelectedFile().getAbsolutePath();
+
+            //gets path to resources folder
+            resourcesDir = loadPath.replace(".template", "");
+            resourcesDir = resourcesDir + " Template Resources";
+
+
+
+
+
+
+
+
+            try
+            {
+                FileInputStream fileIn = new FileInputStream(loadPath);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+
+                Integer index = slideDeck.getSlides().indexOf(currentSlide);
+                slideDeck.removeSlide(index);
+
+                Slide temp = (Slide) in.readObject();
+                slideDeck.addSlide(temp, index);
+
+                //remove all currentSlides in show
+
+
+
+                in.close();
+                fileIn.close();
+
+                //code for reimporting a new slideDeck
+                //loads the first slide in the slide show first
+                //showSlide(slideDeck.getSlides().get(0));
+
+
+
+                //TODO: load Drawn Images for each slide
+
+
+                    //current slide is newly added slide
+                    if(Files.exists(Path.of(resourcesDir.concat("\\" + currentSlide.getSlideID() + "-drawing.png"))))
+                    {
+                        BufferedImage drawing =  ImageIO.read(new File(String.valueOf(resourcesDir) + "\\" + currentSlide.getSlideID() + "-drawing.png"));
+                        currentSlide.loadDrawing(drawing);
+                    }
+                    else
+                    {
+                        System.out.println("Drawing not Found for slide " + slideDeck.getSlides().indexOf(currentSlide) );
+                    }
+
+
+
+                in.close();
+                fileIn.close();
+
+
+
+                mainFrame.revalidate();
+                mainFrame.repaint();
+            } catch (IOException i) {
+                i.printStackTrace();
+                return;
+            } catch (ClassNotFoundException c) {
+                System.out.println("Employee class not found");
+                c.printStackTrace();
+                return;
+            }
+
+        } else {
+            System.out.println("No Selection ");
+            file = null;
+        }
+    }
+
 
     /**
      * Adds a new slide to the slide deck and displays it

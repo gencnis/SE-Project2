@@ -61,6 +61,19 @@ public class SlideDeck implements java.io.Serializable
         MainFrame.showSlide(s);
     }
 
+    public void addSlide(Slide s, Integer index)
+    {
+        slideCount++;
+        slides.add(index, s);
+
+
+        MainFrame.updateSlideShow(s, true);
+        bb.addSlideButton(slides.indexOf(s), s);
+        // currentSlide = s;
+        updateSlideNumDisplay(); //updates numbers on slides
+        MainFrame.showSlide(s);
+    }
+
 
     public void setSlideColor(String c) {
         this.slideColor = colorMap.get(c);

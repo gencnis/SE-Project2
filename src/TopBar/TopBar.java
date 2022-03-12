@@ -170,7 +170,17 @@ public class TopBar extends JPanel implements java.io.Serializable
             }
         });
         LoadProject.add(loader);
-        LoadProject.add(new JMenuItem("Open Template"));
+
+
+        // Button
+        JMenuItem templateLoader = new JMenuItem("As a Template");
+        templateLoader.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.loadTemplate(e);
+            }
+        });
+        LoadProject.add(templateLoader);
 
         // Button
         JMenuItem saver = new JMenuItem("As a project");
@@ -183,7 +193,15 @@ public class TopBar extends JPanel implements java.io.Serializable
         Save.add(saver);
 
         // Button
-        Save.add(new JMenuItem("As Template"));
+        JMenuItem templateSaver = new JMenuItem("As a Template");
+        templateSaver.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MainFrame.saveTemplate(e);
+            }
+        });
+
+        Save.add(templateSaver);
         // Button
         Share.add(new JMenuItem("Via Email"));
         Share.add(new JMenuItem("Via Social Media"));
