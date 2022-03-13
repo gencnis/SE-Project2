@@ -46,6 +46,30 @@ public class ImageUtilities
 
     }
 
+    //primes image for use
+    public static void setTargetImage(File reference,  Slide slide)
+    {
+        File targetFile;
+        ImageIcon icon; //what you load your image into when you get it
+        BufferedImage targetImg;
+        try
+        {
+            targetFile = reference;
+
+//TODO: not sure if wanna store this for saving
+            targetImg = ImageIO.read(reference); //sets image to desired size
+            icon=new ImageIcon(targetImg); //puts image into a use able format for JPanels
+            slide.addImageToSlide(icon); //adds image to the slide
+        } catch (IOException ex)
+        {
+            System.out.println("File not found or invalid.");
+            // Logger.getLogger(MainAppFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+
+
     public static void setTargetBackground(File reference, Slide slide)
     {
         File targetFile;

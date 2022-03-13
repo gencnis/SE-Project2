@@ -841,31 +841,13 @@ public class MainFrame extends JFrame implements java.io.Serializable
         return currentSlide;
     }
 
-
+    //makes slideshow fullscreen
     public static void fullScreen()
     {
-        /*
-        mainFrame.remove(tb);
-        mainFrame.remove(bb);
-        mainFrame.setUndecorated(true); //removes the window border around it
-        userLocation = mainFrame.getLocation();
-        userDimensions = mainFrame.getSize();
-        device.setFullScreenWindow(mainFrame);
-        for (Slide s: slideDeck.getSlides())
-        {
-           s.getDimensions();
-           s.presentBGSize();
-        }
-        */
-
-
-
-
-        //Another way of doing it, I tried it and it worked smoothly
-        for (Slide s: slideDeck.getSlides())
+        /*for (Slide s: slideDeck.getSlides())
         {
           //  s.getBGOriginalMeasurements();
-        }
+        }*/
         windowSize = mainFrame.getSize();
         tb.setVisible(false);
         bb.setVisible(false);
@@ -875,36 +857,20 @@ public class MainFrame extends JFrame implements java.io.Serializable
         userDimensions = mainFrame.getSize();
         isFullScreen = true;
 
-        for (Slide s: slideDeck.getSlides())
+       /* for (Slide s: slideDeck.getSlides())
         {
            // s.presentBGSize();
-        }
+        }*/
 
     }
 
+    //returns slideshow to original window size
     public static void escapeFullScreen()
     {
-        /*
-        mainFrame.add(tb, BorderLayout.NORTH);
-        mainFrame.add(bb, BorderLayout.SOUTH);
-        for (Slide s: slideDeck.getSlides())
-        {
-            s.resetBGPosition();
-        }
-        device.setFullScreenWindow(null);
-        for (Slide s: slideDeck.getSlides())
-        {
-            s.resetBGSize();
-        }
-
-        mainFrame.setUndecorated(false); //adds the window border around
-        */
-
-        //Another way of doing it, I tried it and it worked smoothly
-        for (Slide s: slideDeck.getSlides())
+        /* for (Slide s: slideDeck.getSlides())
         {
           // s.resetBGPosition();
-        }
+        }*/
 
         tb.setVisible(true);
         bb.setVisible(true);
@@ -914,11 +880,11 @@ public class MainFrame extends JFrame implements java.io.Serializable
         mainFrame.setSize(windowSize);
 
 
-            for (Slide s : slideDeck.getSlides())
+          /*  for (Slide s : slideDeck.getSlides())
             {
 
                // s.resetBGSize();
-            }
+            }*/
 
         ;
 
@@ -936,22 +902,23 @@ public class MainFrame extends JFrame implements java.io.Serializable
         }
 
         @Override
-        public void actionPerformed(ActionEvent actionEvt) {
+        public void actionPerformed(ActionEvent actionEvt)
+        {
             if(actionEvt.getActionCommand().equals("VK_ESCAPE"))
             {
-                if(currentBulletList != null)
-                    currentBulletList.addBullet();
-            }
-
-             if(actionEvt.getActionCommand().equals("VK_F"))
-             {
-                if (isFullScreen && !isTyping)
+                if (isFullScreen)
                 {
                     escapeFullScreen();
                 }
-                else if(!isFullScreen && !isTyping)
-                    fullScreen();
+                else if(currentBulletList != null)
+                    currentBulletList.addBullet();
             }
+            if(actionEvt.getActionCommand().equals("VK_ESCAPE"))
+            {
+
+            }
+
+
         }
     }
 

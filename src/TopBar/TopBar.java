@@ -23,6 +23,7 @@ public class TopBar extends JPanel implements java.io.Serializable
     ArrayList<JMenuItem> addItems = new ArrayList<JMenuItem>();
 
     JMenu Add = new JMenu("Add|যোগ করুন");
+    JMenu Remove = new JMenu("Remove|অপসারণ");
     JMenu Insert = new JMenu("Insert|ঢোকান");
     JMenu Draw = new JMenu("Draw|আঁকা");
     JMenu LoadProject = new JMenu("Open Project|লোড প্রকল্প");
@@ -35,7 +36,11 @@ public class TopBar extends JPanel implements java.io.Serializable
 
     public TopBar(MainFrame mainFrame)
     {
-        addItems.add(Add);addItems.add(Insert);addItems.add(Draw);addItems.add(LoadProject);addItems.add(Save);addItems.add(Share);addItems.add(Print);addItems.add(Present);
+        addItems.add(Add);addItems.add(Insert);addItems.add(Remove);addItems.add(Draw);addItems.add(LoadProject);addItems.add(Save);
+        //addItems.add(Share);
+        // addItems.add(Print);
+        addItems.add(Present);
+
 
         this.setBackground(Color.decode("#B2D5DB"));
         JMenuBar aa = new JMenuBar();
@@ -73,6 +78,7 @@ public class TopBar extends JPanel implements java.io.Serializable
         });
         Add.add(paintedSlide);
 
+        //remove current slide
         JMenuItem removed = new JMenuItem("Remove Current Slide");
         removed.addActionListener(new ActionListener() {
             @Override
@@ -80,10 +86,12 @@ public class TopBar extends JPanel implements java.io.Serializable
                 MainFrame.removed();
             }
         });
-        Add.add(removed);
+        Remove.add(removed);
+
+
 
         // Button
-        Add.add(new JMenuItem("Add Slides Numbers"));
+       // Add.add(new JMenuItem("Add Slides Numbers"));
 
         // Button
         JMenuItem image = new JMenuItem("Image");
@@ -121,9 +129,9 @@ public class TopBar extends JPanel implements java.io.Serializable
         Insert.add(toggleSlideNumber);
 
 
-        Insert.add(new JMenuItem("Equation"));
+     /*  Insert.add(new JMenuItem("Equation"));
         Insert.add(new JMenuItem("Link"));
-        Insert.add(new JMenuItem("Code"));
+        Insert.add(new JMenuItem("Code"));*/
 
         // Button
         JMenuItem bullet = new JMenuItem("Bullet List");
@@ -135,14 +143,14 @@ public class TopBar extends JPanel implements java.io.Serializable
         });
         Insert.add(bullet);
 
-        JMenuItem slideBG = new JMenuItem("Slide Background Image");
+       /* JMenuItem slideBG = new JMenuItem("Slide Background Image");
         slideBG.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 MainFrame.loadBackground(e);
             }
         });
-        Insert.add(slideBG);
+        Insert.add(slideBG);*/
 
 
         // Button
@@ -217,8 +225,8 @@ public class TopBar extends JPanel implements java.io.Serializable
 
         Save.add(templateSaver);
         // Button
-        Share.add(new JMenuItem("Via Email"));
-        Share.add(new JMenuItem("Via Social Media"));
+      /*  Share.add(new JMenuItem("Via Email"));
+        Share.add(new JMenuItem("Via Social Media"));*/
 
 
         // Button
