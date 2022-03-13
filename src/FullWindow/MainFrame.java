@@ -425,11 +425,9 @@ public class MainFrame extends JFrame implements java.io.Serializable
         }
 
 
-
-
-
-
         System.out.println("Tester: Project should be saved.");
+        JOptionPane.showMessageDialog(mainFrame, "A project has been saved.",
+                "Information", JOptionPane.WARNING_MESSAGE);
     }
 
     /**
@@ -549,6 +547,8 @@ public class MainFrame extends JFrame implements java.io.Serializable
             System.out.println("No Selection ");
             file = null;
         }
+        JOptionPane.showMessageDialog(mainFrame, "A Project has been loaded successfully.",
+                "Information", JOptionPane.WARNING_MESSAGE);
     }
 
 
@@ -622,6 +622,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
                         //cancelSelection();
                         return;
                 }
+
             }
             else
             {
@@ -694,6 +695,9 @@ public class MainFrame extends JFrame implements java.io.Serializable
         }
 
         System.out.println("Template was saved");
+
+        JOptionPane.showMessageDialog(mainFrame, "A Template has been saved.",
+                "Information", JOptionPane.WARNING_MESSAGE);
 
     }
 
@@ -796,6 +800,8 @@ public class MainFrame extends JFrame implements java.io.Serializable
             System.out.println("No Selection ");
             file = null;
         }
+        JOptionPane.showMessageDialog(mainFrame, "A Template has been loaded.",
+                "Information", JOptionPane.WARNING_MESSAGE);
     }
 
 
@@ -805,6 +811,8 @@ public class MainFrame extends JFrame implements java.io.Serializable
     public static void newSlide(String c) {
         slideDeck.setSlideColor(c);
         slideDeck.addSlide();
+        JOptionPane.showMessageDialog(mainFrame, "A new Slide has Been Added.",
+                "Information", JOptionPane.WARNING_MESSAGE);
     }
 
     /**
@@ -815,6 +823,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
     {
         currentSlide.setBrushColor();
         currentSlide.setActivated(true);
+
     }
 
     /**
@@ -866,7 +875,8 @@ public class MainFrame extends JFrame implements java.io.Serializable
         {
            // s.presentBGSize();
         }*/
-
+        JOptionPane.showMessageDialog(mainFrame, "To exit full screen please press ESC button.",
+                "Information", JOptionPane.WARNING_MESSAGE);
     }
 
     //returns slideshow to original window size
@@ -945,6 +955,8 @@ public class MainFrame extends JFrame implements java.io.Serializable
      */
     public static void removed() {
         slideDeck.removeSlide();
+        JOptionPane.showMessageDialog(mainFrame, "A slide has been removed.",
+                "Information", JOptionPane.WARNING_MESSAGE);
     }
 
     public static BottomBar getBottomBar() { return bb;}
