@@ -30,6 +30,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     Integer brushWidth = 10;
     Integer brushHeight = 10;
     Boolean activated = false; // This is the boolean that would make sure we can draw or not
+    Boolean erase = false;
 
    HashMap<String, Color> colorMap; // here I save all of the color values for easy access
 
@@ -46,8 +47,8 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         toolkit =  Toolkit.getDefaultToolkit();
         brushCursor = toolkit.createCustomCursor(new ImageIcon("png/cur.png").getImage(),
                                                new Point(0,0),"custom cursor");
-        toolkit.createCustomCursor(new ImageIcon("png/erase.png").getImage(),
-                new Point(0,0),"custom cursor");
+        eraserCursor = toolkit.createCustomCursor(new ImageIcon("png/erase.png").getImage(),
+                new Point(0,0),"eraser");
         colorMap = new HashMap<>();
         colorMap.put("BLACK", Color.BLACK );  // Black
         colorMap.put("RED", Color.RED );    // Red
@@ -129,6 +130,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     public void eraser(){
         setCursor(eraserCursor);
         setBrushSize(50);
+        erase = true;
     }
 
 
@@ -143,8 +145,14 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
 
        if (activated)
        {
-        setCursor(brushCursor);
-        setBrushSize(10);
+           if(erase)
+           {
+               setCursor(eraserCursor);
+           }
+           if(!erase) {
+               setCursor(brushCursor);
+               setBrushSize(10);
+           }
        }
         else{
             setCursor(Cursor.getDefaultCursor());
