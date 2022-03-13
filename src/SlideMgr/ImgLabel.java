@@ -20,11 +20,11 @@ public class ImgLabel extends JLabel implements java.io.Serializable
     {
         this.setIcon(i);
 
-        ComponentResizer cr = new ComponentResizer();
-        cr.registerComponent(this);
+       // ComponentResizer cr = new ComponentResizer();
+        //cr.registerComponent(this);
         ComponentMover cm = new ComponentMover();
         cm.registerComponent(this);
-        cm.setDragInsets( cr.getDragInsets() );
+        //cm.setDragInsets( cr.getDragInsets() );
 
 
        /* DraggableHandler handler = new DraggableHandler(this, s);

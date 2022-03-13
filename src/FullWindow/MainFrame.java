@@ -149,6 +149,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
     //happens when button is pressed, takes custom dimensions for an image
     //select an image from file explorer and set the size
+    //scaling has not been implemented. Need to create backup images to reference rescale functions
     public static void loadImage(ActionEvent e, int width, int height)
     {
         //opens a file explorer on the desktop
@@ -197,6 +198,9 @@ public class MainFrame extends JFrame implements java.io.Serializable
         }
     }
 
+    //unimplemented: Has bug when scaling back from fullscreen
+    //Uncomment the menu item in top bar to get it to run in program
+    //loads up a new Background
     public static void loadBackground(BufferedImage bufferedImage)
     {
 
@@ -204,6 +208,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
     }
 
+    //adds or removes slide from cardLayout (i.e. the thing that controls displaying slides on screen)
     public static void updateSlideShow(Slide s, boolean isAdded)
     {
         if(isAdded)
@@ -244,7 +249,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
         }
     }
 
-    //TODO: Fehmi, provide some cool background colors to change to.
+    //changes a slide's background when creating it with Add Painted Slide
     public static void changeSlideBackground(Color c){currentSlide.setBackground(c);}
 
     /*

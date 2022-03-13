@@ -28,8 +28,8 @@ public class TopBar extends JPanel implements java.io.Serializable
     JMenu Draw = new JMenu("Draw|আঁকা");
     JMenu LoadProject = new JMenu("Open Project|লোড প্রকল্প");
     JMenu Save = new JMenu("Save|রক্ষা");
-    JMenu Share = new JMenu("Share|ভাগ");
-    JMenu Print = new JMenu("Print|ছাপা");
+    //JMenu Share = new JMenu("Share|ভাগ");
+    //JMenu Print = new JMenu("Print|ছাপা");
     JMenu Present = new JMenu("Present|বর্তমান");
 
 
@@ -230,7 +230,7 @@ public class TopBar extends JPanel implements java.io.Serializable
 
 
         // Button
-        Print.add(new JMenuItem("Print As PDF"));
+       // Print.add(new JMenuItem("Print As PDF"));
 
 
 
@@ -270,11 +270,10 @@ public class TopBar extends JPanel implements java.io.Serializable
 
         aa.add(Add);aa.add(nM1);
         aa.add(Insert);aa.add(nM2);
+        aa.add(Remove);aa.add(nM6);
         aa.add(Draw);aa.add(nM3);
         aa.add(LoadProject);aa.add(nM4);
         aa.add(Save);aa.add(nM5);
-        aa.add(Share);aa.add(nM6);
-        aa.add(Print);aa.add(nM7);
         aa.add(Present);
         this.add(aa);
 
