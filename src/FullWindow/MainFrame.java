@@ -31,6 +31,7 @@ import java.nio.file.Paths;
 import static Utilities.ImageUtilities.setTargetBackground;
 import static Utilities.ImageUtilities.setTargetImage;
 import static javax.swing.JFileChooser.SAVE_DIALOG;
+import java.awt.event.KeyEvent;
 
 public class MainFrame extends JFrame implements java.io.Serializable
 {
@@ -62,6 +63,9 @@ public class MainFrame extends JFrame implements java.io.Serializable
     static GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]; //get screen
     static boolean isFullScreen = false;
     static BulletList currentBulletList;
+    static Dimension windowSize;
+
+    static boolean isTyping = false;
 
     MainFrame() throws InterruptedException
     {
@@ -503,7 +507,6 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
 
 
-                //TODO: load Drawn Images for each slide
 
                 for(Slide s : slideDeck.getSlides())
                 {
@@ -544,6 +547,9 @@ public class MainFrame extends JFrame implements java.io.Serializable
     }
 
 
+    //saves a single slide as a .template file
+    //can load the single slide to any slide in the show to have the same layout
+    //saves drawn image in template resources folder
     public static void saveTemplate(ActionEvent e)
     {
         File file;
@@ -624,11 +630,6 @@ public class MainFrame extends JFrame implements java.io.Serializable
                 fileName = fileName + ".template";
 
 
-                //make a new Folder to save the project in
-
-                //dirMaker = new File(newProjectDir);
-                //dirMaker.mkdir();
-
                 //make a new resources folder in that project path
                 String recDir = savePath + " Template Resources";
                 resourcesDir = Paths.get(recDir);
@@ -691,6 +692,8 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
     }
 
+    //loads a .template file to a slide layout
+    //loads corresponding drawn image from template resources folder for further drawing
     public static void loadTemplate(ActionEvent e)
     {
         File file;
@@ -709,8 +712,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
         // disable the "All files" option.
         //
         fc.setAcceptAllFileFilterUsed(false);
-        //fc.showSaveDialog(null);
-        //
+
         if (fc.showOpenDialog(mainFrame) == JFileChooser.APPROVE_OPTION) //if selected item is folder
         {
 
@@ -733,12 +735,14 @@ public class MainFrame extends JFrame implements java.io.Serializable
                 ObjectInputStream in = new ObjectInputStream(fileIn);
 
                 Integer index = slideDeck.getSlides().indexOf(currentSlide);
+
+                //removes current slide and loads a new one in place
                 slideDeck.removeSlide(index);
 
                 Slide temp = (Slide) in.readObject();
                 slideDeck.addSlide(temp, index);
 
-                //remove all currentSlides in show
+
 
 
 
@@ -800,9 +804,8 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
     /**
      * Tells the cursor follower to paint the canvas if dragged
+     * Works with DrawingPanel.java file that is inherited by all slides
      */
-
-
     public static void draw()
     {
         currentSlide.setBrushColor();
@@ -811,6 +814,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
     /**
      * Tells the cursor follower to not paint the canvas if dragged
+     *  Works with DrawingPanel.java file that is inherited by all slides
      */
     public static void stopDrawing()
     {
@@ -829,6 +833,9 @@ public class MainFrame extends JFrame implements java.io.Serializable
        currentSlide.setActivated(true);
     }
 
+    /**
+        *returns currently displayed slide in the slide deck
+     */
     public static Slide getCurrentSlide()
     {
         return currentSlide;
@@ -855,7 +862,11 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
 
         //Another way of doing it, I tried it and it worked smoothly
-
+        for (Slide s: slideDeck.getSlides())
+        {
+          //  s.getBGOriginalMeasurements();
+        }
+        windowSize = mainFrame.getSize();
         tb.setVisible(false);
         bb.setVisible(false);
         mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -863,6 +874,11 @@ public class MainFrame extends JFrame implements java.io.Serializable
         userLocation = mainFrame.getLocation();
         userDimensions = mainFrame.getSize();
         isFullScreen = true;
+
+        for (Slide s: slideDeck.getSlides())
+        {
+           // s.presentBGSize();
+        }
 
     }
 
@@ -885,15 +901,31 @@ public class MainFrame extends JFrame implements java.io.Serializable
         */
 
         //Another way of doing it, I tried it and it worked smoothly
+        for (Slide s: slideDeck.getSlides())
+        {
+          // s.resetBGPosition();
+        }
 
         tb.setVisible(true);
         bb.setVisible(true);
         mainFrame.setSize(userDimensions);
         mainFrame.setLocation(userLocation);
         isFullScreen= false;
+        mainFrame.setSize(windowSize);
+
+
+            for (Slide s : slideDeck.getSlides())
+            {
+
+               // s.resetBGSize();
+            }
+
+        ;
 
 
     }
+
+
 
     /**
      * This is what connects our key strokes to the actual mehtods we have
@@ -905,14 +937,20 @@ public class MainFrame extends JFrame implements java.io.Serializable
 
         @Override
         public void actionPerformed(ActionEvent actionEvt) {
-            if(actionEvt.getActionCommand().equals("VK_ESCAPE")){
-                currentBulletList.addBullet();
+            if(actionEvt.getActionCommand().equals("VK_ESCAPE"))
+            {
+                if(currentBulletList != null)
+                    currentBulletList.addBullet();
             }
-            if(actionEvt.getActionCommand().equals("VK_ESCAPE") || actionEvt.getActionCommand().equals("VK_F")) {
-                if (isFullScreen) {
+
+             if(actionEvt.getActionCommand().equals("VK_F"))
+             {
+                if (isFullScreen && !isTyping)
+                {
                     escapeFullScreen();
-                    System.out.println(actionEvt.getActionCommand() + " pressed");
                 }
+                else if(!isFullScreen && !isTyping)
+                    fullScreen();
             }
         }
     }
@@ -944,6 +982,11 @@ public class MainFrame extends JFrame implements java.io.Serializable
         return device;
     }
 
+    public static void setIsTyping(boolean b)
+    {
+        System.out.println("focus changed");
+        isTyping = b;
+    }
 }
 
 

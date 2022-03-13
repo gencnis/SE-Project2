@@ -56,6 +56,7 @@ public class ImageUtilities
             targetFile = reference;
 
 //TODO: not sure if wanna store this for saving
+            slide.setBackGround(ImageIO.read(reference));
             targetImg = rescale(ImageIO.read(reference), slide.getWidth(), slide.getHeight()); //sets image to desired size
             BufferedImage newImage = new BufferedImage(targetImg.getWidth(), targetImg.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
@@ -64,13 +65,18 @@ public class ImageUtilities
             g.dispose();
             newImage = setAlpha(.5, newImage);
             icon=new ImageIcon(newImage); //puts image into a use able format for JPanels
-            slide.setBackGround(newImage);
+
             slide.loadBackgroundImage(icon); //adds image to the slide
         } catch (IOException ex)
         {
             System.out.println("File not found or invalid.");
             // Logger.getLogger(MainAppFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+    }
+
+    public static void presentTargetBackground()
+    {
 
     }
 
@@ -86,11 +92,11 @@ public class ImageUtilities
             BufferedImage newImage = new BufferedImage(targetImg.getWidth(), targetImg.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
             //changes image typ to something with an alpha value
-            Graphics2D g = newImage.createGraphics();
+           Graphics2D g = newImage.createGraphics();
             g.drawImage(targetImg, 0, 0, targetImg.getWidth(), targetImg.getHeight(), null);
             g.dispose();
             newImage = setAlpha(.5, newImage);
-            slide.setBackGround(newImage);
+            //slide.setBackGround(newImage);
             icon=new ImageIcon(newImage); //puts image into a use able format for JPanels
             slide.loadBackgroundImage(icon); //adds image to the slide
 

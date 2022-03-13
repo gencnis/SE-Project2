@@ -10,6 +10,7 @@
 
 package Item;
 
+import FullWindow.MainFrame;
 import SlideMgr.*;
 
 
@@ -17,6 +18,7 @@ import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import java.awt.*;
+import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 public class Text extends JComponent implements Item, java.io.Serializable
@@ -34,7 +36,8 @@ public class Text extends JComponent implements Item, java.io.Serializable
      * @param currentSlide when you create a new instance of an item in the MainFrame, just go ahead and add the
      *                     slide on which you want that Item to be which is : currentSlide
      */
-    public Text(Slide currentSlide){
+    public Text(Slide currentSlide)
+    {
         setSize();
         Font font =  new Font(this.setFont().toString(), Font.BOLD, textSize);
         ComponentResizer cr = new ComponentResizer();
@@ -46,6 +49,23 @@ public class Text extends JComponent implements Item, java.io.Serializable
         cm.registerComponent(textArea);
         cm.setDragInsets( cr.getDragInsets() );
         currentSlide.addText(textArea, this);
+
+        /*textArea.addFocusListener(new FocusListener()
+        {
+
+
+            @Override
+            public void focusGained(FocusEvent e)
+            {
+                MainFrame.setIsTyping(true);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e)
+            {
+                MainFrame.setIsTyping(false);
+            }
+        });*/
     }
 
     /**
@@ -54,7 +74,9 @@ public class Text extends JComponent implements Item, java.io.Serializable
      * @return an Object selected value. We will later convert it to string.
      */
 
-    Object setFont(){
+    Object setFont()
+    {
+
         Object[] possibleValues = { "Arial", "Helvetica", "Calibri", "Times New Roman"};
 
 

@@ -14,10 +14,13 @@ import Item.Item;
 import Utilities.ImageUtilities;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -51,11 +54,13 @@ public class Slide extends DrawingPanel implements java.io.Serializable
     JLabel backgroundImage;
     float bgAlpha = .5f;
     transient BufferedImage backGround = null;
+    transient ImageIcon bgIcon = null;
     int ogWidth;
     int ogHeight;
     boolean isBGSet = false;
     Point BGLocation;
 
+    JPanel back;
     public Slide(Integer slideID)
     {
 
@@ -72,11 +77,28 @@ public class Slide extends DrawingPanel implements java.io.Serializable
 
 
         backgroundImage = new JLabel();
+
         BGLocation = new Point();
 
+        back = new JPanel();
+        back.setSize(getWidth(), getHeight());
+
+        back.addFocusListener(new FocusListener()
+        {
 
 
-// TODO: Fehmi: add JButtons to take you to the next and previous slides on the sides
+            @Override
+            public void focusGained(FocusEvent e)
+            {
+                MainFrame.setIsTyping(false);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e)
+            {
+                MainFrame.setIsTyping(true);
+            }
+        });
 
 
     }
@@ -223,7 +245,7 @@ public class Slide extends DrawingPanel implements java.io.Serializable
     public void loadBackgroundImage(ImageIcon icon)
     {
 
-
+        bgIcon = icon;
         backgroundImage.setIcon(icon);
 
 
@@ -253,12 +275,13 @@ public class Slide extends DrawingPanel implements java.io.Serializable
 
         if(!isBGSet)
         {
-            this.setComponentZOrder(backgroundImage, 10000);
+            this.setComponentZOrder(backgroundImage, this.getComponentCount() - 1);
             isBGSet = true;
         }
 
 
         backgroundImage.setOpaque(false);
+        getBGOriginalMeasurements();
        backgroundImage.revalidate();
        backgroundImage.repaint();
         this.revalidate();
@@ -270,31 +293,33 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         if(backGround != null)
         {
 
-
+            //may reduce alpha over time...
             ImageUtilities.setTargetBackground(backGround, this);
         }
 
     }
     public void resetBGPosition()
     {
-        backgroundImage.setLocation(BGLocation.x,BGLocation.y);
+        //backgroundImage = new JLabel();
+       backgroundImage.setLocation(BGLocation.x,BGLocation.y);
     }
     public void resetBGSize()
     {
 
-        backgroundImage = new JLabel();
 
 
-
-
+       // backgroundImage.setSize(getWidth(), getHeight());
         ImageUtilities.setTargetBackground(backGround,  this);
+
+
 
     }
 
-    public void getDimensions()
+    public void getBGOriginalMeasurements()
     {
+        ogHeight = getHeight();
+        ogWidth = getWidth();
 
-        BGLocation.setLocation(backgroundImage.getLocation());
     }
 
     public void setBackGround(BufferedImage bi){backGround = bi;}

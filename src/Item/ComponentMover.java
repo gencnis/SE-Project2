@@ -11,6 +11,8 @@
 
 
 package Item;
+import FullWindow.MainFrame;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JComponent;
@@ -239,7 +241,13 @@ public class ComponentMover extends MouseAdapter implements java.io.Serializable
         Rectangle r = new Rectangle(dragInsets.left, dragInsets.top, width, height);
 
         if (r.contains(e.getPoint()))
+        {
             setupForDragging(e);
+
+        }
+
+
+
     }
 
     private void setupForDragging(MouseEvent e)
@@ -356,6 +364,7 @@ public class ComponentMover extends MouseAdapter implements java.io.Serializable
     @Override
     public void mouseReleased(MouseEvent e)
     {
+
         if (!potentialDrag) return;
 
         source.removeMouseMotionListener( this );
