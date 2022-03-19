@@ -250,6 +250,7 @@ public class ComponentMover extends MouseAdapter implements java.io.Serializable
 
     }
 
+    //prepares mouse listener and reference to item to be dragged
     private void setupForDragging(MouseEvent e)
     {
         source.addMouseMotionListener( this );

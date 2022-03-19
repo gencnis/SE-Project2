@@ -17,6 +17,8 @@ import SlideMgr.Slide;
 
 import java.util.ArrayList;
 
+
+//unused
 public abstract class Deck {
     ArrayList<Slide> slides = new ArrayList<Slide>();
 
