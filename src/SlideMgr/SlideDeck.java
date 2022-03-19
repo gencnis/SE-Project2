@@ -5,15 +5,27 @@ import FullWindow.MainFrame;
 
 import java.util.ArrayList;
 
+<<<<<<< Updated upstream
 public class SlideDeck
+=======
+//The slide deck is a singleton class that holds a reference to the master slide deck that holds all the slides in the show
+public class SlideDeck implements java.io.Serializable
+>>>>>>> Stashed changes
 {
     private static SlideDeck ref;
     private static ArrayList<Slide> slides;
     private static Slide currentSlide;
     private  Integer slideCount = 0; //unique identifier for every slide..don't think any reasonable actions would overflow
     static BottomBar bb;
+<<<<<<< Updated upstream
 
     //eed to add slides after this is made
+=======
+    HashMap<String, Color> colorMap; // here I save all of the color values for easy access
+    Color slideColor = Color.WHITE; //default slide color
+
+    //makes new slide deck and initialized all possible palette colors
+>>>>>>> Stashed changes
     SlideDeck()
     {
         bb = MainFrame.getBottomBar();
@@ -24,6 +36,7 @@ public class SlideDeck
 
 
 
+    //adds slide to end of slide Deck
     public  void addSlide()
     {
         Slide s = new Slide(slideCount);
@@ -38,7 +51,45 @@ public class SlideDeck
 
     }
 
+<<<<<<< Updated upstream
+=======
+    //adds specified Slide to end of slide deck
+    //used when loading project files
+    public void addSlide(Slide s)
+    {
+        slideCount++; //increment unique identifier
+        slides.add(s);
 
+        MainFrame.updateSlideShow(s, true);
+
+        bb.addSlideButton(slides.indexOf(s), s);
+        updateSlideNumDisplay();
+        MainFrame.showSlide(s);
+    }
+
+    //inserts specified slide at specified index in slide deck
+    //used for loading templates
+    public void addSlide(Slide s, Integer index)
+    {
+        slideCount++;
+        slides.add(index, s);
+
+
+        MainFrame.updateSlideShow(s, true);
+        bb.addSlideButton(slides.indexOf(s), s);
+        // currentSlide = s;
+        updateSlideNumDisplay(); //updates numbers on slides
+        MainFrame.showSlide(s);
+    }
+
+
+    public void setSlideColor(String c) {
+        this.slideColor = colorMap.get(c);
+    }
+>>>>>>> Stashed changes
+
+    //inserts slide at specified index
+    //used when Insert Slide is selected
     public void addSlide(Integer index)
     {
         Slide s = new Slide(slideCount);
@@ -53,6 +104,7 @@ public class SlideDeck
         MainFrame.showSlide(s);
     }
 
+    //removes currently displayed slide from slide deck
     public  void removeSlide()
     {
         Integer currentSlideIndex = slides.indexOf(currentSlide);
@@ -94,7 +146,14 @@ public class SlideDeck
 
     }
 
+<<<<<<< Updated upstream
     public static void removeSlide(Integer index) //remove specified slide
+=======
+    public static BottomBar getBottomBar(){return bb;}
+
+    //remove slide at specified index
+    public static void removeSlide(Integer index)
+>>>>>>> Stashed changes
     {
         Slide previousSlide;
         if(slides.size() > 0)
@@ -136,6 +195,8 @@ public class SlideDeck
 
     }
 
+    //replaces current slide with specified slide
+    //used in template loading
     public  void setCurrentSlide(Slide s)
     {
         currentSlide = s;
@@ -143,6 +204,7 @@ public class SlideDeck
 
     public  Slide getCurrentSlide(){return currentSlide;}
 
+    //revalidates all slide numbers in presentation are correct for each slide
     public void updateSlideNumDisplay()
     {
         for (Slide s: slides)
@@ -154,6 +216,8 @@ public class SlideDeck
 
     public ArrayList<Slide> getSlides(){return slides;}
 
+
+    //singleton constructor returns only one slide deck instance
     public static SlideDeck getSlideDeck()
     {
         // we can call this constructor
@@ -162,5 +226,18 @@ public class SlideDeck
         return ref;
     }
 
+<<<<<<< Updated upstream
+=======
+    //unused I think
+    //was thought of as a solution to loading a whole deck from project file but did not work well
+    public static void setDeck(SlideDeck slideDeck)
+    {
+        ref = slideDeck;
+    }
+    public Slide getSlide(int n){
+        return slides.get(n);
+    }
+
+>>>>>>> Stashed changes
 
 }

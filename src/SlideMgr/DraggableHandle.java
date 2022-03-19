@@ -6,7 +6,7 @@ import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-//Handles dragging motion of all items in a JPanel
+//Allows for dragging of JComponents in a JPanel
 /*
    Use this code with any added JComponent to a panel to make it draggable on screen
 
@@ -24,6 +24,7 @@ class DraggableHandler extends MouseInputAdapter
     Slide currentSlide;
     // int ogOrder;      //if you want to set it back to the original layer order on the slide
 
+    //gets a item reference and sets default dragging off
     public DraggableHandler(JComponent item, Slide s) //need to provide the item and the slide it is on
     {
         this.item = item;
@@ -32,6 +33,7 @@ class DraggableHandler extends MouseInputAdapter
     }
 
 
+    //when mouse is clicked in bounds of the object, enable dragging
     public void mousePressed(MouseEvent e)
     {
         // ogOrder = item.getComponentZOrder(currentSlide); not sure if this works to get the original layer order
@@ -48,12 +50,14 @@ class DraggableHandler extends MouseInputAdapter
        // EditProperties.resize(item, 300,300);
     }
 
+    //turns of dragging of objet when button is released
     public void mouseReleased(MouseEvent e)
     {
         dragging = false;
     }
 
 
+    //when mouse is dragged, updates coordinates of object based on mouse position
     public void mouseDragged(MouseEvent e)
     {
         if(dragging)

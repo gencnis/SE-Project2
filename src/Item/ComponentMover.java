@@ -242,6 +242,7 @@ public class ComponentMover extends MouseAdapter
             setupForDragging(e);
     }
 
+    //prepares mouse listener and reference to item to be dragged
     private void setupForDragging(MouseEvent e)
     {
         source.addMouseMotionListener( this );

@@ -301,6 +301,7 @@ public class ComponentResizer extends MouseAdapter
         }
     }
 
+    //checks if we are iin bounds for resizing and prepares the scaling of the image
     @Override
     public void mousePressed(MouseEvent e)
     {
@@ -366,6 +367,8 @@ public class ComponentResizer extends MouseAdapter
         changeBounds(source, direction, bounds, pressed, dragged);
     }
 
+
+    //updates the border around the item used to resize the object
     protected void changeBounds(Component source, int direction, Rectangle bounds, Point pressed, Point current)
     {
         //  Start with original locaton and size

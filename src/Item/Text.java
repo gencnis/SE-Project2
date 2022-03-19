@@ -15,7 +15,14 @@ import SlideMgr.*;
 
 import javax.swing.*;
 
+<<<<<<< Updated upstream
 public class Text implements Item{
+=======
+//Uses a JTextArea as a box for text input
+//is draggable and scalable
+public class Text extends JComponent implements Item, java.io.Serializable
+{
+>>>>>>> Stashed changes
 
     public JTextArea textArea;
     public String textEntry = "Insert Text here\n";                  // The text entry that the user will enter / edit

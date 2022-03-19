@@ -16,8 +16,14 @@ import java.util.ArrayList;
 //RESOURCE: https://stackoverflow.com/questions/22436954/saving-a-jpanel-as-an-image-object-and-drawing-it-back-onto-a-jpanel
 //Original and Third Post
 
+<<<<<<< Updated upstream
 
 public class DrawingPanel extends JPanel implements MouseListener, MouseMotionListener
+=======
+//Drawing Panel is the base class for All Slides
+//It extends JPanel and adds a Buffered Image for the user to draw onto when the draw function is selected from the GUI
+public class DrawingPanel extends JPanel implements MouseListener, MouseMotionListener, java.io.Serializable
+>>>>>>> Stashed changes
 {
 
     private int xPos, yPos;//mouse positions
@@ -25,8 +31,19 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     Integer brushWidth = 10;
     Integer brushHeight = 10;
 
+<<<<<<< Updated upstream
     private BufferedImage bufferedImage;
 
+=======
+    transient protected   BufferedImage drawnImage; //can't serialize images, saved to a resources folder
+
+    //cursor images are also non-serializeable
+    transient  Toolkit toolkit;
+    transient static Cursor brushCursor;
+    transient static Cursor eraserCursor;
+
+    //adds mouse listener and sets up cursors and the color map or available color options
+>>>>>>> Stashed changes
     DrawingPanel()
     {
         addMouseListener(this);
@@ -68,6 +85,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     }
 
 
+    //draws image to screen
     @Override
     protected void paintComponent(Graphics g)
     {
@@ -79,8 +97,43 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         g.drawImage(bufferedImage, 0, 0, null);
     }
 
+<<<<<<< Updated upstream
+=======
+    public Color getBrushColor() {
+        return brushColor;
+    }
+    public void setBrushSize(int n){
+        brushHeight = n;
+        brushWidth  = n;
+    }
+
+    //sets brushcolor from set of options
+    public void setBrushColor()
+    {
+        Object[] possibleValues = { "BLACK", "RED", "BLUE", "GREEN"};
+
+        Object selectedValue = JOptionPane.showInputDialog(null,
+                "Choose A Text Color Please: ", "Input",
+                JOptionPane.INFORMATION_MESSAGE, null,
+                possibleValues, possibleValues[0]);
+
+        System.out.println(selectedValue.toString());
+        setBrushColor(colorMap.get(selectedValue.toString()));
+    }
+
+    public void setBrushColor(Color brushColor) {
+        this.brushColor = brushColor;
+    }
+
+    //changes cursor to earaser image
+    public void eraser(){
+        setCursor(eraserCursor);
+        setBrushSize(50);
+    }
+>>>>>>> Stashed changes
 
 
+    //when clicked checks if brush is activated and updates cursor approporiately
     @Override
     public void mousePressed(MouseEvent me)
     {
@@ -90,6 +143,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         yPos = me.getY();
     }
 
+    //if activated, paints an oval to the screen of selected color and brush size
     @Override
     public void mouseDragged(MouseEvent me)
     {
@@ -105,6 +159,8 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         yPos = y;
     }
 
+    //loads the up a previous drawn image to continue using in the prohect
+    //called from load in Main Frame
     public void loadDrawing(BufferedImage bi)
     {
         //opens a message dialog and displays the image parameter
@@ -112,6 +168,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         System.out.println("w:" + bi.getWidth() + " h:" + bi.getHeight());
     }
 
+    //gets a snapshot of the drawn image for testinc
     public BufferedImage getScreenShot()
     {
 
@@ -125,6 +182,16 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         return image;
     }
 
+<<<<<<< Updated upstream
+=======
+
+
+    //sets if we can paint or not
+    public void setActivated(Boolean activated) {
+        this.activated = activated;
+    }
+
+>>>>>>> Stashed changes
     //unused abstract method
     @Override
     public void mouseClicked(MouseEvent me) {

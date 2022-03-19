@@ -20,7 +20,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+<<<<<<< Updated upstream
 public class BottomBar extends JPanel
+=======
+/**
+ * The Bottom Bar class is responsible for displaying all the slides that are currently in the slide deck.
+ * Clicking on the arrow buttons will advance you forward or back one slide.
+ * You can click on any nubmered button to display that numbered slide in the slideshow
+ * */
+
+public class BottomBar extends JPanel implements java.io.Serializable
+>>>>>>> Stashed changes
 {
     //Arraylist should hold all of the slides
     //ArrayList<PresentationSlide> slides = new ArrayList<>();
@@ -34,6 +44,7 @@ public class BottomBar extends JPanel
      */
 
 
+<<<<<<< Updated upstream
 
     static SlideDeck slideDeck;
     static CardLayout slideShow;
@@ -41,6 +52,18 @@ public class BottomBar extends JPanel
     ArrayList<JButton> buttons;
 
      public BottomBar( CardLayout slideShow, JPanel mainPanel)
+=======
+    static SlideDeck slideDeck; //main slide show
+    static CardLayout slideShow;    //the cardlayout used to manage and display all slides
+    static JPanel mainPanel;        //the center panel that holds all the slides
+    ArrayList<JButton> buttons;     //holds all the nubmered slide buttons
+
+    Color beginColor;               //original color of slide buttons
+
+    JButton next;                   //next slide button
+    JButton previous;              //previous slide button
+    public BottomBar(CardLayout slideShow, JPanel mainPanel)
+>>>>>>> Stashed changes
     {
         buttons = new ArrayList<JButton>();
         this.slideShow = slideShow;
@@ -56,12 +79,31 @@ public class BottomBar extends JPanel
         this.add(next);
         this.add(previous);
 
+<<<<<<< Updated upstream
 
+=======
+        //adds actions for forward and back slide buttons
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                moveForward();
+            }
+        });
+
+
+        previous.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                moveBackwards();
+            }
+        });
+>>>>>>> Stashed changes
 
 
     }
 
     //this needs to run after making a SlideDeck or else you get null pointer exceptions
+<<<<<<< Updated upstream
     //links with the main slide deck
     public void initializeBB()
     {
@@ -72,6 +114,17 @@ public class BottomBar extends JPanel
 //if I insert a slide after 5 in a 10 slide show, slides 6-10 need to be updated
 
     public void addSlideButton(Integer index , Slide s)
+=======
+    //connects to  the main slide deck
+    public void initializeBB() {
+        slideDeck = SlideDeck.getSlideDeck();
+    }
+
+
+
+    //inserts slide button at specified index in buttons list
+    public void addSlideButton(Integer index, Slide s)
+>>>>>>> Stashed changes
     {
 
         Integer temp = index + 1;
@@ -95,11 +148,37 @@ public class BottomBar extends JPanel
         {
             rebuildDeck();
 
+<<<<<<< Updated upstream
+=======
+    //updates which slide button is currently highlighted for the current slide
+    //horribly inefficient
+    public void changeSlideButtonSelection()
+    {
+        Slide currentSlide= MainFrame.getCurrentSlide();
+        int currentSlideIndex = SlideDeck.getSlideDeck().getSlides().indexOf(currentSlide);
+
+        for (JButton b : buttons)
+        {
+            int buttonIndex = buttons.indexOf(b);
+            if(buttonIndex == currentSlideIndex)
+            {
+                b.setBackground(Color.BLUE);
+            }
+            else
+            {
+                b.setBackground(beginColor);
+                b.setForeground(Color.BLACK);
+            }
+>>>>>>> Stashed changes
         }
 
     }
 
+<<<<<<< Updated upstream
 //TODO: Figure out how to remove the buttons from the menu. You may need to rebuild all the buttons again.
+=======
+    //removes navigation button from bottom for a removed slide
+>>>>>>> Stashed changes
     //this will be called via SlideDeck removeSlide()
     public void removeSlideButton(Slide s)
     {
@@ -115,7 +194,24 @@ public class BottomBar extends JPanel
 
     }
 
+<<<<<<< Updated upstream
     void rebuildDeck()
+=======
+    //deletes all slide buttons in bottom
+    //used when loading project
+    public void clearAllButtons()
+    {
+        for(JButton b : buttons)
+        {
+            this.remove(b);
+
+        }
+        buttons.clear();
+    }
+
+    //updates all slide buttons and relinks all slides to specified buttons
+    public void rebuildDeck()
+>>>>>>> Stashed changes
     {
         this.removeAll();
         Integer index = 1;
@@ -126,9 +222,30 @@ public class BottomBar extends JPanel
             index++;
         }
     }
+<<<<<<< Updated upstream
 
 
 
 
 
+=======
+
+    //moves currently displayed slide and button forward one slide in the slide deck
+    static void moveForward(){
+            if (slideDeck.getSlides().indexOf(slideDeck.getCurrentSlide()) < slideDeck.getSlides().size() -1) {
+                MainFrame.showSlide(slideDeck.getSlide(slideDeck.getSlides().indexOf(slideDeck.getCurrentSlide()) + 1));
+            } else {
+                System.out.println("END OF DECK REACHED");
+            }
+        }
+
+    //moves currently displayed slide and button backward one slide in the slide deck
+    static void moveBackwards(){
+        if (slideDeck.getSlides().indexOf(slideDeck.getCurrentSlide()) > 0) {
+            MainFrame.showSlide(slideDeck.getSlide(slideDeck.getSlides().indexOf(slideDeck.getCurrentSlide()) - 1));
+        } else {
+            System.out.println("START OF DECK REACHED");
+        }
+    }
+>>>>>>> Stashed changes
 }

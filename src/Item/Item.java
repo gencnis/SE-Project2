@@ -10,6 +10,12 @@
 package Item;
 
 
+<<<<<<< Updated upstream
+=======
+import javax.swing.*;
+
+//basic item interface to be used by all components
+>>>>>>> Stashed changes
 public interface Item
 {
 
