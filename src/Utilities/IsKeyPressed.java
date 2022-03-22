@@ -1,6 +1,6 @@
 package Utilities;
 
-/*
+/* UNUSED
  *   Checks for Keys being pressed
  */
 public class IsKeyPressed

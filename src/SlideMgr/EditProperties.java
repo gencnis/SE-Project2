@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-//unused. was for editting of JComponents
+/**unused. was for editing of JComponents
+ *
+ */
 public class EditProperties
 {
     public static void resizeImage(JLabel item, Integer width, Integer height)

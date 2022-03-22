@@ -6,8 +6,8 @@ import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-//Allows for dragging of JComponents in a JPanel
-/*
+//
+/**Allows for dragging of JComponents in a JPanel
    Use this code with any added JComponent to a panel to make it draggable on screen
 
     DraggableHandler handler = new DraggableHandler(imgLabel, this);
@@ -15,7 +15,11 @@ import java.awt.event.MouseEvent;
         imgLabel.addMouseMotionListener(handler);
         imgLabel.revalidate();
         imgLabel.repaint();
+
+    Author: Robert
  */
+
+
 class DraggableHandler extends MouseInputAdapter implements java.io.Serializable
 {
     JComponent item; //handles every item on a JPanel
@@ -24,7 +28,13 @@ class DraggableHandler extends MouseInputAdapter implements java.io.Serializable
     Slide currentSlide;
     // int ogOrder;      //if you want to set it back to the original layer order on the slide
 
-    //gets a item reference and sets default dragging off
+
+
+    /**Gets a target  JComponent reference and sets default dragging off
+     *
+     * @param item - the target item we want to be able to grab and drag
+     * @param s - the slide that the item is on
+     */
     public DraggableHandler(JComponent item, Slide s) //need to provide the item and the slide it is on
     {
         this.item = item;
@@ -33,7 +43,10 @@ class DraggableHandler extends MouseInputAdapter implements java.io.Serializable
     }
 
 
-    //when mouse is clicked in bounds of the object, enable dragging
+    /**When mouse is clicked in bounds of the object, enable dragging
+     *
+     * @param e - mouse pressed action, used to get the coordinates of the mouse click
+     */
     public void mousePressed(MouseEvent e)
     {
         // ogOrder = item.getComponentZOrder(currentSlide); not sure if this works to get the original layer order
@@ -50,14 +63,21 @@ class DraggableHandler extends MouseInputAdapter implements java.io.Serializable
        // EditProperties.resize(item, 300,300);
     }
 
-    //turns of dragging of objet when button is released
+    /**Turns off dragging of objet when button is released
+     *
+     * @param e - mouse released event
+     */
     public void mouseReleased(MouseEvent e)
     {
         dragging = false;
     }
 
 
-    //when mouse is dragged, updates coordinates of object based on mouse position
+    /**When mouse is dragged, updates coordinates of object based on mouse position
+     * TODO: Kind of buggy. image is a little offset from mouse location when dragged.
+     *
+     * @param e - mouse dragged event. used to get coordinates of dragged mouse on screen
+     */
     public void mouseDragged(MouseEvent e)
     {
         if(dragging)

@@ -10,12 +10,21 @@ import SlideMgr.Slide;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 
-//This is used for Image importing. Stores a reference of the image for resizing if needed.(not implemented)
+/**This is used for Image importing and displays an image on a slide.
+ * Stores a reference of the image for resizing if needed.(not implemented)
+ *
+ * Author: Robert
+ */
 public class ImgLabel extends JLabel implements java.io.Serializable
 {
     transient BufferedImage img = null;
 
 
+    /**Constructor - gets an image to display and which slide it should be added to
+     *
+     * @param i - the image you wish to display with this imgLabel
+     * @param s - the slide which this Image should be displayed
+     */
     public ImgLabel(Icon i, Slide s)
     {
         this.setIcon(i);
@@ -34,7 +43,10 @@ public class ImgLabel extends JLabel implements java.io.Serializable
         this.repaint();*/
     }
 
-    //stores a resizeable version of the image in a Buffered Image
+    /**stores a resizeable version of the image in a Buffered Image
+     *
+     * @param bufferedImage - the target image we wish to keep a reference of for resizing.
+     */
     public void storeImage(BufferedImage bufferedImage)
     {
         img = bufferedImage;

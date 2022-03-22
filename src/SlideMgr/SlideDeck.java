@@ -8,21 +8,34 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**Holds the master list of Slides used by the whole program
+ * Keeps BottomBar up to date if slides are removed or added.
+ *
+ * Author: Robert
+ */
 public class SlideDeck implements java.io.Serializable
 {
-    private static SlideDeck ref;
-    private static ArrayList<Slide> slides;
+    private static SlideDeck ref; //singleton
+    private static ArrayList<Slide> slides; //master slide deck
     private static Slide currentSlide;
     private  Integer slideCount = 0; //unique identifier for every slide..don't think any reasonable actions would overflow
     static BottomBar bb;
+
+    //Fehmi's Color Map
     HashMap<String, Color> colorMap; // here I save all of the color values for easy access
     Color slideColor = Color.WHITE;
-    //eed to add slides after this is made
+
+
+
+    /**Costructor - initializes the main slide deck and Color Map
+     * Need to add slides AFTER this is made
+     */
     SlideDeck()
     {
         bb = MainFrame.getBottomBar();
         slides = new ArrayList<>();
 
+        //Fehmi's Color Map
         colorMap = new HashMap<>();
         //colorMap.put("BLACK", Color.BLACK );  // Black
         colorMap.put("RED", Color.RED );    // Red
@@ -33,7 +46,9 @@ public class SlideDeck implements java.io.Serializable
     }
 
 
-
+    /**Adds a new slide to the end of the slide deck
+     *
+     */
     public  void addSlide()
     {
         Slide s = new Slide(slideCount);
@@ -49,6 +64,11 @@ public class SlideDeck implements java.io.Serializable
 
     }
 
+    /**Adds specified slide to end of the slide deck.
+     * Used when loading a project to populate an empty slide deck.
+     *
+     * @param s - the slide we wish to add to the deck
+     */
     public void addSlide(Slide s)
     {
         slideCount++; //increment unique identifier
@@ -61,6 +81,12 @@ public class SlideDeck implements java.io.Serializable
         MainFrame.showSlide(s);
     }
 
+    /**Adds specified slide at a specified index in the slide deck
+     * Used when loading slides from project file.
+     *
+     * @param s - the slide we wish to as to the deck
+     * @param index - the index at which we want to insert the slide
+     */
     public void addSlide(Slide s, Integer index)
     {
         slideCount++;
@@ -74,11 +100,19 @@ public class SlideDeck implements java.io.Serializable
         MainFrame.showSlide(s);
     }
 
-
+    /**Changes the slide color based on specified color.
+     * Called when inserting painted slides.
+     *
+     * @param c - the target color we wish to change slides to
+     */
     public void setSlideColor(String c) {
         this.slideColor = colorMap.get(c);
     }
 
+    /**Adds a blank slide at specificed index
+     *
+     * @param index - the index of the slideshow we wisht to insert a new slide at
+     */
     public void addSlide(Integer index)
     {
 
@@ -95,6 +129,10 @@ public class SlideDeck implements java.io.Serializable
         MainFrame.showSlide(s);
     }
 
+    /**Removes the currently displayed slide from the slide deck
+     * Updates Bottom Bar display accordingly
+     *
+     */
     public  void removeSlide()
     {
         Integer currentSlideIndex = slides.indexOf(currentSlide);
@@ -138,6 +176,10 @@ public class SlideDeck implements java.io.Serializable
 
     public static BottomBar getBottomBar(){return bb;}
 
+    /**Removes slide at specified index
+     *
+     * @param index - index of slide we wish to remove
+     */
     public static void removeSlide(Integer index) //remove specified slide
     {
         Slide previousSlide;
@@ -187,6 +229,9 @@ public class SlideDeck implements java.io.Serializable
 
     public  Slide getCurrentSlide(){return currentSlide;}
 
+    /**Refreshes the slide numbers to be displayed for the whole slide deck
+     *
+     */
     public void updateSlideNumDisplay()
     {
         for (Slide s: slides)
@@ -206,6 +251,10 @@ public class SlideDeck implements java.io.Serializable
         return ref;
     }
 
+    /**Sets a whole slide deck....ONLY TO BE USED WHEN LEADING PROJECTS
+     *
+     * @param slideDeck - slideDeck from save file to be loaded
+     */
     public static void setDeck(SlideDeck slideDeck)
     {
         ref = slideDeck;

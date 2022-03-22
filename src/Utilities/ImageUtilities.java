@@ -10,11 +10,24 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.Buffer;
 
+/**Contains methods for processing images for use with ImgLabel Class.
+ * Includes Resizing, converting bufferedImage to Icon, and changing Alpha value for background images
+ *
+ * Author: Robert
+ */
 public class ImageUtilities
 {
 
 
-    //resizes the image based on provided image and dimensions
+
+
+    /**Resizes the image based on provided image and dimensions
+     *
+     * @param originalImage - the image you wish to resize
+     * @param width - desired width of resized image
+     * @param height - desired height of resized image
+     * @return - returns the image resized to provided height and width
+     */
     public static BufferedImage rescale(BufferedImage originalImage, int width, int height)
     {
         BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -25,6 +38,15 @@ public class ImageUtilities
     }
 
     //primes image for use
+
+    /**Resizes image and converts it to an icon to use with ImgLabel on a slide
+     * Calls addImageToSlide() to add the processed image to the specified slide
+     *
+     * @param reference - the reference to the image file
+     * @param width - desired width of image on slide
+     * @param height - desired height of image on slide
+     * @param slide - the target slide that will have an image added on it
+     */
     public static void setTargetImage(File reference, int width, int height, Slide slide)
     {
         File targetFile;
@@ -34,7 +56,7 @@ public class ImageUtilities
         {
            targetFile = reference;
 
-//TODO: not sure if wanna store this for saving
+//TODO: not sure if we should store this for saving
             targetImg = rescale(ImageIO.read(reference), width, height); //sets image to desired size
             icon=new ImageIcon(targetImg); //puts image into a use able format for JPanels
             slide.addImageToSlide(icon); //adds image to the slide
@@ -46,7 +68,12 @@ public class ImageUtilities
 
     }
 
-    //primes image for use
+    /** Converts image to an icon to use with ImgLabel on a slide. Uses image's original size.
+     * Calls addImageToSlide() to add the processed image to the specified slide
+     *
+     * @param reference - the reference to the image file
+     * @param slide - the target slide that will have an image added on it
+     */
     public static void setTargetImage(File reference,  Slide slide)
     {
         File targetFile;
@@ -69,7 +96,14 @@ public class ImageUtilities
     }
 
 
-
+    /**UNUSED
+     * esizes an image to the target slide's dimensions and converts image to an icon to use with ImgLabel.
+     * Reduces alpha of image to make it more transparent to not stand out so much.
+     * Calls loadBackgroundImage() to add the processed image to the specified slide's background
+     *
+     * @param reference - the reference to the image file
+     * @param slide - the target slide that will have an image added on it
+     */
     public static void setTargetBackground(File reference, Slide slide)
     {
         File targetFile;
@@ -99,11 +133,20 @@ public class ImageUtilities
 
     }
 
+    //UNUSED - Supposed to scale background to full screen
     public static void presentTargetBackground()
     {
 
     }
 
+    /**UNUSED
+     * Resizes an image to the target slide's dimensions and converts image to an icon to use with ImgLabel.
+     * Reduces alpha of image to make it more transparent to not stand out so much.
+     * Calls loadBackgroundImage() to add the processed image to the specified slide's background
+     *
+     * @param bi -  the image we want to set as a background
+     * @param slide - the target slide that will have an image added on it
+     */
     public static void setTargetBackground(BufferedImage bi, Slide slide)
     {
 
@@ -126,6 +169,16 @@ public class ImageUtilities
 
     }
 
+    /**UNUSED
+     * Resizes an image to the specified dimensions and converts image to an icon to use with ImgLabel.
+     * Reduces alpha of image to make it more transparent to not stand out so much.
+     * Calls loadBackground() to add the processed image to the specified slide's background
+     *
+     * Purpose was to use for scaling slide backgrounds for full screen
+     *
+     * @param bi - the  image we want to set as a background
+     * @param slide - the target slide that will have an image added on it
+     */
     public static void setTargetBackground(BufferedImage bi, int width, int height, Slide slide)
     {
 
@@ -149,6 +202,12 @@ public class ImageUtilities
     }
 
 
+    /**Reduces alpha value of an image to specified proportion making it more or less transparent.
+     *
+     * @param changeAmt - from 0 - 1 percent of alpha retained in image
+     * @param bi - target image to edit
+     * @return
+     */
     public static BufferedImage setAlpha(double changeAmt, BufferedImage bi)
     {
         System.out.print("working");

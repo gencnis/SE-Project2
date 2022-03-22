@@ -35,9 +35,10 @@ public class BottomBar extends JPanel implements java.io.Serializable
     /***
      * Here we look at every slide we have, we make a button for it with an index reference
      *
-     * @param slides TODO: Ideally would be ArrayList of slides not JPanel
-     * @param slideShow idk what this is or if we could change but all's cool since it works
-     * @param mainPanel TODO: TODO: Ideally would be Slide not JPanel
+     * @param slides reference to master slideDeck
+     * @param slideShow holds the cardLayout template so slides all appear in the same spot on screen
+     * @param mainPanel mainPanel is a reference to the main content window
+     *                  Author: Fehmi
      */
 
 
@@ -50,6 +51,12 @@ public class BottomBar extends JPanel implements java.io.Serializable
 
     JButton next;
     JButton previous;
+
+    /**
+     *
+     * @param slideShow
+     * @param mainPanel
+     */
     public BottomBar(CardLayout slideShow, JPanel mainPanel)
     {
         buttons = new ArrayList<JButton>();
@@ -80,15 +87,26 @@ public class BottomBar extends JPanel implements java.io.Serializable
 
     }
 
-    //this needs to run after making a SlideDeck or else you get null pointer exceptions
-    //links with the main slide deck
+
+
+    /**This needs to run after making a SlideDeck or else you get null pointer exceptions
+     *updates reference to  the master slide deck
+     *
+     * Author: Robert
+     */
     public void initializeBB() {
         slideDeck = SlideDeck.getSlideDeck();
     }
 
-    //TODO: You may need to rearrange all the buttons to make sure each one is pointing to the right slide.
-    //if I insert a slide after 5 in a 10 slide show, slides 6-10 need to be updated
 
+
+
+    /**Adds a slide button in at the provided index and shifts all other slides back one.
+     *
+     * if I insert a slide after 5 in a 10 slide show, slides 6-10 need to be updated
+     * @param index -- the index you wish to insert the new slide at in the slide deck
+     * @param s -- the slide we wish to insert
+     */
     public void addSlideButton(Integer index, Slide s)
     {
 
@@ -113,7 +131,14 @@ public class BottomBar extends JPanel implements java.io.Serializable
         this.add(next, BorderLayout.LINE_START);
     }
 
-    //horribly inefficient but works at changing colors to the current slide
+
+
+    /**Horribly inefficient but works at changing colors  of the bottom buttons to reflect the currently selected slide
+     * The currently selected slide is blue while the other buttons are white.
+     *
+     * Inefficient because it goes through the whole arrayList to change each slide button's color each time called.
+     * Author: Robert
+     */
     public void changeSlideButtonSelection()
     {
         Slide currentSlide= MainFrame.getCurrentSlide();
@@ -133,8 +158,17 @@ public class BottomBar extends JPanel implements java.io.Serializable
             }
         }
     }
-    //TODO: Figure out how to remove the buttons from the menu. You may need to rebuild all the buttons again.
-    //this will be called via SlideDeck removeSlide()
+
+
+    //
+
+    /**Removes a slide button based on the slide that is to be removed and it's index in the slide deck
+     * This will be called via SlideDeck removeSlide()
+     *
+     * @param s - the slide we wish to remove from the slide deck
+     *
+     * Author: Robert
+     */
     public void removeSlideButton(Slide s)
     {
 
@@ -149,6 +183,10 @@ public class BottomBar extends JPanel implements java.io.Serializable
 
     }
 
+    /**Removes all buttons from bottom bar. Used when loading a project file.
+     *
+     * Author: Robert
+     */
     public void clearAllButtons()
     {
         for(JButton b : buttons)
@@ -159,6 +197,12 @@ public class BottomBar extends JPanel implements java.io.Serializable
         buttons.clear();
     }
 
+    /**Deletes the whole bottom bar and re-adds all buttons for each slide.
+     * Used when removing or adding slides in the middle of the deck.
+     * Not exactly efficient.
+     *
+     * Author: Robert
+     */
     public void rebuildDeck()
     {
         this.removeAll();
@@ -170,6 +214,8 @@ public class BottomBar extends JPanel implements java.io.Serializable
             index++;
         }
     }
+
+
     static void moveForward(){
             if (slideDeck.getSlides().indexOf(slideDeck.getCurrentSlide()) < slideDeck.getSlides().size() -1) {
                 MainFrame.showSlide(slideDeck.getSlide(slideDeck.getSlides().indexOf(slideDeck.getCurrentSlide()) + 1));

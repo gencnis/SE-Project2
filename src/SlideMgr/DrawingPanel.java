@@ -21,7 +21,10 @@ import java.util.HashMap;
 //RESOURCE: https://stackoverflow.com/questions/22436954/saving-a-jpanel-as-an-image-object-and-drawing-it-back-onto-a-jpanel
 //Original and Third Post
 
-
+/**Base Class for each slide. Allows for drawing on the background when enabled
+ *
+ * Author: Robert
+ */
 public class DrawingPanel extends JPanel implements MouseListener, MouseMotionListener, java.io.Serializable
 {
 
@@ -30,8 +33,9 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     Integer brushWidth = 10;
     Integer brushHeight = 10;
     Boolean activated = false; // This is the boolean that would make sure we can draw or not
-    Boolean erase = false;
+    Boolean erase = false; //checks if we are erasing from the surface
 
+    //Fehmi's map for colors
    HashMap<String, Color> colorMap; // here I save all of the color values for easy access
 
     transient protected   BufferedImage drawnImage;
@@ -39,12 +43,21 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     transient  Toolkit toolkit;
     transient static Cursor brushCursor;
     transient static Cursor eraserCursor;
+
+    /**Constructor : Initializes mouse and motion listeners, gets toolkit for cursor designs, initializes color map
+     * colorMap holds every choice for brush color for drawing.
+     *
+     *
+     *
+     */
     DrawingPanel()
     {
         addMouseListener(this);
         addMouseMotionListener(this);
 
         toolkit =  Toolkit.getDefaultToolkit();
+
+        //Fehmi's code for color map and cursor shapes
         brushCursor = toolkit.createCustomCursor(new ImageIcon("png/cur.png").getImage(),
                                                new Point(0,0),"custom cursor");
         eraserCursor = toolkit.createCustomCursor(new ImageIcon("png/erase.png").getImage(),
@@ -58,8 +71,12 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
 
     }
 
-    // Make sure that the "bufferedImage" is non-null
-    // and has the same size as this panel
+
+
+    /**Make sure that the bufferedImage to be used as the drawing surface is non-null
+     * and has the same size as this panel
+     *
+     */
     private void validateImage()
     {
         if (drawnImage == null)
@@ -91,7 +108,10 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         }
     }
 
-
+    /**Paints on the background bufferedImage.
+     *
+     * @param g - paints using this instance of Graphics
+     */
     @Override
     protected void paintComponent(Graphics g)
     {
@@ -106,11 +126,16 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     public Color getBrushColor() {
         return brushColor;
     }
+
     public void setBrushSize(int n){
         brushHeight = n;
         brushWidth  = n;
     }
 
+    /**Displays an option pane from which to select a brush color from a set of available colors.
+     *
+     * Author: Fehmi
+     */
     public void setBrushColor()
     {
         Object[] possibleValues = { "BLACK", "RED", "BLUE", "GREEN"};
@@ -127,13 +152,21 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         this.brushColor = brushColor;
     }
 
+    /**Enables erasing on the drawing surface
+     *
+     * Author: Fehmi
+     */
     public void eraser(){
         setCursor(eraserCursor);
         setBrushSize(50);
         erase = true;
     }
 
-
+    /**Gets coordinates of mouse and draws an oval on the screen at those coordinates in the specified brush color.
+     * If erasing, paints the image the same color as the background.
+     *
+     * @param me - mouse pressed event
+     */
     @Override
     public void mousePressed(MouseEvent me)
     {
@@ -143,6 +176,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         yPos = me.getY();
 
 
+        //Fehmi's if statements
        if (activated)
        {
            if(erase)
@@ -160,6 +194,12 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         repaint();
     }
 
+    /**Draws ovals of specified color at subsequent mouse coordinates when dragged if drawing is enabled
+     *
+     * @param me - mouse dragged event
+     *
+     *Author: Robert
+     */
     @Override
     public void mouseDragged(MouseEvent me)
     {
@@ -178,6 +218,12 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         }
     }
 
+    /**Loads a buffered image to act as the drawing surface of the slide
+     *
+     * @param bi - the target buffered image to be used as a drawing surface
+     *
+     * Author: Robert
+     */
     public void loadDrawing(BufferedImage bi)
     {
         //opens a message dialog and displays the image parameter
@@ -193,6 +239,11 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
 
     }
 
+    /**UNUSED
+     * Returns screen shot of background image as Buffered Image
+     *
+     * @return - screenshot of background image
+     */
     public BufferedImage getScreenShot()
     {
 
@@ -207,12 +258,12 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     }
 
 
-
+    //Allows for turning on and off drawing on a slide.
     public void setActivated(Boolean activated) {
         this.activated = activated;
     }
 
-    //unused abstract method
+    //unused abstract methods
     @Override
     public void mouseClicked(MouseEvent me) {
 

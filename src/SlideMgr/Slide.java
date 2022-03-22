@@ -28,15 +28,20 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 
-//Manages all of the Objects in the SlideShow
+/**Basic Component of the slideShow.
+ * Inherits from DrawingPanel class to allow for drawing on Backgrounds.
+ * Has operations for adding text, images, and bulletLists
+ *
+ * Author: Robert
+ */
 public class Slide extends DrawingPanel implements java.io.Serializable
 {
-    //Serial ID number needed for every class
+    //Serial ID number needed for every class...at least this class. It didn't work without this.
     private static final long serialVersionUID = -4751816768152150898L;
 
     ArrayList<ImgLabel> images;
 
-    //TODO: make serializable
+
     transient ArrayList<JTextArea> textAreas;
 
     //This a test
@@ -61,6 +66,12 @@ public class Slide extends DrawingPanel implements java.io.Serializable
     Point BGLocation;
 
     JPanel back;
+
+    /**Constructor - gives new slide its own unique ID number
+     * Makes lists for each component type (i.e text, images) for easy reference when saving.
+     *
+     * @param slideID
+     */
     public Slide(Integer slideID)
     {
 
@@ -103,7 +114,10 @@ public class Slide extends DrawingPanel implements java.io.Serializable
 
     }
 
-
+    /**Shows slide number in the bottom right corner of slide, scaled in proportion to slide size in program window.
+     *
+     * @param d - the dimensions of the program window to use to proportionately display slide number in bototm right corner.
+     */
     public void showSlideNumber(Dimension d)
     {
 
@@ -116,6 +130,9 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         isSlideNumberShown = true;
     }
 
+    /**Hides the slide's number from the bottom right corner of the slide
+     *
+     */
     public void removeSlideNumber()
     {
         remove(slideNumber);
@@ -124,11 +141,18 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         isSlideNumberShown = false;
     }
 
+    /**Returns bool to check if slideNumber is visible for this slide
+     *
+     * @return --boolean for if slide number is visible for this slide
+     */
     public boolean getSlideNumberState()
     {
         return isSlideNumberShown;
     }
 
+    /**When a slide is inserted, this is called to make sure the slideNumber value is the same as its index in the list of slides.
+     *
+     */
     public void upDateSlideNumber()
 
     {
@@ -139,7 +163,14 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         slideNumber.setText(number.toString() + " / " + totalSlides.toString());
     }
 
-    //resizes, recolors, and sets location of slide number to begin with
+
+
+    /**Resizes, recolors, and sets location of slide number to begin with
+     *
+     * @param width - width of slide
+     * @param height - slide
+     */
+
     void initializeSlideNumber(int width, int height)
     {
         slideNumber.setSize(width,height); //necessary because null layout of slide makes location go wonky otherwise
@@ -175,8 +206,12 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         slideNumber.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse));
     }
 
-    //run this to add an image from the button action
-    //makes a JLabel, adds it to reference list
+
+
+    /**Called from ImageUtilities SetTargetImage() after processing image to add an ImgLabel with image to slide.
+     *
+     * @param icon - processed image to be added to slide
+     */
     public void addImageToSlide(ImageIcon icon)
     {
         ImgLabel imgLabel = new ImgLabel(icon, this);
@@ -192,7 +227,10 @@ public class Slide extends DrawingPanel implements java.io.Serializable
 
     }
 
-    public void clearSlide() //basically deletes everything on a slide
+    /**Deletes everything on a slide
+     *
+     */
+    public void clearSlide()
     {
         images.clear();
         this.removeAll();
@@ -200,16 +238,17 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         this.repaint();
     }
 
+
     public String getSlideID(){return slideID;}
 
-    void save(ArrayList<Item> allItems){
-        // TODO:
-    }
+
 
     /**
      * This is to keep the text in this current slide, it is being called from the Class Text.java
      * @param s is a text area
      * @param t is the Item we're passing, no matter what it might be (picture, etc) it gets saved and added
+     *
+     * Author: Fehmi
      */
     public void addText(JTextArea s, Item t){
         s.setBounds(50, 50, 150, 150);
@@ -221,6 +260,13 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         repaint();
     }
 
+    /**Adds a Text component to slide that creates bullets when a key is pressed.
+     *
+     * @param s -
+     * @param t -
+     *
+     * Author: Fehmi
+     */
     public void addBulletList(JTextArea s, Item t){
         s.setBounds(50, 50, 150, 150);
 
@@ -231,6 +277,14 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         repaint();
     }
 
+    /**Saves out the drawn part of the slide to the Resources folder with its own naming convention.
+     * Allows us to reload the image to be drawn on when loading a project.
+     *
+     * @param p - the save path of the project's resources folder
+     * @throws IOException - thrown if the path is not found
+     *
+     * Author: Robert
+     */
     public void writeDrawing(Path p) throws IOException
     {
         //TODO:include slideID with drawing so can easily sort through the images
@@ -241,7 +295,14 @@ public class Slide extends DrawingPanel implements java.io.Serializable
     }
 
 
-
+    /**UNUSED
+     * Loads a processed image to be a background on the slide.
+     * Called from ImageUtilities SetTargetBackground() after processing a background image
+     *
+     * @param icon - the processed image to be used as a background for this slide
+     *
+     * Author: Robert
+     */
     public void loadBackgroundImage(ImageIcon icon)
     {
 
@@ -288,6 +349,9 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         this.repaint();
     }
 
+    /**UNUSED
+     * Tried to  debug background not scaling to fullscreen. Did not work.
+     */
     public void presentBGSize()
     {
         if(backGround != null)
@@ -298,11 +362,19 @@ public class Slide extends DrawingPanel implements java.io.Serializable
         }
 
     }
+
+    /**UNUSED
+     * Tried to  debug background not scaling to fullscreen. Did not work.
+     */
     public void resetBGPosition()
     {
         //backgroundImage = new JLabel();
        backgroundImage.setLocation(BGLocation.x,BGLocation.y);
     }
+
+    /**UNUSED
+     * Tried to  debug background not scaling to fullscreen. Did not work.
+     */
     public void resetBGSize()
     {
 
@@ -315,6 +387,9 @@ public class Slide extends DrawingPanel implements java.io.Serializable
 
     }
 
+    /**UNUSED
+     * Tried to  debug background not scaling to fullscreen. Did not work.
+     */
     public void getBGOriginalMeasurements()
     {
         ogHeight = getHeight();
@@ -324,6 +399,7 @@ public class Slide extends DrawingPanel implements java.io.Serializable
 
     public void setBackGround(BufferedImage bi){backGround = bi;}
 
+    //changes Background color
     public void changeBGColor(Color color)
     {
         bgColor = color;
