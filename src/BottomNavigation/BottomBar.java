@@ -56,6 +56,8 @@ public class BottomBar extends JPanel implements java.io.Serializable
      *
      * @param slideShow
      * @param mainPanel
+     *
+     * Author: Fehmi
      */
     public BottomBar(CardLayout slideShow, JPanel mainPanel)
     {
@@ -216,6 +218,11 @@ public class BottomBar extends JPanel implements java.io.Serializable
     }
 
 
+    /**
+     * Makes sure the system does not crash when the user gets to the end of the deck and wants to keep going
+     *
+     * Author: Fehmi
+     */
     static void moveForward(){
             if (slideDeck.getSlides().indexOf(slideDeck.getCurrentSlide()) < slideDeck.getSlides().size() -1) {
                 MainFrame.showSlide(slideDeck.getSlide(slideDeck.getSlides().indexOf(slideDeck.getCurrentSlide()) + 1));
@@ -223,6 +230,12 @@ public class BottomBar extends JPanel implements java.io.Serializable
                 System.out.println("END OF DECK REACHED");
             }
         }
+
+    /**
+     * Makes sure the system does not crash when the user gets to the start of the deck and wants to keep going
+     *
+     * Author: Fehmi
+     */
 
     static void moveBackwards(){
         if (slideDeck.getSlides().indexOf(slideDeck.getCurrentSlide()) > 0) {

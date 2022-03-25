@@ -47,11 +47,13 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     /**Constructor : Initializes mouse and motion listeners, gets toolkit for cursor designs, initializes color map
      * colorMap holds every choice for brush color for drawing.
      *
-     *
+     *Author: Fehmi
      *
      */
     DrawingPanel()
     {
+
+
         addMouseListener(this);
         addMouseMotionListener(this);
 
@@ -111,6 +113,8 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
     /**Paints on the background bufferedImage.
      *
      * @param g - paints using this instance of Graphics
+     *
+     * Author : Robert
      */
     @Override
     protected void paintComponent(Graphics g)
@@ -127,6 +131,12 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         return brushColor;
     }
 
+    /**
+     *
+     * @param n is the size of the brush
+     *
+     * Author: Fehmi
+     */
     public void setBrushSize(int n){
         brushHeight = n;
         brushWidth  = n;
@@ -166,6 +176,7 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
      * If erasing, paints the image the same color as the background.
      *
      * @param me - mouse pressed event
+     *    Author : Robert
      */
     @Override
     public void mousePressed(MouseEvent me)
@@ -174,7 +185,6 @@ public class DrawingPanel extends JPanel implements MouseListener, MouseMotionLi
         //TODO: Implement a GetBrushSize() method here so you can customize the size.
         xPos = me.getX();
         yPos = me.getY();
-
 
         //Fehmi's if statements
        if (activated)

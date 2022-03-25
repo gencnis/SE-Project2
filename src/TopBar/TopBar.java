@@ -33,7 +33,14 @@ public class TopBar extends JPanel implements java.io.Serializable
     JMenu Present = new JMenu("Present|বর্তমান");
 
 
-
+    /**
+     * Huge constructor that has all of the top bar
+     * Here I have a Menu bar that I add Menu Items to
+     * When I add a menu Item I add an action listener to it that I connect to a method in the mainFrame
+     * Hence the main frame reference
+     *
+     * @param mainFrame
+     */
     public TopBar(MainFrame mainFrame)
     {
         addItems.add(Add);addItems.add(Insert);addItems.add(Remove);addItems.add(Draw);addItems.add(LoadProject);addItems.add(Save);

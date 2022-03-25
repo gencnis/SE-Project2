@@ -9,6 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+/**
+ * This follows the same structure as the Text Item class
+ * The difference is that it adds a bullet point at every new line
+ *
+ * Author: Fehmi Neffati
+ */
+
 public class BulletList extends JComponent implements Item, java.io.Serializable
 {
 

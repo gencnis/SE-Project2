@@ -105,7 +105,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
      *
      * Sets up the GUI and slideshow layout and adds 3 dummy slides for an example slideshow
      *
-     * Author: Robert
+     * Author: Robert and Fehmi
      */
     MainFrame()
     {
@@ -985,7 +985,7 @@ public class MainFrame extends JFrame implements java.io.Serializable
     /** Tells the cursor follower to paint the canvas if dragged
      * Works with DrawingPanel.java file that is inherited by all slides
      *
-     * Author: Robert
+     * Author: Fehmi
      */
     public static void draw()
     {
@@ -1027,10 +1027,10 @@ public class MainFrame extends JFrame implements java.io.Serializable
         return currentSlide;
     }
 
-    /*Makes slideshow fullscreen
+    /** Makes slideshow fullscreen
     *
     * Author: Fehmi
-     */
+    */
     public static void fullScreen()
     {
         /*for (Slide s: slideDeck.getSlides())

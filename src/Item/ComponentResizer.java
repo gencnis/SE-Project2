@@ -5,6 +5,8 @@
  * Source: https://tips4java.wordpress.com/2009/09/13/resizing-components/
  * Author: Rob Camick (View source)
  *
+ *
+ * Retriever: Fehmi Neffati
  */
 
 

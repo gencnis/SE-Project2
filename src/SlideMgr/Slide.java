@@ -44,7 +44,7 @@ public class Slide extends DrawingPanel implements java.io.Serializable
 
     transient ArrayList<JTextArea> textAreas;
 
-    //This a test
+    //This a test ~ fehmi ~ It worked
    transient ArrayList<Item> items;
 
     String slideID;
